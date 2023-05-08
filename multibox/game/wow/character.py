@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import typing as T
 from collections import OrderedDict
+
 import attr
 from attrs_mate import AttrsClass
 
@@ -14,9 +16,10 @@ class Character(AttrsClass):
     代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
     在天赋 1 下就算是一个 Character, 在天赋 2 下算是另一个 Character.
 
-    :param account: 与该游戏角色所绑定的账号密码信息
-    :param name: 游戏角色名
-    :param window: 游戏窗口
+    :param account: 与该游戏角色所绑定的账号密码信息.
+    :param name: 游戏角色名.
+    :param window: 游戏窗口.
+    :param nth_char: 在人物选择界面位于第几个人物, 从 1 开始计数.
     :param active: 设置这个人物是否是属于 HotkeyNet 的快捷键所操作的人物.
         例如你在一场游戏中定义了 5 个人物, 但是只启用了 1, 2, 3 号 3 个人物. 4, 5 号
         设置为 active = False. 在此情况下多开脚本的行为是这样的:
@@ -108,5 +111,118 @@ class Character(AttrsClass):
         return f"{self.account.username}-{self.name}"
 
 
-# class CharacterOrderedDict:
-#     pass
+class CharacterHelper:
+    @classmethod
+    def deduplicate(
+        cls,
+        chars: T.Iterable["Character"],
+    ) -> T.OrderedDict[str, "Character"]:
+        """
+        根据角色的 ID 对角色进行去重.
+        """
+        return OrderedDict((char.id, char) for char in chars)
+
+    @classmethod
+    def find_key_char_window(
+        cls,
+        chars: T.Iterable["Character"],
+        attribute: str,
+    ) -> T.Optional[Window]:
+        """
+        从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的窗口.
+
+        例如找到谁是一堆角色中的 1 号司机.
+
+        如果一个队伍里有多个人被设为 1 号司机, 那么就设为自然顺序遇到的第一个 1 号司机.
+        其他人则会被取消设为一号司机 (该逻辑还没有实现).
+        """
+        window: T.Optional[Window] = None
+        for char in chars:
+            if getattr(char, attribute):
+                return char.window
+        return window
+
+    @classmethod
+    def find_leader_1(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
+        """
+        找到一堆角色中的 1 号司机的窗口.
+        """
+        return cls.find_key_char_window(chars, attribute="is_leader_1")
+
+    @classmethod
+    def find_leader_2(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
+        """
+        找到一堆角色中的 2 号司机的窗口.
+        """
+        return cls.find_key_char_window(chars, attribute="is_leader_2")
+
+    @classmethod
+    def _set_key_char_window(
+        cls,
+        chars: T.Iterable["Character"],
+        attr: str,
+        window: Window,
+    ):
+        """
+        一个用于内部实现的方法, 用于将一堆角色的某个跟窗口相关的属性统一设定为指定的窗口.
+
+        例如可以将所有角色的 1 号司机设为指定窗口, 除了 1 号司机本人. 这里要注意的是 1 号司机
+        本人不会将自己设为一号司机. 司机本人不需要吧自己设为焦点, 而且司机可能随时要临时绑定焦点.
+        """
+        for char in chars:
+            if char.window.label != window.label:
+                setattr(char, attr, window)
+
+    @classmethod
+    def set_leader_1_window(
+        cls,
+        chars: T.Iterable["Character"],
+        window: Window,
+    ):
+        """
+        将所有角色的 1 号司机窗口设为指定窗口.
+        """
+        cls._set_key_char_window(chars, "leader_1_window", window)
+
+    @classmethod
+    def set_leader_2_window(
+        cls,
+        chars: T.Iterable["Character"],
+        window: Window,
+    ):
+        """
+        将所有角色的 1 号司机窗口设为指定窗口.
+        """
+        cls._set_key_char_window(chars, "leader_2_window", window)
+
+    @classmethod
+    def set_active(cls, chars: T.Iterable["Character"]):
+        for char in chars:
+            char.active = True
+        return chars
+
+    @classmethod
+    def set_inactive(cls, chars: T.Iterable["Character"]):
+        for char in chars:
+            char.active = False
+        return chars
+
+    @classmethod
+    def sort_chars_by_window_label(
+        cls,
+        chars: T.Iterable["Character"],
+    ) -> T.OrderedDict[str, "Character"]:
+        """
+        将多个角色按照所在的窗口 label (编号) 排序.
+        """
+        return cls.deduplicate(sorted(chars, key=lambda char: char.window.label))
+
+    @classmethod
+    def sort_chars_by_window_title(
+        cls,
+        chars: T.Iterable["Character"],
+    ) -> T.OrderedDict[str, "Character"]:
+        """
+        将多个角色按照所在的窗口 title (标题) 排序.
+        """
+        return cls.deduplicate(sorted(chars, key=lambda char: char.window.label))
