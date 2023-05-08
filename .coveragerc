@@ -5,6 +5,7 @@ omit =
     multibox/tests/*
     multibox/docs/*
     multibox/_version.py
+    multibox/compat.py
 
 [report]
 # Regexes for lines to exclude from consideration
