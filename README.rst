@@ -51,8 +51,7 @@
 
 Welcome to ``multibox`` Documentation
 ==============================================================================
-
-Documentation for ``multibox``.
+本项目是我用来玩网游多开的脚本生成器和管理器. 本项目基于 `hotkeynet <https://github.com/MacHu-GWU/hotkeynet-project>`_ 项目开发.
 
 
 .. _install:
