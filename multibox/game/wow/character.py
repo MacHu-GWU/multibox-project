@@ -123,13 +123,13 @@ class CharacterHelper:
         return OrderedDict((char.id, char) for char in chars)
 
     @classmethod
-    def find_key_char_window(
+    def _find_key_char_window(
         cls,
         chars: T.Iterable["Character"],
         attribute: str,
     ) -> T.Optional[Window]:
         """
-        从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的窗口.
+        一个用于内部实现的方法, 从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的窗口.
 
         例如找到谁是一堆角色中的 1 号司机.
 
@@ -147,14 +147,14 @@ class CharacterHelper:
         """
         找到一堆角色中的 1 号司机的窗口.
         """
-        return cls.find_key_char_window(chars, attribute="is_leader_1")
+        return cls._find_key_char_window(chars, attribute="is_leader_1")
 
     @classmethod
     def find_leader_2(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
         """
         找到一堆角色中的 2 号司机的窗口.
         """
-        return cls.find_key_char_window(chars, attribute="is_leader_2")
+        return cls._find_key_char_window(chars, attribute="is_leader_2")
 
     @classmethod
     def _set_key_char_window(
