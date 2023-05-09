@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .account import AccountFactory as acc_fact
+from .account import acc_fact
 from .character import (
     char_fact,
     char_group,login_char_fact,

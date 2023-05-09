@@ -14,3 +14,6 @@
 
 这种代码组织结构能最大化的复用代码, 并且保持了一定的灵活性, 能用最少得代码达到最丰富的目的.
 """
+
+from .play.dungeon import dungeon_mode_fact
+from .play.raid import raid_mode_fact

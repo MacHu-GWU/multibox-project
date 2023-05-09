@@ -19,7 +19,7 @@ from multibox.game.wow.wlk.api import (
 from ..factory.api import act
 
 if T.TYPE_CHECKING:
-    from .mode import Mode
+    from .play import Mode
 
 
 @attr.s

@@ -53,3 +53,5 @@ class AccountFactory:
     rab03 = _account_loader.load("rab03")
     rab04 = _account_loader.load("rab04")
     rab05 = _account_loader.load("rab05")
+
+acc_fact = AccountFactory
