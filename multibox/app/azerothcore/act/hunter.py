@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from hotkeynet.api import CAN
 
 class BeastMastery:
     # 兽王系主打技能
     Bestial_Wrath = None  # 狂野怒火, 让你的宠物在短时间内增加大量伤害, 兽王系天赋技能
     Intimidation = None  # 胁迫, 控制技, 兽王系天赋技能
     The_Beast_Within = None  # 人面兽心, 俗称小红人, 人和宠物都免疫控制, 兽王系天赋技能
-    Kill_Command = None  # 杀戮命令
+    Kill_Command = CAN.X  # 杀戮命令
     Master_s_Call = None  # 主人的呼唤, 解除宠物身上的控制技能
 
     # 守护
@@ -36,26 +37,26 @@ class BeastMastery:
 
 class Marksmanship:
     # 射击系主打技能
-    Serpent_Sting = None  # 毒蛇钉刺
-    Steady_Shot = None  # 稳固射击
-    Chimera_Shot = None  # 奇美拉设计, 射击系天赋技能
-    Aimed_Shot = None  # 瞄准射击
-    Silencing_Shot = None  # 沉默射击, 射击系天赋技能
-    Kill_Shot = None  # 杀戮射击, 对血量低于一定值的目标可用, 斩杀阶段技能
-    Multi_Shot = None  # 多重射击
-    Volley = None  # 乱射
-    Trueshot_Aura = None  # 强击光环
+    Serpent_Sting = CAN.KEY_1  # 毒蛇钉刺
+    Steady_Shot = CAN.KEY_2  # 稳固射击
+    Chimera_Shot = CAN.KEY_3  # 奇美拉设计, 射击系天赋技能
+    Aimed_Shot = CAN.KEY_4  # 瞄准射击
+    Silencing_Shot = CAN.R  # 沉默射击, 射击系天赋技能
+    Kill_Shot = CAN.KEY_5  # 杀戮射击, 对血量低于一定值的目标可用, 斩杀阶段技能
+    Multi_Shot = CAN.ALT_4  # 多重射击
+    Volley = CAN.ALT_X  # 乱射
+    Trueshot_Aura = CAN.KEY_9  # 强击光环
 
-    Hunter_s_Mark = None  # 猎人印记
+    Hunter_s_Mark = CAN.CTRL_G  # 猎人印记
 
-    Viper_Sting = None  # 蝮蛇钉刺, 吸蓝效果
-    Scorpid_Sting = None  # 毒蝎钉刺, 降低命中率
+    Viper_Sting = CAN.CTRL_X  # 蝮蛇钉刺, 吸蓝效果
+    Scorpid_Sting = None # 毒蝎钉刺, 降低命中率
 
-    Arcane_Shot = None  # 奥术射击
-    Concussive_Shot = None  # 震荡射击
-    Tranquilizing_Shot = None  # 宁神射击, 移除激怒效果
+    Arcane_Shot = CAN.KEY_6  # 奥术射击
+    Concussive_Shot = CAN.Z  # 震荡射击
+    Tranquilizing_Shot = CAN.SHIFT_TAB  # 宁神射击, 移除激怒效果
 
-    Distracting_Shot = None  # 扰乱, 使目标攻击你, 猎人的嘲讽
+    Distracting_Shot = CAN.SHIFT_OEM3_WAVE_OR_BACK_QUOTE  # 扰乱, 使目标攻击你, 猎人的嘲讽
     Flare = None  # 照明弹, 侦测隐形
 
     Rapid_Fire = None  # 急速射击, 长 CD 冷却技能
@@ -66,26 +67,26 @@ class Survival:
     # 生存系主打技能
     Black_Arrow = None  # 黑蚀箭, 生存系天赋技能
     Wyvern_Sting = None  # 奇美拉钉刺, 使目标进入沉睡, 苏醒后造成伤害, 生存系天赋技能
-    Explosive_Shot = None  # 爆炸射击, 生存系天赋技能
+    Explosive_Shot = CAN.CTRL_MIDDLE_CLICK  # 爆炸射击, 生存系天赋技能
 
     # 生存类技能
     Counterattack = None  # 还击, 近战技能, 招架后使用, 造成伤害并使得目标定身, 生存系天赋技能
-    Deterrence = None  # 威慑, 100% 躲闪以及偏斜法术, 保命技能
-    Disengage = None  # 逃脱, 向后跳, 位移技能
+    Deterrence = CAN.SHIFT_F1  # 威慑, 100% 躲闪以及偏斜法术, 保命技能
+    Disengage = CAN.SHIFT_R  # 逃脱, 向后跳, 位移技能
     Mongoose_Bite = None  # 近战攻击技能
     Raptor_Strike = None  # 猛禽以及, 近战攻击技能
-    Feign_Death = None  # 假死
+    Feign_Death = CAN.ALT_E  # 假死
 
     # 陷阱
     Immolation_Trap = None  # 献祭陷阱
-    Snake_Trap = None  # 毒蛇陷阱
+    Snake_Trap = CAN.SHIFT_MIDDLE_CLICK  # 毒蛇陷阱
 
     # 控制类技能
     Scatter_Shot = None  # 驱散射击, 控制技能, 生存系天赋技能
-    Freezing_Arrow = None  # 冰冻箭, 远程版本的冰冻陷阱
-    Freezing_Trap = None  # 冰冻陷阱, 使目标无法做出任何动作, 控制技能
-    Frost_Trap = None  # 冰霜陷阱, 使进入范围内的敌人移动速度降低
-    Wing_Clip = None  # 摔绊, 近战技能, 使目标减速
+    Freezing_Arrow = CAN.ALT_R  # 冰冻箭, 远程版本的冰冻陷阱
+    Freezing_Trap = CAN.CTRL_E  # 冰冻陷阱, 使目标无法做出任何动作, 控制技能
+    Frost_Trap = CAN.CTRL_R  # 冰霜陷阱, 使进入范围内的敌人移动速度降低
+    Wing_Clip = CAN.T  # 摔绊, 近战技能, 使目标减速
 
     # 追踪
     Track_Beasts = None  # 追踪野兽
@@ -97,7 +98,7 @@ class Survival:
     Track_Humanoids = None  # 追踪人形生物
     Track_Undead = None  # 追踪亡灵
 
-    Misdirection = None  # 误导, 使你下几次攻击造成的仇恨转移到指定目标身上
+    Misdirection = CAN.ALT_1  # 误导, 使你下几次攻击造成的仇恨转移到指定目标身上
 
 
 class Healbot:
@@ -115,9 +116,9 @@ class HunterBeastMastery(Hunter):
 
 
 class HunterMarksmanship(Hunter):
-    Chimera_Shot = None  # 奇美拉设计, 射击系天赋技能
-    Silencing_Shot = None  # 沉默射击, 射击系天赋技能
-    Trueshot_Aura = None  # 强击光环
+    Chimera_Shot = CAN.KEY_3  # 奇美拉设计, 射击系天赋技能
+    Silencing_Shot = CAN.R  # 沉默射击, 射击系天赋技能
+    Trueshot_Aura = CAN.KEY_9  # 强击光环
     Readiness = None  # 预备, 重置你的技能 CD, 射击系天赋技能
 
 
@@ -125,4 +126,4 @@ class HunterSurvival(Hunter):
     Counterattack = None  # 还击, 近战技能, 招架后使用, 造成伤害并使得目标定身, 生存系天赋技能
     Black_Arrow = None  # 黑蚀箭, 生存系天赋技能
     Wyvern_Sting = None  # 奇美拉钉刺, 使目标进入沉睡, 苏醒后造成伤害, 生存系天赋技能
-    Explosive_Shot = None  # 爆炸射击, 生存系天赋技能
+    Explosive_Shot = CAN.CTRL_MIDDLE_CLICK  # 爆炸射击, 生存系天赋技能
