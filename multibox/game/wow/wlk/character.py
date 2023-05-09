@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import typing as T
-import dataclasses
 
 import attr
 from attrs_mate import AttrsClass
