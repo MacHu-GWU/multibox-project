@@ -7,7 +7,7 @@
 
 from multibox.runtime import IS_CI
 from multibox.game.wow.api import AccountLoader
-from .paths import path_azerothcore_accounts_json, path_azerothcore_test_accounts_json
+from multibox.app.azerothcore.paths import path_azerothcore_accounts_json, path_azerothcore_test_accounts_json
 
 if IS_CI:
     path = path_azerothcore_test_accounts_json
@@ -17,7 +17,7 @@ else:
 _account_loader = AccountLoader(path=path)
 
 
-class Accounts:
+class AccountFactory:
     """
     枚举出所有的用户名密码的数据对象, 以供之后引用.
     """
