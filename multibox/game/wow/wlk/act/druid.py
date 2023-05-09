@@ -7,6 +7,7 @@ class Balance:
     Insect_Swarm = None  # 虫群, Dot, 平衡系天赋技能
     Wrath = None  # 愤怒
     Starfire = None  # 星火术
+    Hurricane = None  # 飓风, 主力 AOE 技能
     Starfall = None  # 星落术, 强大的 AOE 技能, 平衡系天赋技能
     Typhoon = None  # 台风, 俗称推推, 造成伤害并将目标向后退
     Force_of_Nature = None  # 自然之力, 召唤树人, 平衡系天赋技能
