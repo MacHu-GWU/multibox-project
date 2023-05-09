@@ -117,6 +117,7 @@ class Healbot:
     HB_Rejuvenation = None  # 回春术
     HB_Regrowth = None  # 愈合
     HB_Nourish = None  # 滋养
+    HB_Healing_Touch = None  # 治疗之触
     HB_Lifebloom = None  # 生命之花, hot, 周期结束后会返回部分蓝耗
     HB_Wild_Growth = None  # 野性生长, 群体治疗, 恢复系天赋技能
     HB_Swiftmend = None  # 迅捷治愈, 恢复系天赋技能
