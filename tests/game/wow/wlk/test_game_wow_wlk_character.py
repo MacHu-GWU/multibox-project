@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from multibox.game.wow.model import (
+from multibox.game.wow.api import (
     Account,
     Window,
 )

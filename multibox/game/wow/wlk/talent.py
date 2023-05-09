@@ -15,10 +15,10 @@ from enum import auto
 
 from ordered_set import OrderedSet
 
-from .. import model
+from .. import api
 
 
-class Talent(model.Talent):
+class Talent(api.Talent):
     """
     角色天赋.
     """
@@ -142,7 +142,7 @@ class Talent(model.Talent):
         return TalentCategory.dispeler in _get_category_by_talent(self)
 
 
-class TalentCategory(model.TalentCategory):
+class TalentCategory(api.TalentCategory):
     """
     天赋的类别.
 

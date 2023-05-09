@@ -6,18 +6,18 @@ import dataclasses
 import attr
 from attrs_mate import AttrsClass
 
-from .. import model
-from ..model import Window
+from .. import api
+from ..api import Window
 from .talent import Talent as TL, TalentCategory as TC
 
 
 @attr.s
-class Character(model.Character):
+class Character(api.Character):
     """
     在 WOTLK 版本下的代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
     在天赋 1 下就算是一个 Character, 在天赋 2 下算是另一个 Character.
 
-    除了 :class:`~multibox.game.wow.model.Character` 的属性外, 额外增加了以下属性:
+    除了 :class:`~multibox.game.wow.api.Character` 的属性外, 额外增加了以下属性:
 
     :param talent: 角色天赋.
     :param is_tank_1: 自己是否是 1 号坦克.
@@ -31,8 +31,8 @@ class Character(model.Character):
     talent: TL = AttrsClass.ib_generic(TL, nullable=True, default=None)
     is_tank_1: bool = AttrsClass.ib_bool(default=False)
     is_tank_2: bool = AttrsClass.ib_bool(default=False)
-    tank_1_window: model.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
-    tank_2_window: model.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+    tank_1_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+    tank_2_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
     is_dr_pala_1: bool = AttrsClass.ib_bool(default=False)
     is_dr_pala_2: bool = AttrsClass.ib_bool(default=False)
 
@@ -52,11 +52,11 @@ class Character(model.Character):
         self.is_tank_2 = False
         return self
 
-    def set_tank_1_window(self, window: model.Window) -> "Character":
+    def set_tank_1_window(self, window: api.Window) -> "Character":
         self.tank_1_window: Window = window
         return self
 
-    def set_tank_2_window(self, window: model.Window) -> "Character":
+    def set_tank_2_window(self, window: api.Window) -> "Character":
         self.tank_2_window: Window = window
         return self
 
@@ -86,7 +86,7 @@ class Character(model.Character):
         return self
 
 
-class CharacterHelper(model.CharacterHelper):
+class CharacterHelper(api.CharacterHelper):
     @classmethod
     def find_tank_1(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
         return cls._find_key_char_window(chars, attribute="is_tank_1")
