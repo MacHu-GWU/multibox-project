@@ -7,9 +7,8 @@
 import typing as T
 
 from hotkeynet import api as hk
-from hotkeynet.api import KN, CAN
+from hotkeynet.api import KN
 
-from multibox.game.wow.wlk.api import TalentCategory as TC
 from .. import act
 
 if T.TYPE_CHECKING:
