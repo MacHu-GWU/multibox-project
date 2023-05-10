@@ -8,9 +8,10 @@ import typing as T
 import attr
 from attrs_mate import AttrsClass
 
-from multibox.app.azerothcore.factory.game_client import GameClient
-from multibox.app.azerothcore.mode.team import Team
-from multibox.app.azerothcore.mode.hkn.script import HknScript
+from .factory.game_client import GameClient
+from .team import Team
+from .hkn.script import HknScript
+from .paths import path_azerothcore_hkn
 
 
 @attr.s
@@ -27,3 +28,9 @@ class Mode(AttrsClass):
 
     def __attrs_post_init__(self):
         self.hkn_script = HknScript(mode=self)
+
+    def render(self, verbose: bool = False) -> str:
+        return self.hkn_script.script.render(verbose=verbose)
+
+    def dump(self, verbose: bool = False):
+        path_azerothcore_hkn.write_text(self.render(verbose=verbose))

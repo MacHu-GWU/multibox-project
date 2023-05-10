@@ -16,10 +16,10 @@ from multibox.game.wow.wlk.api import (
     Talent as TL,
     TalentCategory as TC,
 )
-from ..factory.api import act
+from .factory.api import act
 
 if T.TYPE_CHECKING:
-    from .play import Mode
+    from multibox.app.azerothcore.play import Mode
 
 
 @attr.s

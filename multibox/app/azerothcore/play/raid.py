@@ -4,13 +4,13 @@ from hotkeynet import api as hk
 from hotkeynet.api import KN
 
 from multibox.game.wow.wlk.api import TalentCategory as TC
-from ...factory.api import (
+from ..factory.api import (
     game_client_fact,
     raid_active_char_fact,
     login_char_fact,
     act,
 )
-from ..base import Mode, Team
+from ..mode import Mode, Team
 
 
 class ModeFactory:

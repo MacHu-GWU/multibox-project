@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from multibox.app.azerothcore.factory.character import (
+from ..factory.api import (
     login_char_fact,
     dungeon_active_char_fact,
+    game_client_fact,
 )
-from multibox.app.azerothcore.factory.game_client import game_client_fact
-from multibox.app.azerothcore.mode.base import Mode, Team
+from ..mode import Mode, Team
 
 
 class ModeFactory:
