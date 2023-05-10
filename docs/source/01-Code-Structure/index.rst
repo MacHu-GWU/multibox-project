@@ -30,27 +30,39 @@ Folder Structure
 - ``multibox`` 则是本项目的 Python 源码, 主要用来保存可以被复用的模块, 里面的代码需要 import 后再使用. 例如里面按照游戏分类, 实现了游戏常用的代码模块. 每个游戏又有不同的版本, 例如魔兽世界有巫妖王之怒和熊猫人之谜的资料片, 每个版本有它特殊的设定. 而这些设定可以利用编程语言中的面向对象和继承模型来复用代码. 我们 95% 的核心逻辑和核心代码都在这个目录下.
 - ``tests`` 则是 Python 源码的单元测试, 以保证在修改代码后不会破坏已有的逻辑.
 
+既然 ``multibox`` 目录最为重要, 我们就先来讲解一下它. ``multibox`` 目录下有两个重要文件夹 ``/multibox/game`` 和 ``/multibox/app``:
 
-
-Multibox 目录下有两个重要文件夹 app 和 game. app 是用来保存归属于每个具体的 app 的相关模块. 而 game 则是用来根据游戏, 版本进行层级归类, 将某个游戏或某个版本下常用的公共模块放在这里.
-
+    /multibox/game
     /multibox/app
-    /multibox/game
 
-我们先来看 game 目录, 它的目录结构是 ``/multibox/game/${game_name}/${game_version}``::
+- ``/multibox/game`` 目录保存了不同的游戏, 不同的版本所要用到的常用模块. 它本身不定义了你具体要怎么玩, 它只是提供了很多常用的变成模块能让你在定义具体怎么玩的时候工作量减小.
+- ``/multibox/app`` 则是用来保存归属于每个具体的 app 的具体实现, 定义了你具体要怎么玩. 也就是说 ``/multibox/app`` 要 import ``/multibox/game`` 里的东西.
 
-    /multibox/game
-    /multibox/game/wow 魔兽世界游戏通用的模块
-    /multibox/game/wow/wlk 只跟魔兽世界巫妖王之怒相关的模块
-    /multibox/game/wow/mop 只跟魔兽世界熊猫人之谜相关的模块
+我们先来看一下 ``/multibox/game`` 目录, 它的整体子目录结构是 ``/multibox/game/${game_name}/${game_version}/a_lot_of_modules.py``::
 
-我们再来看 app 目录, 下面有几个子目录::
+    /multibox/game/
+    /multibox/game/wow/ # 魔兽世界游戏通用的模块
+    /multibox/game/wow/module1.py, module2.py, ... # 魔兽世界游戏通用的模块
+    /multibox/game/wow/wlk/ # 只跟魔兽世界巫妖王之怒相关的模块
+    /multibox/game/wow/mop/ # 只跟魔兽世界熊猫人之谜相关的模块
 
-    /multibox/app/azerothcore # 魔兽世界 巫妖王之怒版本 azerothcore 服务器
-    /multibox/app/warmane # 魔兽世界 巫妖王之怒版本 warmane 服务器
-    /multibox/app/tauri # 魔兽世界 熊猫人之谜 tarui 服务器
+我们再来看 ``/multibox/app`` 目录, 下面有几个子目录::
 
-最后我们回过头来看根目录下的 app 目录, 里面的结构跟 ``/multibox/app`` 类似::
+    /multibox/app/azerothcore # 魔兽世界 巫妖王之怒版本 azerothcore 服务器的具体设置
+    /multibox/app/warmane # 魔兽世界 巫妖王之怒版本 warmane 服务器的具体设置
+    /multibox/app/tauri # 魔兽世界 熊猫人之谜 tarui 服务器的具体设置
+
+由于我主要玩的是魔兽世界, 而且每个 App 下面的配置相当复杂, 有必要在这里详细解说一下. 我们就以 ``/multibox/app/azerothcore`` 为例. 它下面的目录结构是这样的::
+
+- ``/multibox/app/azerothcore/act/``: 定义了各个游戏角色中的职业在不同的天赋下, 动作条快捷键设置. 这些设置会被用来生成 Hotkeynet 的脚本文件.
+- ``/multibox/app/azerothcore/factory/``: 定义了一些 Python 对象的工厂函数, 以便于在其他模块中引用.
+- ``/multibox/app/azerothcore/hkn/``: 定义了所有的多开快捷键定义, 按下按键会有哪些角色做出什么动作.
+- ``/multibox/app/azerothcore/play/``: 基于一个通用的多开快捷键定义, 定义了在不同的玩法中, 用哪些角色, 对通用定义做出哪些修改. 例如打团, 升级, PvP 是不同的玩法. 里面的定义在 Python 中都是 ``class Mode`` 的实例.
+- ``/multibox/app/azerothcore/mode.py``: 定义了用来代表一个具体玩法的 ``class Mode`` 类.
+- ``/multibox/app/azerothcore/paths.py``: 定义了跟 azeorthcore 服务器玩法相关的文件路径.
+- ``/multibox/app/azerothcore/team.py``: 定义了用来代表一个队伍的 ``class Team`` 类. 里面包括了你要用哪些职业进游戏, 分别用什么天赋, 谁是司机, 谁是坦克等等.
+
+最后我们回过头来看根目录下的 ``/app`` 目录, 里面的结构跟 ``/multibox/app`` 类似. 这个目录放置了一些数据文件, 包括你的账号密码, 以及用来最终生成 hotkeynet 的脚本. 这里的脚本其实就是 import 了 ``/multibox/app`` 中的内容, 然后玩家可以很轻易的在不同的 play 模式之间切换. 比如换一批角色, 换一种玩法::
 
     /app/azerothcore # 魔兽世界 巫妖王之怒版本 azerothcore 服务器
     /app/warmane # 魔兽世界 巫妖王之怒版本 warmane 服务器

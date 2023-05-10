@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Todo: doc string here
+当你想要 import multibox.app.azerothcore.factory 里面的模块里的东西的时候, 不要直接 import,
+而是通过这个 API 模块 import.
 """
 
 from .account import acc_fact
