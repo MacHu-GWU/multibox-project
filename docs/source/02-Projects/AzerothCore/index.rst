@@ -2,8 +2,9 @@ AzerothCore
 ==============================================================================
 
 
-AzerothCore Multibox Key Map
+AzerothCore Multi-box Key Map
 ------------------------------------------------------------------------------
+以下里列出了我在 AzerothCore 服务器上的所有多开按键设置.
 
 
 Window and Login
@@ -19,15 +20,15 @@ Window and Login
       - .. image:: /_static/wow-icon/wow.png
             :height: 64px
       - Round Robin Switch Window
-    * - Ctrl + F1-F10 (1-10), Shift + F5-F12 (11-18), Shift + (Insert-PgDn) (19-24), Ctrl + F12 (25)
+    * - ``Ctrl + F1-F10 (1-10)``, ``Shift + F5-F12 (11-18)``, ``Shift + (Insert-PgDn) (19-24)``, ``Ctrl + F12 (25)``
       - .. image:: /_static/wow-icon/wow.png
             :height: 64px
       - Toggle Specific Window
-    * - Ctrl Shift Alt + / (Numpad)
+    * - Ctrl Shift Alt + ``/`` (Numpad)
       - .. image:: /_static/wow-icon/resize_window.png
             :height: 64px
       - Resize Window
-    * - Ctrl Alt + F1-F10 (1-10), Shift Alt + F5-F12 (11-18), Shift Alt + (Insert-PgDn) (19-24), Ctrl Alt + F12 (25)
+    * - ``Ctrl Alt + F1-F10 (1-10)``, ``Shift Alt + F5-F12 (11-18)``, ``Shift Alt + (Insert-PgDn) (19-24)``, ``Ctrl Alt + F12 (25)``
       - .. image:: /_static/wow-icon/log_in.png
             :height: 64px
       - Login Specific Window
@@ -116,7 +117,7 @@ Numpad 1 - 12
     * - Numpad 11
       - .. image:: /_static/wow-icon/ability_mount_drake_bronze.png
             :height: 64px
-      - Stop Following
+      - Fly or Land Mount On
     * - Numpad 12
       - .. image:: /_static/wow-icon/achievement_quests_completed_vashjir.png
             :height: 64px
