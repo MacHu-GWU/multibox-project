@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Todo: doc string here
+"""
+
 from .account import acc_fact
 from .character import (
     char_fact,

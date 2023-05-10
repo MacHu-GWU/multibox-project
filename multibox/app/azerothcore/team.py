@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Todo: doc string here
+"""
+
 import typing as T
 import attr
 from attrs_mate import AttrsClass
