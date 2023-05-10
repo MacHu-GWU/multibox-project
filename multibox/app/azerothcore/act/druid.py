@@ -8,7 +8,7 @@ class Balance:
     Insect_Swarm = CAN.KEY_4  # 虫群, Dot, 平衡系天赋技能
     Wrath = CAN.KEY_2  # 愤怒
     Starfire = CAN.KEY_3  # 星火术
-    Hurricane = CAN.ALT_X # 飓风, 主力 AOE 技能
+    Hurricane = CAN.ALT_X  # 飓风, 主力 AOE 技能
     Starfall = CAN.ALT_F  # 星落术, 强大的 AOE 技能, 平衡系天赋技能
     Typhoon = CAN.G  # 台风, 俗称推推, 造成伤害并将目标向后退
     Force_of_Nature = None  # 自然之力, 召唤树人, 平衡系天赋技能
@@ -49,7 +49,7 @@ class Restoration:
     Remove_Curse = CAN.T  # 驱散诅咒
 
     Nature_s_Swiftness = CAN.ALT_F  # 自然迅捷, 下一个技能瞬发, 恢复系天赋技能
-    Healing_Touch = CAN.KEY_7  # 治疗之触
+    Healing_Touch = None  # 治疗之触
 
     Revive = None  # 复活
     Rebirth = CAN.CTRL_X  # 战斗复活
@@ -68,18 +68,25 @@ class Feral:
     Swipe_Bear = CAN.KEY_4  # 扫击 熊形态
 
     Bash = CAN.KEY_5  # 重击, 使目标昏迷, 控制技能
-    Challenging_Roar = None  # 挑战咆哮, 群体嘲讽
+    Challenging_Roar = CAN.ALT_F2  # 挑战咆哮, 群体嘲讽
     Demoralizing_Roar = None  # 挫志咆哮
     Feral_Charge_Bear = None  # 野性冲锋 熊形态, 野性系天赋技能
 
     # 其他
-    Enrage = None  # 激怒, 类似于战士的血性狂暴
+    Enrage = CAN.SHIFT_G  # 激怒, 类似于战士的血性狂暴
     Survival_Instincts = CAN.SHIFT_F2  # 生存本能, 提高生命上限, 类似于战士的破釜沉舟
-    Frenzied_Regeneration = None  # 狂暴回复, 怒气转血量
+    Frenzied_Regeneration = CAN.SHIFT_OEM3_WAVE_OR_BACK_QUOTE  # 狂暴回复, 怒气转血量
 
     # 猫形态
     Cat_FormShapeshift = CAN.SHIFT_W  # 猫形态
     Prowl = CAN.ALT_F1  # 潜行
+
+    Enter_Prowl_Macro = CAN.ALT_F1  # 进入潜行状态宏
+    """
+    #showtooltips
+    /cast [stance:0/1/2/4/5] 猎豹形态
+    /cast [stance:3] !潜行
+    """
 
     # 起手技
     Pounce = None  # 突袭, 使目标昏迷, 类似与盗贼的偷袭
@@ -105,13 +112,13 @@ class Feral:
     Cower = None  # 畏缩, 降低仇恨
     Swipe_Cat = None  # 扫击 猫形态
 
-    Faerie_Fire_Feral = CAN.R  # 精灵之火 野性
-    Tiger_s_Fury = CAN.G  # 猛虎之怒, 提高物理伤害
+    Faerie_Fire_Feral = None  # 精灵之火 野性
+    Tiger_s_Fury = None  # 猛虎之怒, 提高物理伤害
 
     Track_Humanoids = None  # 追踪人形生物
 
-    Aquatic_FormShapeshift = CAN.ALT_F2  # 水栖形态
-    Travel_FormShapeshift = CAN.SHIFT_Q  # 旅行形态
+    Aquatic_FormShapeshift = None  # 水栖形态
+    Travel_FormShapeshift = None  # 旅行形态
     Flight_FormShapeshift = CAN.NUMPAD_11_DIVIDE  # 飞行形态
 
 
@@ -141,7 +148,7 @@ class DruidBalance(Druid):
 
 class DruidRestoration(Druid):
     Wild_Growth = CAN.KEY_5  # 野性生长, 群体治疗, 恢复系天赋技能
-    Swiftmend = CAN.KEY_4  # 迅捷治愈, 恢复系天赋技能
+    Swiftmend = None  # 迅捷治愈, 恢复系天赋技能
     Tree_of_LifeShapeshift = CAN.SHIFT_E  # 治疗之树形态
     Nature_s_Swiftness = CAN.ALT_F  # 自然迅捷, 下一个技能瞬发, 恢复系天赋技能
 
@@ -150,3 +157,9 @@ class DruidFeral(Druid):
     Feral_Charge_Bear = None  # 野性冲锋 熊形态, 野性系天赋技能
     Feral_Charge_Cat = None  # 野性冲锋 猫形态, 野性系天赋技能
     Berserk = None  # 狂暴, 熊猫通用爆发技能, 野性系天赋技能
+
+
+druid = Druid()
+druid_balance = DruidBalance()
+druid_restoration = DruidRestoration()
+druid_feral = DruidFeral()

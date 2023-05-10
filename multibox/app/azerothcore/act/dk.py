@@ -36,12 +36,12 @@ class Frost:
     Deathchill = None  # 黑锋冰寒
     Hungering_Cold = CAN.CTRL_F  # 饥饿之寒, 群体控制
     Unbreakable_Armor = CAN.SHIFT_F2  # 铜墙铁壁, 提高护甲和力量, 冰霜系天赋技能
-    Frost_Strike = CAN.ALT_3  # 冰霜打击, 冰霜系天赋技能
-    Howling_Blast = CAN.ALT_F  # 凛风冲击, 冰霜系天赋技能
+    Frost_Strike = CAN.ALT_3  # 冰霜打击, 冰霜系天赋技能, 替代死亡缠绕
+    Howling_Blast = None  # 凛风冲击, 冰霜系天赋技能
 
     # 其他
     Chains_of_Ice = CAN.CTRL_E  # 寒冰锁链
-    Empower_Rune_Weapon = CAN.CTRL_R  # 强化符文武器
+    Empower_Rune_Weapon = CAN.CTRL_F  # 强化符文武器
     Horn_of_Winter = CAN.SHIFT_TAB  # 寒冬号角, buff 技能
 
     Icebound_Fortitude = CAN.SHIFT_F1  # 冰固坚韧, 减伤技能
@@ -63,17 +63,17 @@ class Unholy:
     Anti_Magic_Zone = CAN.SHIFT_G  # 反魔法领域
     Bone_Shield = CAN.SHIFT_F2  # 骨盾
     Summon_Gargoyle = CAN.SHIFT_C  # 召唤石像鬼
+    Corpse_Explosion = None  # 尸体爆炸
 
     # 其他
     Anti_Magic_Shell = CAN.SHIFT_F  # 反魔法护盾
     Army_of_the_Dead = None  # 亡者大军
-    Corpse_Explosion = CAN.ALT_F  # 尸体爆炸
     Death_and_Decay = CAN.ALT_X  # 死亡凋零
     Death_Gate = None  # 死亡之门
     Death_Grip = CAN.G  # 死亡之握
 
-    Raise_Ally = None  # 复活友军
-    Raise_Dead = None  # 复活死者
+    Raise_Ally = CAN.CTRL_G  # 复活友军
+    Raise_Dead = CAN.CTRL_X  # 复活死者
 
 
 class Healbot:
@@ -95,10 +95,10 @@ class DKBlood(DK):
 
 class DKFrost(DK):
     Lichborne = None  # 巫妖之躯, 冰霜系天赋技能
-    Deathchill = None  # 黑锋冰寒
+    Deathchill = CAN.SHIFT_C  # 黑锋冰寒
     Hungering_Cold = CAN.CTRL_F  # 饥饿之寒, 群体控制
     Unbreakable_Armor = CAN.SHIFT_F2  # 铜墙铁壁, 提高护甲和力量, 冰霜系天赋技能
-    Frost_Strike = CAN.ALT_3  # 冰霜打击, 冰霜系天赋技能
+    Frost_Strike = CAN.ALT_3  # 冰霜打击, 冰霜系天赋技能, 替代死亡缠绕
     Howling_Blast = CAN.ALT_F  # 凛风冲击, 冰霜系天赋技能
 
 
@@ -108,3 +108,9 @@ class DKUnholy(DK):
     Anti_Magic_Zone = CAN.SHIFT_G  # 反魔法领域
     Bone_Shield = CAN.SHIFT_F2  # 骨盾
     Summon_Gargoyle = CAN.SHIFT_C  # 召唤石像鬼
+
+
+dk = DK()
+dk_blood = DKBlood()
+dk_frost = DKFrost()
+dk_unholy = DKUnholy()
