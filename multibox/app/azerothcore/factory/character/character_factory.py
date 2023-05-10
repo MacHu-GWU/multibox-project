@@ -21,7 +21,7 @@ class CharacterFactory:
     @property
     def ra_pve_protect_pala(self) -> Character:
         return Character(
-            account=acc_fact.fat01.value,
+            account=acc_fact.fat01,
             name="ra",
             talent=TL.paladin_pve_protect,
             window=Window.make(1),
@@ -31,7 +31,7 @@ class CharacterFactory:
     @property
     def rb_pve_elemental_shaman(self) -> Character:
         return Character(
-            account=acc_fact.fat02.value,
+            account=acc_fact.fat02,
             name="rb",
             talent=TL.shaman_pve_elemental,
             window=Window.make(2),
@@ -41,7 +41,7 @@ class CharacterFactory:
     @property
     def rc_pve_balance_druid(self) -> Character:
         return Character(
-            account=acc_fact.fat03.value,
+            account=acc_fact.fat03,
             name="rc",
             talent=TL.druid_pve_balance,
             window=Window.make(3),
@@ -51,7 +51,7 @@ class CharacterFactory:
     @property
     def rd_pve_arcane_mage(self) -> Character:
         return Character(
-            account=acc_fact.fat04.value,
+            account=acc_fact.fat04,
             name="rd",
             talent=TL.mage_pve_arcane,
             window=Window.make(4),
@@ -61,7 +61,7 @@ class CharacterFactory:
     @property
     def re_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat05.value,
+            account=acc_fact.fat05,
             name="re",
             talent=TL.priest_pve_shadow,
             window=Window.make(5),
@@ -71,7 +71,7 @@ class CharacterFactory:
     @property
     def re_pve_holy_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat05.value,
+            account=acc_fact.fat05,
             name="re",
             talent=TL.priest_pve_holy,
             window=Window.make(5),
@@ -81,7 +81,7 @@ class CharacterFactory:
     @property
     def rf_pve_demon_warlock(self) -> Character:
         return Character(
-            account=acc_fact.fat06.value,
+            account=acc_fact.fat06,
             name="rf",
             talent=TL.warlock_pve_demonology,
             window=Window.make(6),
@@ -91,7 +91,7 @@ class CharacterFactory:
     @property
     def rg_pve_marksman_hunter(self) -> Character:
         return Character(
-            account=acc_fact.fat07.value,
+            account=acc_fact.fat07,
             name="rg",
             talent=TL.hunter_pve_marksman,
             window=Window.make(7),
@@ -101,7 +101,7 @@ class CharacterFactory:
     @property
     def rh_pve_resto_druid(self) -> Character:
         return Character(
-            account=acc_fact.fat08.value,
+            account=acc_fact.fat08,
             name="rh",
             talent=TL.druid_pve_resto,
             window=Window.make(8),
@@ -111,7 +111,7 @@ class CharacterFactory:
     @property
     def ri_pve_holy_paladin(self) -> Character:
         return Character(
-            account=acc_fact.fat09.value,
+            account=acc_fact.fat09,
             name="ri",
             talent=TL.paladin_pve_holy,
             window=Window.make(9),
@@ -121,7 +121,7 @@ class CharacterFactory:
     @property
     def rj_pve_blood_tank_dk(self) -> Character:
         return Character(
-            account=acc_fact.fat10.value,
+            account=acc_fact.fat10,
             name="rj",
             talent=TL.dk_pve_blood_tank,
             window=Window.make(10),
@@ -131,7 +131,7 @@ class CharacterFactory:
     @property
     def rk_pve_balance_druid(self) -> Character:
         return Character(
-            account=acc_fact.fat11.value,
+            account=acc_fact.fat11,
             name="rk",
             talent=TL.druid_pve_balance,
             window=Window.make(11),
@@ -141,7 +141,7 @@ class CharacterFactory:
     @property
     def rl_pve_balance_druid(self) -> Character:
         return Character(
-            account=acc_fact.fat12.value,
+            account=acc_fact.fat12,
             name="rl",
             talent=TL.druid_pve_balance,
             window=Window.make(12),
@@ -151,7 +151,7 @@ class CharacterFactory:
     @property
     def rm_pve_balance_druid(self) -> Character:
         return Character(
-            account=acc_fact.fat13.value,
+            account=acc_fact.fat13,
             name="rm",
             talent=TL.druid_pve_balance,
             window=Window.make(13),
@@ -161,7 +161,7 @@ class CharacterFactory:
     @property
     def rn_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat14.value,
+            account=acc_fact.fat14,
             name="rn",
             talent=TL.priest_pve_shadow,
             window=Window.make(14),
@@ -171,7 +171,7 @@ class CharacterFactory:
     @property
     def ro_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat15.value,
+            account=acc_fact.fat15,
             name="ro",
             talent=TL.priest_pve_shadow,
             window=Window.make(15),
@@ -181,7 +181,7 @@ class CharacterFactory:
     @property
     def rp_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat16.value,
+            account=acc_fact.fat16,
             name="rp",
             talent=TL.priest_pve_shadow,
             window=Window.make(16),
@@ -191,7 +191,7 @@ class CharacterFactory:
     @property
     def rq_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat17.value,
+            account=acc_fact.fat17,
             name="rq",
             talent=TL.priest_pve_shadow,
             window=Window.make(17),
@@ -201,7 +201,7 @@ class CharacterFactory:
     @property
     def rr_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat18.value,
+            account=acc_fact.fat18,
             name="rr",
             talent=TL.priest_pve_shadow,
             window=Window.make(18),
@@ -211,7 +211,7 @@ class CharacterFactory:
     @property
     def rs_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat19.value,
+            account=acc_fact.fat19,
             name="rs",
             talent=TL.priest_pve_shadow,
             window=Window.make(19),
@@ -221,7 +221,7 @@ class CharacterFactory:
     @property
     def rt_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat20.value,
+            account=acc_fact.fat20,
             name="rt",
             talent=TL.priest_pve_shadow,
             window=Window.make(20),
@@ -231,7 +231,7 @@ class CharacterFactory:
     @property
     def ru_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat21.value,
+            account=acc_fact.fat21,
             name="ru",
             talent=TL.priest_pve_shadow,
             window=Window.make(21),
@@ -241,7 +241,7 @@ class CharacterFactory:
     @property
     def rv_pve_shadow_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat22.value,
+            account=acc_fact.fat22,
             name="rv",
             talent=TL.priest_pve_shadow,
             window=Window.make(22),
@@ -251,7 +251,7 @@ class CharacterFactory:
     @property
     def rw_pve_resto_shaman(self) -> Character:
         return Character(
-            account=acc_fact.fat23.value,
+            account=acc_fact.fat23,
             name="rw",
             talent=TL.shaman_pve_resto,
             window=Window.make(23),
@@ -261,7 +261,7 @@ class CharacterFactory:
     @property
     def rx_pve_holy_paladin(self) -> Character:
         return Character(
-            account=acc_fact.fat24.value,
+            account=acc_fact.fat24,
             name="rx",
             talent=TL.paladin_pve_holy,
             window=Window.make(24),
@@ -271,7 +271,7 @@ class CharacterFactory:
     @property
     def ry_pve_disco_priest(self) -> Character:
         return Character(
-            account=acc_fact.fat25.value,
+            account=acc_fact.fat25,
             name="ry",
             talent=TL.priest_pve_disco,
             window=Window.make(25),
@@ -281,7 +281,7 @@ class CharacterFactory:
     @property
     def sa_pve_protect_paladin(self) -> Character:
         return Character(
-            account=acc_fact.rab01.value,
+            account=acc_fact.rab01,
             name="sa",
             talent=TL.paladin_pve_protect,
             window=Window.make(1),
@@ -291,7 +291,7 @@ class CharacterFactory:
     @property
     def sb_pve_elemental_shaman(self) -> Character:
         return Character(
-            account=acc_fact.rab02.value,
+            account=acc_fact.rab02,
             name="sb",
             talent=TL.shaman_pve_elemental,
             window=Window.make(2),
@@ -301,7 +301,7 @@ class CharacterFactory:
     @property
     def sc_pve_elemental_shaman(self) -> Character:
         return Character(
-            account=acc_fact.rab03.value,
+            account=acc_fact.rab03,
             name="sc",
             talent=TL.shaman_pve_elemental,
             window=Window.make(3),
@@ -311,7 +311,7 @@ class CharacterFactory:
     @property
     def sd_pve_elemental_shaman(self) -> Character:
         return Character(
-            account=acc_fact.rab04.value,
+            account=acc_fact.rab04,
             name="sd",
             talent=TL.shaman_pve_elemental,
             window=Window.make(4),
@@ -321,7 +321,7 @@ class CharacterFactory:
     @property
     def se_pve_resto_shaman(self) -> Character:
         return Character(
-            account=acc_fact.rab05.value,
+            account=acc_fact.rab05,
             name="se",
             talent=TL.shaman_pve_resto,
             window=Window.make(5),
