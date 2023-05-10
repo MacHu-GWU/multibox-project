@@ -30,8 +30,12 @@ class Character(api.Character):
     talent: TL = AttrsClass.ib_generic(TL, nullable=True, default=None)
     is_tank_1: bool = AttrsClass.ib_bool(default=False)
     is_tank_2: bool = AttrsClass.ib_bool(default=False)
-    tank_1_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
-    tank_2_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+    tank_1_window: api.Window = AttrsClass.ib_generic(
+        Window, nullable=True, default=None
+    )
+    tank_2_window: api.Window = AttrsClass.ib_generic(
+        Window, nullable=True, default=None
+    )
     is_dr_pala_1: bool = AttrsClass.ib_bool(default=False)
     is_dr_pala_2: bool = AttrsClass.ib_bool(default=False)
 
@@ -64,6 +68,11 @@ class Character(api.Character):
         return self
 
     def set_dr_pala_2(self) -> "Character":
+        self.is_dr_pala_2 = True
+        return self
+
+    def set_dr_pala_12(self) -> "Character":
+        self.is_dr_pala_1 = True
         self.is_dr_pala_2 = True
         return self
 

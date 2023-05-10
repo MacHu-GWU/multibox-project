@@ -14,7 +14,7 @@ class ActiveCharactersFactory:
         """
         return CharacterHelper.set_team_leader_and_tank(
             chars=[
-                char_fact.ra_pve_protect_pala.set_leader_1_tank_1(),
+                char_fact.ra_pve_protect_pala.set_leader_1_tank_1().set_dr_pala_1(),
                 char_fact.rb_pve_elemental_shaman,
                 char_fact.rc_pve_balance_druid,
                 char_fact.rd_pve_arcane_mage,
