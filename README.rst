@@ -1,12 +1,12 @@
 
-.. image:: https://readthedocs.org/projects/multibox/badge/?version=latest
+.. .. image:: https://readthedocs.org/projects/multibox/badge/?version=latest
     :target: https://multibox.readthedocs.io/index.html
     :alt: Documentation Status
 
 .. image:: https://github.com/MacHu-GWU/multibox-project/workflows/CI/badge.svg
     :target: https://github.com/MacHu-GWU/multibox-project/actions?query=workflow:CI
 
-.. image:: https://codecov.io/gh/MacHu-GWU/multibox-project/branch/main/graph/badge.svg
+.. .. image:: https://codecov.io/gh/MacHu-GWU/multibox-project/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/MacHu-GWU/multibox-project
 
 .. image:: https://img.shields.io/pypi/v/multibox.svg
@@ -24,10 +24,10 @@
 ------
 
 
-.. image:: https://img.shields.io/badge/Link-Document-blue.svg
+.. .. image:: https://img.shields.io/badge/Link-Document-blue.svg
     :target: https://multibox.readthedocs.io/index.html
 
-.. image:: https://img.shields.io/badge/Link-API-blue.svg
+.. .. image:: https://img.shields.io/badge/Link-API-blue.svg
     :target: https://multibox.readthedocs.io/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
@@ -52,21 +52,3 @@
 Welcome to ``multibox`` Documentation
 ==============================================================================
 本项目是我用来玩网游多开的脚本生成器和管理器. 本项目基于 `hotkeynet <https://github.com/MacHu-GWU/hotkeynet-project>`_ 项目开发.
-
-
-.. _install:
-
-Install
-------------------------------------------------------------------------------
-
-``multibox`` is released on PyPI, so all you need is:
-
-.. code-block:: console
-
-    $ pip install multibox
-
-To upgrade to latest version:
-
-.. code-block:: console
-
-    $ pip install --upgrade multibox
