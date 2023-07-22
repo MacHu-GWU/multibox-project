@@ -12,7 +12,7 @@ from pathlib_mate import Path
 from .factory.game_client import GameClient
 from .team import Team
 from .hkn.script import HknScript
-from .paths import path_azerothcore_hkn
+from .paths import path_azerothcore_horde_hkn
 
 
 @attr.s
@@ -31,7 +31,7 @@ class Mode(AttrsClass):
     game_client: T.Optional[GameClient] = attr.ib(default=None)
     team: T.Optional["Team"] = attr.ib(default=None)
     hkn_script: T.Optional["HknScript"] = attr.ib(default=None)
-    path: T.Optional[Path] = attr.ib(default=path_azerothcore_hkn)
+    path: T.Optional[Path] = attr.ib(default=path_azerothcore_horde_hkn)
 
     def __attrs_post_init__(self):
         self.hkn_script = HknScript(mode=self)

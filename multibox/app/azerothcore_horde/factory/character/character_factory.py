@@ -6,7 +6,7 @@ from multibox.game.wow.wlk.api import (
     Window,
     Character,
 )
-from multibox.app.azerothcore.factory.account import acc_fact
+from multibox.app.azerothcore_horde.factory.account import acc_fact
 
 
 class CharacterFactory:

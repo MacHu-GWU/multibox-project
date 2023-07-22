@@ -7,12 +7,12 @@
 
 from multibox.runtime import IS_CI
 from multibox.game.wow.api import AccountLoader
-from multibox.app.azerothcore.paths import path_azerothcore_accounts_json, path_azerothcore_test_accounts_json
+from multibox.app.azerothcore_horde.paths import path_azerothcore_horde_accounts_json, path_azerothcore_horde_test_accounts_json
 
 if IS_CI:
-    path = path_azerothcore_test_accounts_json
+    path = path_azerothcore_horde_test_accounts_json
 else:
-    path = path_azerothcore_accounts_json
+    path = path_azerothcore_horde_accounts_json
 
 _account_loader = AccountLoader(path=path)
 

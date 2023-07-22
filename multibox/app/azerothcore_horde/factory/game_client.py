@@ -12,7 +12,7 @@ from pathlib_mate import Path
 from multibox.game.wow.wlk import coordinator
 from multibox.game.wow.wlk.game_client import GameClient
 
-from ..paths import path_azerothcore_config_json
+from ..paths import path_azerothcore_horde_config_json
 
 
 @attr.s
@@ -37,7 +37,7 @@ class GameClientFactory(AttrsClass):
     @classmethod
     def from_config_file(
         cls,
-        path: Path = path_azerothcore_config_json,
+        path: Path = path_azerothcore_horde_config_json,
     ) -> "GameClientFactory":
         config_data = json.load(path.abspath, verbose=False, ignore_comments=True)
         return cls(**config_data)

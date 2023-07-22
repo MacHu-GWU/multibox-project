@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from multibox.app.azerothcore.play import (
+from multibox.app.azerothcore_horde.play import (
     dungeon_mode_fact,
     raid_mode_fact,
 )
