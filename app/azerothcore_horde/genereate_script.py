@@ -10,14 +10,14 @@ from multibox.app.azerothcore_horde.play import (
 # -----------------------------------------------------------------------------
 # mode = raid_mode_fact.x10p_core_team
 # mode = raid_mode_fact.x10p_naxx_abomination_4th_boss
-mode = raid_mode_fact.x25p_core_team
+# mode = raid_mode_fact.x25p_core_team
 # mode = raid_mode_fact.x25p_core_team_ICC_1
 
 
 # -----------------------------------------------------------------------------
 # Horde
 # -----------------------------------------------------------------------------
-# mode = dungeon_mode_fact.x5p_horde_s_abcde
+mode = dungeon_mode_fact.x5p_horde_s_abcde
 
 # -----------------------------------------------------------------------------
 # Don't Touch
