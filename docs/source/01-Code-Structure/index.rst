@@ -30,7 +30,7 @@ Folder Structure
 - ``multibox`` 则是本项目的 Python 源码, 主要用来保存可以被复用的模块, 里面的代码需要 import 后再使用. 例如里面按照游戏分类, 实现了游戏常用的代码模块. 每个游戏又有不同的版本, 例如魔兽世界有巫妖王之怒和熊猫人之谜的资料片, 每个版本有它特殊的设定. 而这些设定可以利用编程语言中的面向对象和继承模型来复用代码. 我们 95% 的核心逻辑和核心代码都在这个目录下.
 - ``tests`` 则是 Python 源码的单元测试, 以保证在修改代码后不会破坏已有的逻辑.
 
-既然 ``multibox`` 目录最为重要, 我们就先来讲解一下它. ``multibox`` 目录下有两个重要文件夹 ``/multibox/game`` 和 ``/multibox/app``:
+既然 ``multibox`` 目录最为重要, 我们就先来讲解一下它. ``multibox`` 目录下有两个重要文件夹 ``/multibox/game`` 和 ``/multibox/app``::
 
     /multibox/game
     /multibox/app

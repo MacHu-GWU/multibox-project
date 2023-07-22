@@ -67,13 +67,15 @@ class CommandMixin:
         """
         with hk.Command(
             name="BringWindowToForeground",
-        ) as self.cmd_bring_window_to_foreground:
+        # ) as self.cmd_bring_window_to_foreground:
+        ) as cmd_bring_window_to_foreground:
             with hk.SendPC():
                 with hk.TargetWin(window=hk.CommandArgEnum.Arg1):
                     hk.Wait.make(50)
                     hk.SetForegroundWin()  # This command response fast
                     # hk.SetActiveWin()  # This command cause big delay
-
+            # we have to do this to allow type hint to work
+            self.cmd_bring_window_to_foreground = cmd_bring_window_to_foreground
     def build_cmd_resize_and_relocate_window(self: "HknScript"):
         """
         将某个窗口尺寸调整, 给左边留出一竖条用于 Control Panel, 并移动到屏幕中心区域.
