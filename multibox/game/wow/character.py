@@ -115,13 +115,16 @@ class Character(AttrsClass):
 
 
 class CharacterHelper:
+    """
+    一些对 :class:`Character` 对象的操作的辅助方法.
+    """
     @classmethod
     def deduplicate(
         cls,
         chars: T.Iterable["Character"],
     ) -> T.OrderedDict[str, "Character"]:
         """
-        根据角色的 ID 对角色进行去重.
+        根据角色的 ID (account + character name) 对角色进行去重.
         """
         return OrderedDict((char.id, char) for char in chars)
 
@@ -200,12 +203,18 @@ class CharacterHelper:
 
     @classmethod
     def set_active(cls, chars: T.Iterable["Character"]):
+        """
+        将多个角色设为 active.
+        """
         for char in chars:
             char.active = True
         return chars
 
     @classmethod
     def set_inactive(cls, chars: T.Iterable["Character"]):
+        """
+        将多个角色设为 inactive.
+        """
         for char in chars:
             char.active = False
         return chars

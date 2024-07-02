@@ -4,7 +4,7 @@
 跟职业无关的常用快捷键绑定.
 """
 
-from hotkeynet.api import CAN, KeyMaker
+from hotkeynet.api import KN, CAN, KeyMaker
 from multibox.game.wow.api import Window
 
 # fmt: off
@@ -18,10 +18,10 @@ class Movement:
     MOVE_RIGHT = CAN.E  # 往右平移
     MOVE_FORWARD = CAN.UP  # 往前
     MOVE_BACKWARD = CAN.DOWN  # 往后
-    MOVE_LEFT_TOP = KeyMaker(f"{MOVE_LEFT} {MOVE_FORWARD}")  # 左上
-    MOVE_RIGHT_TOP = KeyMaker(f"{MOVE_RIGHT} {MOVE_FORWARD}")  # 右上
-    MOVE_LEFT_BOTTOM = KeyMaker(f"{MOVE_LEFT} {MOVE_BACKWARD}")  # 左下
-    MOVE_RIGHT_BOTTOM = KeyMaker(f"{MOVE_RIGHT} {MOVE_BACKWARD}")  # 右下
+    MOVE_LEFT_TOP = KeyMaker(f"{MOVE_LEFT.key} {MOVE_FORWARD.key}")  # 左上
+    MOVE_RIGHT_TOP = KeyMaker(f"{MOVE_RIGHT.key} {MOVE_FORWARD.key}")  # 右上
+    MOVE_LEFT_BOTTOM = KeyMaker(f"{MOVE_LEFT.key} {MOVE_BACKWARD.key}")  # 左下
+    MOVE_RIGHT_BOTTOM = KeyMaker(f"{MOVE_RIGHT.key} {MOVE_BACKWARD.key}")  # 右下
     TURN_LEFT = CAN.LEFT  # 向左转
     TURN_RIGHT = CAN.RIGHT  # 向右转
     JUMP = CAN.SPACE  # 跳跃
@@ -102,20 +102,6 @@ class Target:
         /assist focus
         /assist
     """
-
-    # --- Target specific person
-    # 以下的几个设置需要配合宏命令
-    # w01
-    TARGET_W01_RA = CAN.SHIFT_(CAN.INSERT)
-
-    # w10
-    TARGET_W10_RJ = CAN.SHIFT_(CAN.HOME)
-
-
-target_leader_key_mapper = {
-    Window.make(1).label: Target.TARGET_W01_RA,
-    Window.make(10).label: Target.TARGET_W10_RJ,
-}
 
 
 class Camera:

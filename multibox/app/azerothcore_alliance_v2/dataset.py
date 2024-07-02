@@ -7,7 +7,7 @@ from multibox.game.wow.wlk.api import (
     Client,
 )
 
-from gen_dataset import ds
+from .gen_dataset import ds
 
 # fmt: off
 class AccountFactory:

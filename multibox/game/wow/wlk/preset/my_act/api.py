@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-Usage
+Usage example::
 
-    import multibox.game.wow.wlk.present.my_act.api as act
+    import multibox.game.wow.wlk.present.my_act.api as my_act
 """
 
 from .common import Movement
 from .common import PetAction
 from .common import Target
-from .common import target_leader_key_mapper
 from .common import Camera
 from .common import System
 from .common import General
