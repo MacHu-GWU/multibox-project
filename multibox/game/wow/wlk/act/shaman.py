@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# fmt: off
 class ElementalCombat:
     # 元素系主打技能
     Lightning_Bolt = None  # 闪电箭
@@ -132,3 +133,4 @@ class ShamanRestoration(Shaman):
     Mana_Tide_Totem = None  # 法力之潮图腾, 恢复系天赋技能
     Nature_s_Swiftness = None  # 自然迅捷, 使下一个自然法术瞬发, 恢复系天赋技能
     Tidal_Force = None  # 潮汐之力, 恢复系天赋技能
+# fmt: on

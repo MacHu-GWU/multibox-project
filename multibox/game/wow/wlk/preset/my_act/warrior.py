@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from hotkeynet.api import CAN
 
 # fmt: off
 class Arm:

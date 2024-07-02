@@ -26,6 +26,7 @@ spell key binding.
 """
 
 
+# fmt: off
 class Retribution:
     # 惩戒系主打技能
     Judgement_of_Light = None  # 光明审判
@@ -155,3 +156,4 @@ class PaladinProtection(Paladin):
 class PaladinHoly(Paladin):
     Holy_Shock = None  # 神圣冲击
     Beacon_of_Light = None  # 圣光道标
+# fmt: on

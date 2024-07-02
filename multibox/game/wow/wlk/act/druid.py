@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# fmt: off
 class Balance:
     # 平衡系主打技能
     Moonfire = None  # 月火术
@@ -149,3 +150,4 @@ class DruidFeral(Druid):
     Feral_Charge_Bear = None  # 野性冲锋 熊形态, 野性系天赋技能
     Feral_Charge_Cat = None  # 野性冲锋 猫形态, 野性系天赋技能
     Berserk = None  # 狂暴, 熊猫通用爆发技能, 野性系天赋技能
+# fmt: on

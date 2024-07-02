@@ -1,5 +1,2 @@
 # -*- coding: utf-8 -*-
 
-
-# fmt: off
-# fmt: on

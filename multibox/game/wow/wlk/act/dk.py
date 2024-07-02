@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# fmt: off
 class Blood:
     # 鲜血系系主打技能
     Blood_Presence = None  # 血之领域
@@ -106,3 +107,4 @@ class DKUnholy(DK):
     Anti_Magic_Zone = None  # 反魔法领域
     Bone_Shield = None  # 骨盾
     Summon_Gargoyle = None  # 召唤石像鬼
+# fmt: on

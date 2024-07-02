@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# fmt: off
 class Discipline:
     # 戒律系主打技能
     Penance = None  # 苦修, 通道型治疗技能, 戒律系天赋技能
@@ -120,3 +121,4 @@ class PriestShadow(Priest):
     Psychic_Horror = None  # 心灵惊骇, 远程恐惧单体目标, 暗影系天赋技能Silence = None  # 沉默, 暗影系天赋技能
     Vampiric_Touch = None  # 吸血鬼之触
     Dispersion = None  # 影散, 回蓝和减伤技能, 暗影系天赋技能
+# fmt: on

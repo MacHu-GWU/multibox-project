@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# fmt: off
 class Arcane:
     # 奥系主打攻击技能
     Arcane_Missiles = None  # 奥术飞弹
@@ -141,3 +142,4 @@ class MageFrost(Mage):
     Icy_Veins = None  # 冰冷血脉, 使你的施法速度提高, 冰系天赋技能
     Cold_Snap = None  # 急速冷却, 重置你的冰系技能 CD, 冰系天赋技能
     Summon_Water_Elemental = None  # 召唤水元素
+# fmt: on
