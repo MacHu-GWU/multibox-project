@@ -139,6 +139,14 @@ class TestCharacterHelper:
         assert len(chars_od) == 1
         assert list(chars_od.values())[0].talent == TL.warrior_pve_protect
 
+    def test_entity_id(self):
+        """
+        确保每个 character 的内存中的引用都是不同的.
+        """
+        c1 = Character(account=Account("admin", "admin"), name="char1")
+        c2 = Character(account=Account("admin", "admin"), name="char1")
+        assert id(c1) != id(c2)
+
 
 if __name__ == "__main__":
     from multibox.tests import run_cov_test

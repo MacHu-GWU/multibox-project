@@ -58,6 +58,14 @@ class TestCharacter:
         check_char_set(s1.intersection(s2), [c2])
         check_char_set(s1.difference(s2), [c1])
 
+    def test_entity_id(self):
+        """
+        确保每个 character 的内存中的引用都是不同的.
+        """
+        c1 = Character(account=Account("admin", "admin"), name="char1")
+        c2 = Character(account=Account("admin", "admin"), name="char1")
+        assert id(c1) != id(c2)
+
 
 class TestCharacterHelper:
     def test(self):
