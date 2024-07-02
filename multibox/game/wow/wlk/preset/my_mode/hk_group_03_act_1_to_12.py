@@ -702,7 +702,7 @@ class HotkeyGroup03Act1To12Mixin:
                             char.window.label,
                         ],
                     ):
-                        act.target_leader_key_mapper[char.leader_2_window.label]()
+                        self.target_leader_key_mapper[char.leader_2_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     # # --- alt 1,2,3,4,5

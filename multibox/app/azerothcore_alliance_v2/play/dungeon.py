@@ -24,6 +24,7 @@ class ModeFactory:
             target_leader_key_mapper=target_leader_key_mapper_raid_tank,
             script_path=path_azerothcore_alliance_v2_hkn,
             leader1=char_fact.ra_paladin_pve_protect,
+            leader2=char_fact.ra_paladin_pve_protect,
             tank1=char_fact.ra_paladin_pve_protect,
             dr_pala1=char_fact.ra_paladin_pve_protect,
         )

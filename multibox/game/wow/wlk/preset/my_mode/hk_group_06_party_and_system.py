@@ -51,20 +51,20 @@ class HotkeyGroup06PartyAndSystemMixin:
                 to=self.lbs_all,
             ):
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.pass_item_button_x,
-                    y=self.mode.game_client.pass_item_button_1_y,
+                    x=self.client.pass_item_button_x,
+                    y=self.client.pass_item_button_1_y,
                 )
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.pass_item_button_x,
-                    y=self.mode.game_client.pass_item_button_2_y,
+                    x=self.client.pass_item_button_x,
+                    y=self.client.pass_item_button_2_y,
                 )
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.pass_item_button_x,
-                    y=self.mode.game_client.pass_item_button_3_y,
+                    x=self.client.pass_item_button_x,
+                    y=self.client.pass_item_button_3_y,
                 )
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.pass_item_button_x,
-                    y=self.mode.game_client.pass_item_button_4_y,
+                    x=self.client.pass_item_button_x,
+                    y=self.client.pass_item_button_4_y,
                 )
 
     def build_hk_volume_down(self: "Mode"):
@@ -88,12 +88,12 @@ class HotkeyGroup06PartyAndSystemMixin:
                 to=self.lbs_all,
             ):
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.rdf_confirm_role_accept_button_x,
-                    y=self.mode.game_client.rdf_confirm_role_accept_button_y,
+                    x=self.client.rdf_confirm_role_accept_button_x,
+                    y=self.client.rdf_confirm_role_accept_button_y,
                 )
                 hk.ClickMouse(button=KN.MOUSE_LButton).set_mode_as_x_y(
-                    x=self.mode.game_client.rdf_enter_dungeon_button_x,
-                    y=self.mode.game_client.rdf_enter_dungeon_button_y,
+                    x=self.client.rdf_enter_dungeon_button_x,
+                    y=self.client.rdf_enter_dungeon_button_y,
                 )
 
     def build_hk_group_06_party_and_system_mixin(self: "Mode"):

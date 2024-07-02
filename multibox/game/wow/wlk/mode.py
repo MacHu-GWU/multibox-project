@@ -65,15 +65,15 @@ class Mode(AttrsClass):
             CharacterHelper.sort_chars_by_window_label(self.active_chars).values()
         )
 
-        def set_leader(i: int):
-            char1: Character = getattr(self, f"leader{i}")
-            if char1 is not None:
-                for char in self.active_chars:
-                    if char.id == char1.id:
-                        meth_name = f"set_is_leader_{i}"
-                        getattr(char, meth_name)()
-                        meth_name = f"set_leader_{i}_window"
-                        getattr(char, meth_name)(char1)
+        # def set_leader(i: int):
+        #     char1: Character = getattr(self, f"leader{i}")
+        #     if char1 is not None:
+        #         for char in self.active_chars:
+        #             if char.id == char1.id:
+        #                 meth_name = f"set_is_leader_{i}"
+        #                 getattr(char, meth_name)()
+        #                 meth_name = f"set_leader_{i}_window"
+        #                 getattr(char, meth_name)(char1)
 
 
         def set_role(
@@ -93,6 +93,9 @@ class Mode(AttrsClass):
         set_role("tank2", "set_tank_2")
         set_role("dr_pala1", "set_dr_pala_1")
         set_role("dr_pala2", "set_dr_pala_2")
+
+        CharacterHelper.set_team_leader_and_tank(self.active_chars)
+
 
         self.login_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.login_chars).values()
