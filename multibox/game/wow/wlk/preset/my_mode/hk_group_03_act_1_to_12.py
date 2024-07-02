@@ -675,7 +675,7 @@ class HotkeyGroup03Act1To12Mixin:
                             char.window.label,
                         ],
                     ):
-                        act.target_leader_key_mapper[char.leader_1_window.label]()
+                        self.target_leader_key_mapper[char.leader_1_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     def build_hk_12_focus_mode_2(self: "Mode"):

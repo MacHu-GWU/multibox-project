@@ -9,7 +9,7 @@ import typing as T
 
 from hotkeynet import api as hk
 
-from ..factory.api import icon_fact
+from .....wow.api import Icons
 from ..my_act import api as act
 
 if T.TYPE_CHECKING: # pragma: no cover
@@ -115,31 +115,31 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="ButtonLaunchAndRenameAllGameClient",
-                    file=icon_fact.wow,
+                    file=Icons.wow,
                     command=self.cmd_launch_and_rename_all_game_client,
                 )
 
                 create_picture_button(
                     name="ButtonBatchLogin",
-                    file=icon_fact.log_in,
+                    file=Icons.log_in,
                     command=self.cmd_batch_login_and_enter_game,
                 )
 
                 create_picture_button(
                     name="ButtonResizeWindow",
-                    file=icon_fact.resize_window,
+                    file=Icons.resize_window,
                     command=self.cmd_center_overlap_layout,
                 )
 
                 create_picture_button(
                     name="ButtonLogOut",
-                    file=icon_fact.log_out,
+                    file=Icons.log_out,
                     hotkey=self.hk_batch_logout,
                 )
 
                 create_picture_button(
                     name="ButtonVolumeDown",
-                    file=icon_fact.vol_down,
+                    file=Icons.vol_down,
                     hotkey=self.hk_volumn_down,
                 )
 
@@ -167,7 +167,7 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="RDFConfirmRoleAndEnterDungeon",
-                    file=icon_fact.spell_holy_summonchampion,
+                    file=Icons.spell_holy_summonchampion,
                     hotkey=self.hk_rdf_confirm_role_and_enter_dungeon,
                 )
 
@@ -195,17 +195,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="Alt1",
-                    file=icon_fact.ability_hunter_misdirection,
+                    file=Icons.ability_hunter_misdirection,
                     hotkey=self.hk_alt_numpad_1_hunter_misdirect,
                 )
                 create_picture_button(
                     name="Alt2",
-                    file=icon_fact.ability_mount_whitetiger,
+                    file=Icons.ability_mount_whitetiger,
                     hotkey=self.hk_alt_numpad_2_aspect_of_pact_or_hawk,
                 )
                 create_picture_button(
                     name="Alt3",
-                    file=icon_fact.ability_hunter_aspectoftheviper,
+                    file=Icons.ability_hunter_aspectoftheviper,
                     hotkey=self.hk_alt_numpad_3_aspect_of_viper_or_hawk,
                 )
                 create_button(
@@ -219,17 +219,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="Alt4",
-                    file=icon_fact.ability_druid_starfall,
+                    file=Icons.ability_druid_starfall,
                     hotkey=self.hk_alt_numpad_4_all_boomkin_star_fall,
                 )
                 create_picture_button(
                     name="Alt5",
-                    file=icon_fact.spell_nature_wispheal,
+                    file=Icons.spell_nature_wispheal,
                     hotkey=self.hk_alt_numpad_5_all_dps_burst,
                 )
                 create_picture_button(
                     name="Alt6",
-                    file=icon_fact.spell_nature_bloodlust,
+                    file=Icons.spell_nature_bloodlust,
                     hotkey=self.hk_alt_numpad_6_all_dps_burst_and_hero,
                 )
                 create_button(
@@ -243,17 +243,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="Alt7",
-                    file=icon_fact.spell_holy_powerwordbarrier,
+                    file=Icons.spell_holy_powerwordbarrier,
                     hotkey=self.hk_alt_numpad_7_raid_damage_reduction,
                 )
                 create_picture_button(
                     name="Alt8",
-                    file=icon_fact.spell_holy_powerwordbarrier,
+                    file=Icons.spell_holy_powerwordbarrier,
                     hotkey=self.hk_alt_numpad_8_raid_damage_reduction,
                 )
                 create_picture_button(
                     name="Alt9",
-                    file=icon_fact.spell_holy_auramastery,
+                    file=Icons.spell_holy_auramastery,
                     hotkey=self.hk_alt_numpad_9_raid_damage_reduction,
                 )
                 create_button(
@@ -267,17 +267,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="Alt10",
-                    file=icon_fact.spell_nature_diseasecleansingtotem,
+                    file=Icons.spell_nature_diseasecleansingtotem,
                     hotkey=self.hk_alt_numpad_10_cleansing_totem,
                 )
                 create_picture_button(
                     name="Alt11",
-                    file=icon_fact.spell_nature_tremortotem,
+                    file=Icons.spell_nature_tremortotem,
                     hotkey=self.hk_alt_numpad_11_tremor_totem,
                 )
                 create_picture_button(
                     name="Alt12",
-                    file=icon_fact.spell_nature_strengthofearthtotem02,
+                    file=Icons.spell_nature_strengthofearthtotem02,
                     hotkey=self.hk_alt_numpad_12_earth_binding_totem,
                 )
                 create_button(
@@ -308,17 +308,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="CtrlNumpad1",
-                    file=icon_fact.ability_theblackarrow,
+                    file=Icons.ability_theblackarrow,
                     hotkey=self.hk_ctrl_numpad_1,
                 )
                 create_picture_button(
                     name="CtrlNumpad2",
-                    file=icon_fact.spell_frost_iceshock,
+                    file=Icons.spell_frost_iceshock,
                     hotkey=self.hk_ctrl_numpad_2,
                 )
                 create_picture_button(
                     name="CtrlNumpad3",
-                    file=icon_fact.spell_holy_dispelmagic,
+                    file=Icons.spell_holy_dispelmagic,
                     hotkey=self.hk_ctrl_numpad_3,
                 )
                 create_button(
@@ -332,17 +332,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="CtrlNumpad4",
-                    file=icon_fact.spell_shadow_psychicscream,
+                    file=Icons.spell_shadow_psychicscream,
                     hotkey=self.hk_ctrl_numpad_4,
                 )
                 create_picture_button(
                     name="CtrlNumpad5",
-                    file=icon_fact.ability_druid_typhoon,
+                    file=Icons.ability_druid_typhoon,
                     hotkey=self.hk_ctrl_numpad_5,
                 )
                 create_picture_button(
                     name="CtrlNumpad6",
-                    file=icon_fact.spell_shaman_thunderstorm,
+                    file=Icons.spell_shaman_thunderstorm,
                     hotkey=self.hk_ctrl_numpad_6,
                 )
                 create_button(
@@ -356,17 +356,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="CtrlNumpad7",
-                    file=icon_fact.spell_holy_divinehymn,
+                    file=Icons.spell_holy_divinehymn,
                     hotkey=self.hk_ctrl_numpad_7,
                 )
                 create_picture_button(
                     name="CtrlNumpad8",
-                    file=icon_fact.spell_nature_tranquility,
+                    file=Icons.spell_nature_tranquility,
                     hotkey=self.hk_ctrl_numpad_7,
                 )
                 create_picture_button(
                     name="CtrlNumpad9",
-                    file=icon_fact.spell_nature_tranquility,
+                    file=Icons.spell_nature_tranquility,
                     hotkey=self.hk_ctrl_numpad_7,
                 )
                 create_button(
@@ -380,17 +380,17 @@ class HotkeyControlPanelMixin:
 
                 create_picture_button(
                     name="CtrlNumpad10",
-                    file=icon_fact.spell_holy_symbolofhope,
+                    file=Icons.spell_holy_symbolofhope,
                     hotkey=self.hk_ctrl_numpad_10,
                 )
                 create_picture_button(
                     name="CtrlNumpad11",
-                    file=icon_fact.spell_holy_unyieldingfaith,
+                    file=Icons.spell_holy_unyieldingfaith,
                     hotkey=self.hk_ctrl_numpad_11,
                 )
                 create_picture_button(
                     name="CtrlNumpad12",
-                    file=icon_fact.spell_nature_shamanrage,
+                    file=Icons.spell_nature_shamanrage,
                     hotkey=self.hk_ctrl_numpad_12,
                 )
                 create_button(

@@ -52,15 +52,53 @@ class Mode(AttrsClass):
     target_leader_key_mapper: T_TARGET_LEAD_KEY_MAPPER = attrs.field(factory=dict)
     script: hkn.Script = attrs.field(factory=hkn.Script)
     script_path: T.Optional[Path] = attrs.field(default=None)
+    leader1: T.Optional[Character] = attrs.field(default=None)
+    leader2: T.Optional[Character] = attrs.field(default=None)
+    tank1: T.Optional[Character] = attrs.field(default=None)
+    tank2: T.Optional[Character] = attrs.field(default=None)
+    dr_pala1: T.Optional[Character] = attrs.field(default=None)
+    dr_pala2: T.Optional[Character] = attrs.field(default=None)
 
     def __attrs_post_init__(self):
         # 所有关于 characters 列表的定义
         self.active_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.active_chars).values()
         )
+
+        def set_leader(i: int):
+            char1: Character = getattr(self, f"leader{i}")
+            if char1 is not None:
+                for char in self.active_chars:
+                    if char.id == char1.id:
+                        meth_name = f"set_is_leader_{i}"
+                        getattr(char, meth_name)()
+                        meth_name = f"set_leader_{i}_window"
+                        getattr(char, meth_name)(char1)
+
+
+        def set_role(
+            attr_name: str,
+            meth_name: str,
+        ):
+            char1 = getattr(self, attr_name)
+            if char1 is not None:
+                for char in self.active_chars:
+                    if char.id == char1.id:
+                        getattr(char, meth_name)()
+
+
+        set_role("leader1", "set_is_leader_1")
+        set_role("leader2", "set_is_leader_2")
+        set_role("tank1", "set_tank_1")
+        set_role("tank2", "set_tank_2")
+        set_role("dr_pala1", "set_dr_pala_1")
+        set_role("dr_pala2", "set_dr_pala_2")
+
         self.login_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.login_chars).values()
         )
+        for char in self.login_chars:
+            char.set_inactive()
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
         # 先调用 ``with Script()`` 的语法然后才能定义 Command, Hotkey, 这样很麻烦.
         # 所以我们手动将它设为 context 的顶层, 这样就可以直接定义 Command, Hotkey 了.

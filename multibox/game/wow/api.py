@@ -13,3 +13,4 @@ from .talent import TalentCategory
 from .window import Window
 from .client import LocaleEnum
 from .client import Client
+from .icons import Icons
