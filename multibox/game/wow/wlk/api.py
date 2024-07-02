@@ -5,12 +5,12 @@
 而是通过这个 API 模块 import.
 """
 
+from ...wow.api import Window
+from ...wow.api import Account
+from ...wow.api import AccountLoader
+from ...wow.api import LocaleEnum
 from .character import Character
 from .character import CharacterHelper
 from .talent import Talent
 from .talent import TalentCategory
 from .client import Client
-from ...wow.api import Window
-from ...wow.api import Account
-from ...wow.api import AccountLoader
-from ...wow.api import LocaleEnum
