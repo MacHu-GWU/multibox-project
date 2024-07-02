@@ -6,7 +6,7 @@ from multibox.game.wow.client import Client
 class TestClient:
     def test_make(self):
         client = Client()
-        _ = client
+        _ = client.get_choose_char_x_y(1)
 
 
 if __name__ == "__main__":

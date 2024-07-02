@@ -1,9 +1,21 @@
 # -*- coding: utf-8 -*-
 
 import typing as T
+import enum
 
 import attrs
 from attrs_mate import AttrsClass
+
+
+class LocaleEnum(str, enum.Enum):
+    enUS = "enUS"
+    zhCN = "zhCN"
+    zhTW = "zhTW"
+    koKR = "koKR"
+    frFR = "frFR"
+    ruRU = "ruRU"
+    esES = "esES"
+    esMX = "esMX"
 
 
 @attrs.define
@@ -13,6 +25,9 @@ class Client(AttrsClass):
     """
 
     # fmt: off
+    wow_exe_path: T.Optional[str] = AttrsClass.ib_str(nullable=True, default=None)
+    locale: T.Optional[str] = AttrsClass.ib_str(nullable=True, default=None)
+
     window_left_top_x: T.Optional[int] = AttrsClass.ib_int(nullable=True, default=None)
     window_left_top_y: T.Optional[int] = AttrsClass.ib_int(nullable=True, default=None)
     window_width: T.Optional[int] = AttrsClass.ib_int(nullable=True, default=None)
@@ -37,3 +52,9 @@ class Client(AttrsClass):
     choose_char_9_y: T.Optional[int] = AttrsClass.ib_int(nullable=True, default=None)
     choose_char_10_y: T.Optional[int] = AttrsClass.ib_int(nullable=True, default=None)
     # fmt: on
+
+    def get_choose_char_x_y(self, nth: int) -> T.Tuple[int, int]:
+        return (
+            getattr(self, f"choose_char_{nth}_x"),
+            getattr(self, f"choose_char_{nth}_y"),
+        )

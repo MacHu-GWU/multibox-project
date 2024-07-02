@@ -12,3 +12,5 @@ from .character import CharacterHelper
 from .talent import Talent
 from .talent import TalentCategory
 from .window import Window
+from .client import LocaleEnum
+from .client import Client
