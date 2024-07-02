@@ -2,7 +2,6 @@
 
 from multibox.game.wow.api import (
     Account,
-    AccountLoader,
     Character,
     CharacterHelper,
     Talent,

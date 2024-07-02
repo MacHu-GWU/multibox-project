@@ -1,17 +1,74 @@
 # -*- coding: utf-8 -*-
 
-import json
-from pathlib_mate import Path
+from ordered_set import OrderedSet
 
-from multibox.game.wow.api import Account
-from multibox.game.wow.wlk.api import Character
+from multibox.game.wow.wlk.api import (
+    Character,
+    Client,
+)
 
-dir_here = Path.dir_here(__file__)
+{{ import_line }}
 
-acc_data = json.loads(dir_here.joinpath("accounts.json").read_text())
-
-
+# fmt: off
 class AccountFactory:
-    {%- for account in dataset.accounts %}
-    {{ account.account }} = Account(username="{{ account.account }}", password=acc_data["{{ account.account }}"])
+    {%- for name in dataset.accounts %}
+    {{ name }} = {{ dataset_var_name }}.get_account("{{ name }}")
     {%- endfor %}
+
+
+acc_fact = AccountFactory()
+
+
+class CharacterFactory:
+    {%- for name in dataset.builds %}
+    @property
+    def {{ name }}(self) -> Character:
+        return {{ dataset_var_name }}.get_character("{{ name }}")
+
+    {%- endfor %}
+
+
+char_fact = CharacterFactory()
+
+
+class CharacterGroupFactory:
+    {%- for name in dataset.build_groups %}
+    @property
+    def {{ name }}(self) -> OrderedSet[Character]:
+        return {{ dataset_var_name }}.get_build_group("{{ name }}")
+
+    {%- endfor %}
+
+
+char_group_fact = CharacterGroupFactory()
+
+
+class ClientFactory:
+    {%- for name in dataset.clients %}
+    @property
+    def {{ name }}(self) -> Client:
+        return {{ dataset_var_name }}.get_client("{{ name }}")
+
+    {%- endfor %}
+
+
+client_fact = ClientFactory()
+
+
+if __name__ == "__main__":
+    {%- for name in dataset.accounts %}
+    print(acc_fact.{{ name }})
+    {%- endfor %}
+
+    {%- for name in dataset.builds %}
+    print(char_fact.{{ name }})
+    {%- endfor %}
+
+    {%- for name in dataset.build_groups %}
+    print(char_group_fact.{{ name }})
+    {%- endfor %}
+
+    {%- for name in dataset.clients %}
+    print(client_fact.{{ name }})
+    {%- endfor %}
+# fmt: on

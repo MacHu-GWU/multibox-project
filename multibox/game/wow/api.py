@@ -6,7 +6,6 @@
 """
 
 from .account import Account
-from .account import AccountLoader
 from .character import Character
 from .character import CharacterHelper
 from .talent import Talent
