@@ -66,6 +66,12 @@ class CharacterGroupFactory:
     @property
     def all(self) -> OrderedSet[Character]:
         return ds.get_build_group("all")
+    @property
+    def r_1_to_5(self) -> OrderedSet[Character]:
+        return ds.get_build_group("r_1_to_5")
+    @property
+    def r_1_to_10(self) -> OrderedSet[Character]:
+        return ds.get_build_group("r_1_to_10")
 
 
 char_group_fact = CharacterGroupFactory()
@@ -108,6 +114,8 @@ if __name__ == "__main__":
     print(char_fact.ri_paladin_pve_holy)
     print(char_fact.rj_dk_pve_blood_tank)
     print(char_group_fact.all)
+    print(char_group_fact.r_1_to_5)
+    print(char_group_fact.r_1_to_10)
     print(client_fact.c_1920_1080)
     print(client_fact.c_1600_900)
     print(client_fact.c_1176_664)
