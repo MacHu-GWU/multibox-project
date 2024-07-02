@@ -26,18 +26,15 @@ class Character(api.Character):
     :param is_dr_pala_1: 自己是否是 1 号减伤圣骑士.
     :param is_dr_pala_2: 自己是否是 2 号减伤圣骑士.
     """
-
+    # fmt: off
     talent: TL = AttrsClass.ib_generic(TL, nullable=True, default=None)
     is_tank_1: bool = AttrsClass.ib_bool(default=False)
     is_tank_2: bool = AttrsClass.ib_bool(default=False)
-    tank_1_window: api.Window = AttrsClass.ib_generic(
-        Window, nullable=True, default=None
-    )
-    tank_2_window: api.Window = AttrsClass.ib_generic(
-        Window, nullable=True, default=None
-    )
+    tank_1_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+    tank_2_window: api.Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
     is_dr_pala_1: bool = AttrsClass.ib_bool(default=False)
     is_dr_pala_2: bool = AttrsClass.ib_bool(default=False)
+    # fmt: on
 
     def set_tank_1(self) -> "Character":
         self.is_tank_1 = True
