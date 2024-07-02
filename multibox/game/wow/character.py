@@ -3,14 +3,14 @@
 import typing as T
 from collections import OrderedDict
 
-import attr
+import attrs
 from attrs_mate import AttrsClass
 
 from .account import Account
 from .window import Window
 
 
-@attr.s
+@attrs.define
 class Character(AttrsClass):
     """
     代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
@@ -109,6 +109,9 @@ class Character(AttrsClass):
     @property
     def id(self) -> str:
         return f"{self.account.username}-{self.name}"
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 class CharacterHelper:
@@ -226,3 +229,6 @@ class CharacterHelper:
         将多个角色按照所在的窗口 title (标题) 排序.
         """
         return cls.deduplicate(sorted(chars, key=lambda char: char.window.label))
+
+
+

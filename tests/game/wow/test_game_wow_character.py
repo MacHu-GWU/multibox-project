@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import typing as T
+from ordered_set import OrderedSet
 from multibox.game.wow.character import (
     Account,
     Window,
@@ -8,8 +10,15 @@ from multibox.game.wow.character import (
 )
 
 
+def check_char_set(char_set: OrderedSet[Character], chars: T.List[Character]):
+    assert [c.id for c in char_set] == [c.id for c in chars]
+
+
 class TestCharacter:
     def test_set_method(self):
+        """
+        确保这些 set 属性的方法能够正确设置 character 的属性.
+        """
         window = Window.make(3)
         leader_1_window = Window.make(1)
         leader_2_window = Window.make(2)
@@ -31,6 +40,23 @@ class TestCharacter:
         )
         assert char1 is char2
         assert char1.id == char2.id
+
+    def test_set_operation(self):
+        """
+        确保 character 能够支持集合操作.
+        """
+        acc = Account("admin", "admin")
+        c1 = Character(account=acc, name="char1")
+        c2 = Character(account=acc, name="char2")
+        c3 = Character(account=acc, name="char3")
+
+        check_char_set(OrderedSet([c1, c2, c2, c3]), [c1, c2, c3])
+
+        s1 = OrderedSet([c1, c2])
+        s2 = OrderedSet([c2, c3])
+        check_char_set(s1.union(s2), [c1, c2, c3])
+        check_char_set(s1.intersection(s2), [c2])
+        check_char_set(s1.difference(s2), [c1])
 
 
 class TestCharacterHelper:
