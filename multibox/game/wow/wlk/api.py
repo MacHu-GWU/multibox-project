@@ -5,17 +5,10 @@
 而是通过这个 API 模块 import.
 """
 
-from . import coordinator
-from .character import (
-    Character,
-    CharacterHelper,
-)
-from .talent import (
-    Talent,
-    TalentCategory,
-)
-from ..api import (
-    Window,
-    Account,
-    AccountLoader,
-)
+from .character import Character
+from .character import CharacterHelper
+from .talent import Talent
+from .talent import TalentCategory
+from ...wow.api import Window
+from ...wow.api import Account
+from ...wow.api import AccountLoader

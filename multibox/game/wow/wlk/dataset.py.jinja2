@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+
+import json
+from pathlib_mate import Path
+
+from multibox.game.wow.api import Account
+from multibox.game.wow.wlk.api import Character
+
+dir_here = Path.dir_here(__file__)
+
+acc_data = json.loads(dir_here.joinpath("accounts.json").read_text())
+
+
+class AccountFactory:
+    {%- for account in dataset.accounts %}
+    {{ account.account }} = Account(username="{{ account.account }}", password=acc_data["{{ account.account }}"])
+    {%- endfor %}
