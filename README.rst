@@ -3,26 +3,25 @@
     :target: https://multibox.readthedocs.io/index.html
     :alt: Documentation Status
 
-.. image:: https://github.com/MacHu-GWU/multibox-project/workflows/CI/badge.svg
+.. image:: https://github.com/MacHu-GWU/multibox-project/actions/workflows/main.yml/badge.svg
     :target: https://github.com/MacHu-GWU/multibox-project/actions?query=workflow:CI
 
 .. .. image:: https://codecov.io/gh/MacHu-GWU/multibox-project/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/MacHu-GWU/multibox-project
 
-.. image:: https://img.shields.io/pypi/v/multibox.svg
+.. .. image:: https://img.shields.io/pypi/v/multibox.svg
     :target: https://pypi.python.org/pypi/multibox
 
-.. image:: https://img.shields.io/pypi/l/multibox.svg
+.. .. image:: https://img.shields.io/pypi/l/multibox.svg
     :target: https://pypi.python.org/pypi/multibox
 
-.. image:: https://img.shields.io/pypi/pyversions/multibox.svg
+.. .. image:: https://img.shields.io/pypi/pyversions/multibox.svg
     :target: https://pypi.python.org/pypi/multibox
 
 .. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
     :target: https://github.com/MacHu-GWU/multibox-project
 
 ------
-
 
 .. .. image:: https://img.shields.io/badge/Link-Document-blue.svg
     :target: https://multibox.readthedocs.io/index.html

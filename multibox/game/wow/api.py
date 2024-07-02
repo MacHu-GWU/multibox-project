@@ -5,16 +5,10 @@
 而是通过这个 API 模块 import.
 """
 
-from .account import (
-    Account,
-    AccountLoader,
-)
-from .character import (
-    Character,
-    CharacterHelper,
-)
-from .talent import (
-    Talent,
-    TalentCategory,
-)
+from .account import Account
+from .account import AccountLoader
+from .character import Character
+from .character import CharacterHelper
+from .talent import Talent
+from .talent import TalentCategory
 from .window import Window
