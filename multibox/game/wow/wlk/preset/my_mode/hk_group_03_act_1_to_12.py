@@ -189,6 +189,9 @@ class HotkeyGroup03Act1To12Mixin:
             # 奶德, 奶萨 用小治疗奶坦克
             label_list_druid_resto = self.lbs_by_tc(TC.druid_resto)
             label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
+            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
+            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
+            label_list_priest_holy = self.lbs_by_tc(TC.priest_holy)
             label_list = label_list_druid_resto + label_list_shaman_resto
             if len(label_list) == 0:
                 pass
@@ -311,7 +314,12 @@ class HotkeyGroup03Act1To12Mixin:
             # 奶萨, 奶德 用大治疗奶坦克
             label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
             label_list_druid_resto = self.lbs_by_tc(TC.druid_resto)
+            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
+            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
+            label_list_priest_holy = self.lbs_by_tc(TC.priest_holy)
             label_list = label_list_shaman_resto + label_list_druid_resto
+
+            # 如果没有奶萨奶德, 那么看看有没有其他的治疗能补位
             if len(label_list) == 0:
                 pass
             elif len(label_list) == 1:
