@@ -5,12 +5,15 @@
 """
 
 import typing as T
+from collections import deque
 
 from hotkeynet import api as hk
-from hotkeynet.api import KN
+from hotkeynet.api import KN, CAN
 
 from multibox.game.wow.wlk.api import Talent as TL, TalentCategory as TC
+from multibox.game.assign_task import AssignTask
 from ..my_act import api as act
+
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
@@ -186,54 +189,115 @@ class HotkeyGroup03Act1To12Mixin:
             self._build_default_tank_action(key=KN.KEY_1)
             self._build_default_dps_action(key=KN.KEY_1)
 
-            # 奶德, 奶萨 用小治疗奶坦克
+            # 先获得所有可能在这个组里的治疗职业的 Label, 然后根据人数, 天赋给它们分配任务
             label_list_druid_resto = self.lbs_by_tc(TC.druid_resto)
             label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
-            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
-            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
             label_list_priest_holy = self.lbs_by_tc(TC.priest_holy)
-            label_list = label_list_druid_resto + label_list_shaman_resto
-            if len(label_list) == 0:
-                pass
-            elif len(label_list) == 1:
-                with hk.SendLabel(
-                    id="SlowTankHealer",
-                    to=label_list,
-                ):
-                    act.Target.TARGET_FOCUS()
-                    hk.Key.make(KN.KEY_1)
-            else:
-                with hk.SendLabel(
-                    id="SlowTankHealer1",
-                    to=[
-                        label_list[0],
-                    ],
-                ):
-                    self.target_leader_1()
-                    hk.Key.make(KN.KEY_1)
-                with hk.SendLabel(
-                    id="SlowTankHealer2",
-                    to=[
-                        label_list[1],
-                    ],
-                ):
-                    self.target_leader_2()
-                    hk.Key.make(KN.KEY_1)
-                with hk.SendLabel(
-                    id="SlowTankHealerOther",
-                    to=label_list[2:],
-                ):
-                    act.Target.TARGET_FOCUS()
-                    hk.Key.make(KN.KEY_1)
+            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
 
-            # 戒律牧, 随机给团上盾
-            self._build_send_label_by_talent(
-                talent=list(TC.priest_disco.talents),
-                target=None,
-                key=KN.KEY_1,
+            # 优先级最高的最后 append, 放在队尾, 方便 pop
+            label_list_heal_tank = list()
+            label_list_heal_tank.extend(label_list_priest_disco)
+            label_list_heal_tank.extend(label_list_priest_holy)
+            label_list_heal_tank.extend(label_list_shaman_resto)
+            label_list_heal_tank.extend(label_list_druid_resto)
+
+            assign_task = AssignTask(
+                groups=[
+                    label_list_druid_resto,
+                    label_list_shaman_resto,
+                    label_list_priest_holy,
+                    label_list_priest_disco,
+                    label_list_heal_tank,
+                ]
             )
 
-            # 奶骑, 随机奶团
+            # 确保有人奶 1 号坦克.
+            if len(label_list_heal_tank):
+                lb = label_list_heal_tank[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="SlowTankHealer1",
+                    to=[lb],
+                ):
+                    self.target_leader_1()
+                    CAN.KEY_1()
+
+            # 如果有 2 号坦克, 就尝试派人去奶
+            if self.lb_leader2:
+                if len(label_list_heal_tank):
+                    lb = label_list_heal_tank[-1]
+                    assign_task.remove(lb)
+                    with hk.SendLabel(
+                        id="SlowTankHealer2",
+                        to=[lb],
+                    ):
+                        self.target_leader_2()
+                        hk.Key.make(KN.KEY_1)
+
+            # 神牧, 随机给团上恢复
+            if len(label_list_priest_holy):
+                lb = label_list_priest_holy[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="HolyPriestHealRaid",
+                    to=[lb],
+                ):
+                    CAN.KEY_4()
+
+            # 戒律牧, 随机给团上盾
+            if len(label_list_priest_disco):
+                lb = label_list_priest_disco[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="DiscoPriestHealRaid",
+                    to=[lb],
+                ):
+                    CAN.KEY_4()
+
+            # label_list = label_list_druid_resto + label_list_shaman_resto
+            # if len(label_list) == 0:
+            #     # 没有奶德奶萨
+            #     pass
+            # elif len(label_list) == 1:
+            #     with hk.SendLabel(
+            #         id="SlowTankHealer",
+            #         to=label_list,
+            #     ):
+            #         act.Target.TARGET_FOCUS()
+            #         hk.Key.make(KN.KEY_1)
+            # else:
+            #     with hk.SendLabel(
+            #         id="SlowTankHealer1",
+            #         to=[
+            #             label_list[0],
+            #         ],
+            #     ):
+            #         self.target_leader_1()
+            #         hk.Key.make(KN.KEY_1)
+            #     with hk.SendLabel(
+            #         id="SlowTankHealer2",
+            #         to=[
+            #             label_list[1],
+            #         ],
+            #     ):
+            #         self.target_leader_2()
+            #         hk.Key.make(KN.KEY_1)
+            #     with hk.SendLabel(
+            #         id="SlowTankHealerOther",
+            #         to=label_list[2:],
+            #     ):
+            #         act.Target.TARGET_FOCUS()
+            #         hk.Key.make(KN.KEY_1)
+
+            # 戒律牧, 随机给团上盾
+            # self._build_send_label_by_talent(
+            #     talent=list(TC.priest_disco.talents),
+            #     target=None,
+            #     key=KN.KEY_1,
+            # )
+
+            # 奶骑, 随机奶团, 因为道标的存在, 它肯定也是在奶坦克的
             self._build_send_label_by_talent(
                 talent=list(TC.paladin_holy.talents),
                 target=act.Target.TARGET_RAID,

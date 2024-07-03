@@ -190,6 +190,29 @@ class Mode(AttrsClass):
         ]
 
     @property
+    def lb_leader1(self) -> str:
+        """
+        获得 1 号 Leader 的 label, 必然得有一个人.
+        """
+        lbs = [char.window.label for char in self.active_chars if char.is_leader_1]
+        if len(lbs) != 1:
+            raise ValueError("Your team has to have exact one leader 1!")
+        return lbs[0]
+
+    @property
+    def lb_leader2(self) -> T.Optional[str]:
+        """
+        获得 2 号 Leader 的 label, 可能有一个人或者没有.
+        """
+        lbs = [char.window.label for char in self.active_chars if char.is_leader_2]
+        if len(lbs) == 0:
+            return None
+        elif len(lbs) == 1:
+            return lbs[0]
+        else:
+            raise ValueError("Your team cannot have more than one leader 2!")
+
+    @property
     def lbs_tank1(self) -> T.List[str]:
         """
         获得 1 号坦克的 label 列表 (通常只有一个人).
