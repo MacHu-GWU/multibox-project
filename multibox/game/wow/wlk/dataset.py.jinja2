@@ -21,10 +21,10 @@ acc_fact = AccountFactory()
 
 class CharacterFactory:
     {%- for name in dataset.builds %}
+
     @property
     def {{ name }}(self) -> Character:
         return {{ dataset_var_name }}.get_character("{{ name }}")
-
     {%- endfor %}
 
 
@@ -33,10 +33,10 @@ char_fact = CharacterFactory()
 
 class CharacterGroupFactory:
     {%- for name in dataset.build_groups %}
+
     @property
     def {{ name }}(self) -> OrderedSet[Character]:
         return {{ dataset_var_name }}.get_build_group("{{ name }}")
-
     {%- endfor %}
 
 
@@ -45,10 +45,10 @@ char_group_fact = CharacterGroupFactory()
 
 class ClientFactory:
     {%- for name in dataset.clients %}
+
     @property
     def {{ name }}(self) -> Client:
         return {{ dataset_var_name }}.get_client("{{ name }}")
-
     {%- endfor %}
 
 
@@ -56,6 +56,7 @@ client_fact = ClientFactory()
 
 
 if __name__ == "__main__":
+    # You can run this script as "main" to test it
     {%- for name in dataset.accounts %}
     print(acc_fact.{{ name }})
     {%- endfor %}

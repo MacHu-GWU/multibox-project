@@ -7,7 +7,7 @@ Example Google Sheet: https://docs.google.com/spreadsheets/d/19m889kimzCkbfoc2Q2
 import typing as T
 import copy
 import enum
-import json
+import subprocess
 import dataclasses
 
 import jinja2
@@ -189,9 +189,15 @@ class Dataset:
     def to_module(
         self,
         dir_module: Path,
-        import_line: str = "from .gen_dataset import ds",
+        import_line: str = (
+            "try:\n    "
+            "    from .gen_dataset import ds\n"
+            "except ImportError:\n"
+            "    from gen_dataset import ds\n"
+        ),
         dataset_var_name: str = "ds",
         overwrite: bool = False,
+        test: bool = False,
     ):
         path_character_py = dir_module / "dataset.py"
         path_tpl = Path.dir_here(__file__) / "dataset.py.jinja2"
@@ -205,3 +211,7 @@ class Dataset:
             if overwrite is False:
                 raise FileExistsError(f"{path_character_py} already exists.")
         path_character_py.write_text(content)
+        if test:
+            print("Test the generated script ...")
+            subprocess.run(["python", f"{path_character_py}"])
+            print("✅Test passed.")

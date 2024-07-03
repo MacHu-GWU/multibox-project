@@ -6,7 +6,7 @@ from multibox.game.wow.wlk.dataset import Dataset
 
 def test():
     dir_here = Path.dir_here(__file__)
-    dir_module = dir_here.joinpath("tmp")
+    dir_module = dir_here.joinpath("dataset")
     ds = Dataset.from_excel(dir_module.joinpath("test_dataset.xlsx"))
 
     acc = ds.get_account("rab01")

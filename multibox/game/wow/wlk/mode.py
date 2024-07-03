@@ -31,6 +31,7 @@ class Mode(AttrsClass):
     Mode 是你最终选择要玩的游戏模式. 它相当于是一堆工厂类工厂函数的集合, 提供了一个 namespace
     来组织这些工厂函数. 一个 Mode 包括了:
 
+    :param name: 给这个模式一个人类可读的名字.
     :param client: 客户端的相关设置.
     :param active_chars: 指定要使用哪些角色进行游戏. 跟人物移动, 战斗相关的按键将会对这些角色生效.
     :param login_chars: 指定要登录哪些角色. 跟人物移动,战斗相关的按键将 **不会** 对这些角色生效.
@@ -46,6 +47,7 @@ class Mode(AttrsClass):
     :param script_path: 最终的多开脚本文件路径.
     """
 
+    name: T.Optional[str] = attrs.field(default=None)
     client: T.Optional[Client] = attrs.field(default=None)
     active_chars: OrderedSet[Character] = attrs.field(factory=list)
     login_chars: OrderedSet[Character] = attrs.field(factory=list)
@@ -75,7 +77,6 @@ class Mode(AttrsClass):
         #                 meth_name = f"set_leader_{i}_window"
         #                 getattr(char, meth_name)(char1)
 
-
         def set_role(
             attr_name: str,
             meth_name: str,
@@ -86,7 +87,6 @@ class Mode(AttrsClass):
                     if char.id == char1.id:
                         getattr(char, meth_name)()
 
-
         set_role("leader1", "set_is_leader_1")
         set_role("leader2", "set_is_leader_2")
         set_role("tank1", "set_tank_1")
@@ -95,7 +95,6 @@ class Mode(AttrsClass):
         set_role("dr_pala2", "set_dr_pala_2")
 
         CharacterHelper.set_team_leader_and_tank(self.active_chars)
-
 
         self.login_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.login_chars).values()
@@ -146,7 +145,7 @@ class Mode(AttrsClass):
                 window_and_account_pairs.append((char.window, char.account))
                 label_set.add(char.window.label)
         window_and_account_pairs = list(
-            sorted(window_and_account_pairs, key=lambda x: x[0])
+            sorted(window_and_account_pairs, key=lambda x: x[0].index)
         )
         return window_and_account_pairs
 
