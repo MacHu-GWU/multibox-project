@@ -22,16 +22,19 @@ T_LABEL_ARG = T.Union[T_LABEL_LIKE, T.List[T_LABEL_LIKE]]
 
 
 class HotkeyGroup02MovementMixin:
-    def _convert_int_lbs_to_str_lbs(
+    def preprocess_labels(
         self: "Mode",
         lbs: T_LABEL_ARG,
     ) -> T.List[str]:
         """
-        把用户传进来的参数转化成字符串形式的 labels.
+        把 "label liked" 参数转化成字符串形式的 labels. 可供 ``SendLabel(to=...)``
+        API 使用.
 
         - 如果输入不是 list, 则转化成 list.
         - 如果 list 里的元素是 int, 则转化成 "w01" 这种形式.
         - 如果 list 里的元素是 str, 则不做处理.
+
+        :param lbs: int, str, or list of int, list of str.
         """
         if isinstance(lbs, list) is False:
             lbs = [lbs]
@@ -46,7 +49,7 @@ class HotkeyGroup02MovementMixin:
     def _go_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="up",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_FORWARD()
             return send_label
@@ -54,7 +57,7 @@ class HotkeyGroup02MovementMixin:
     def _go_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="down",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_BACKWARD()
             return send_label
@@ -62,7 +65,7 @@ class HotkeyGroup02MovementMixin:
     def _go_left(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_LEFT()
             return send_label
@@ -70,7 +73,7 @@ class HotkeyGroup02MovementMixin:
     def _go_right(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_RIGHT()
             return send_label
@@ -78,7 +81,7 @@ class HotkeyGroup02MovementMixin:
     def _go_left_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left_up",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_LEFT_TOP()
             return send_label
@@ -86,7 +89,7 @@ class HotkeyGroup02MovementMixin:
     def _go_left_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left_down",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_LEFT_BOTTOM()
             return send_label
@@ -94,7 +97,7 @@ class HotkeyGroup02MovementMixin:
     def _go_right_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right_up",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_RIGHT_TOP()
             return send_label
@@ -102,7 +105,7 @@ class HotkeyGroup02MovementMixin:
     def _go_right_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right_down",
-            to=self._convert_int_lbs_to_str_lbs(lbs),
+            to=self.preprocess_labels(lbs),
         ) as send_label:
             act.Movement.MOVE_RIGHT_BOTTOM()
             return send_label

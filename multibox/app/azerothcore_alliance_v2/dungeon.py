@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from ..dataset import (
-    acc_fact,
+from .dataset import (
     char_fact,
     char_group_fact,
     client_fact,
 )
 import multibox.game.wow.wlk.preset.my_mode.api as my_mode
 
-from ..act import target_leader_key_mapper_raid_tank
-from ..paths import path_azerothcore_alliance_v2_hkn
+from .act import target_leader_key_mapper_raid_tank
+from .paths import path_azerothcore_alliance_v2_hkn
 
 
 class ModeFactory:
