@@ -21,6 +21,21 @@ class AccountFactory:
     Fat08 = ds.get_account("Fat08")
     Fat09 = ds.get_account("Fat09")
     Fat10 = ds.get_account("Fat10")
+    Fat11 = ds.get_account("Fat11")
+    Fat12 = ds.get_account("Fat12")
+    Fat13 = ds.get_account("Fat13")
+    Fat14 = ds.get_account("Fat14")
+    Fat15 = ds.get_account("Fat15")
+    Fat16 = ds.get_account("Fat16")
+    Fat17 = ds.get_account("Fat17")
+    Fat18 = ds.get_account("Fat18")
+    Fat19 = ds.get_account("Fat19")
+    Fat20 = ds.get_account("Fat20")
+    Fat21 = ds.get_account("Fat21")
+    Fat22 = ds.get_account("Fat22")
+    Fat23 = ds.get_account("Fat23")
+    Fat24 = ds.get_account("Fat24")
+    Fat25 = ds.get_account("Fat25")
 
 
 acc_fact = AccountFactory()
@@ -37,11 +52,17 @@ class CharacterFactory:
     def rc_druid_pve_balance(self) -> Character:
         return ds.get_character("rc_druid_pve_balance")
     @property
+    def rc_druid_pve_bear(self) -> Character:
+        return ds.get_character("rc_druid_pve_bear")
+    @property
     def rd_mage_pve_arcane(self) -> Character:
         return ds.get_character("rd_mage_pve_arcane")
     @property
     def re_priest_pve_shadow(self) -> Character:
         return ds.get_character("re_priest_pve_shadow")
+    @property
+    def re_priest_pve_holy(self) -> Character:
+        return ds.get_character("re_priest_pve_holy")
     @property
     def rf_warlock_pve_demonology(self) -> Character:
         return ds.get_character("rf_warlock_pve_demonology")
@@ -54,6 +75,9 @@ class CharacterFactory:
     @property
     def ri_paladin_pve_holy(self) -> Character:
         return ds.get_character("ri_paladin_pve_holy")
+    @property
+    def ri_paladin_pve_protect(self) -> Character:
+        return ds.get_character("ri_paladin_pve_protect")
     @property
     def rj_dk_pve_blood_tank(self) -> Character:
         return ds.get_character("rj_dk_pve_blood_tank")
@@ -103,15 +127,33 @@ if __name__ == "__main__":
     print(acc_fact.Fat08)
     print(acc_fact.Fat09)
     print(acc_fact.Fat10)
+    print(acc_fact.Fat11)
+    print(acc_fact.Fat12)
+    print(acc_fact.Fat13)
+    print(acc_fact.Fat14)
+    print(acc_fact.Fat15)
+    print(acc_fact.Fat16)
+    print(acc_fact.Fat17)
+    print(acc_fact.Fat18)
+    print(acc_fact.Fat19)
+    print(acc_fact.Fat20)
+    print(acc_fact.Fat21)
+    print(acc_fact.Fat22)
+    print(acc_fact.Fat23)
+    print(acc_fact.Fat24)
+    print(acc_fact.Fat25)
     print(char_fact.ra_paladin_pve_protect)
     print(char_fact.rb_shaman_pve_elemental)
     print(char_fact.rc_druid_pve_balance)
+    print(char_fact.rc_druid_pve_bear)
     print(char_fact.rd_mage_pve_arcane)
     print(char_fact.re_priest_pve_shadow)
+    print(char_fact.re_priest_pve_holy)
     print(char_fact.rf_warlock_pve_demonology)
     print(char_fact.rg_hunter_pve_marksman)
     print(char_fact.rh_druid_pve_resto)
     print(char_fact.ri_paladin_pve_holy)
+    print(char_fact.ri_paladin_pve_protect)
     print(char_fact.rj_dk_pve_blood_tank)
     print(char_group_fact.all)
     print(char_group_fact.r_1_to_5)
