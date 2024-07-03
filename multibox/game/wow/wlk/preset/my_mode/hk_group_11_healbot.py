@@ -168,12 +168,14 @@ class HotkeyGroup11Healbot:
                     act.PriestHoly.HB_Circle_of_Healing,
                 ],
             )
-            self.build_send_label_by_tc(
-                tc=TC.tank,
-                funcs=[
-                    CAN.KEY_2,
-                ],
-            )
+            # 不要发送 key 到 坦克 和 DPS. 因为这个时候如果主窗口是 坦克 或 DPS,
+            # 那么此时按着 SHIFT, 然后 HotkeyNEt 又发了个 1 或者 2, 就会切换动作条了
+            # self.build_send_label_by_tc(
+            #     tc=TC.tank,
+            #     funcs=[
+            #         CAN.KEY_2,
+            #     ],
+            # )
             self._build_send_label_non_shaman_dps(),
 
     def build_hk_healbot_dispel(self: "Mode"):
