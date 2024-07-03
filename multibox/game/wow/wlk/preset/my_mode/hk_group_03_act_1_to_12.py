@@ -194,6 +194,7 @@ class HotkeyGroup03Act1To12Mixin:
             label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
             label_list_priest_holy = self.lbs_by_tc(TC.priest_holy)
             label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
+            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
 
             # 优先级最高的最后 append, 放在队尾, 方便 pop
             label_list_heal_tank = list()
@@ -201,6 +202,11 @@ class HotkeyGroup03Act1To12Mixin:
             label_list_heal_tank.extend(label_list_priest_holy)
             label_list_heal_tank.extend(label_list_shaman_resto)
             label_list_heal_tank.extend(label_list_druid_resto)
+
+            # 把所有可能的治疗都放在这个列表里, 用于最后的分配任务
+            label_list_all = list()
+            label_list_all.extend(label_list_paladin_holy)
+            label_list_all.extend(label_list_heal_tank)
 
             assign_task = AssignTask(
                 groups=[
@@ -233,7 +239,7 @@ class HotkeyGroup03Act1To12Mixin:
                         to=[lb],
                     ):
                         self.target_leader_2()
-                        hk.Key.make(KN.KEY_1)
+                        CAN.KEY_1()
 
             # 神牧, 随机给团上恢复
             if len(label_list_priest_holy):
@@ -243,7 +249,7 @@ class HotkeyGroup03Act1To12Mixin:
                     id="HolyPriestHealRaid",
                     to=[lb],
                 ):
-                    CAN.KEY_4()
+                    act.PriestHoly.MB_HEAL_RAID()
 
             # 戒律牧, 随机给团上盾
             if len(label_list_priest_disco):
@@ -253,56 +259,27 @@ class HotkeyGroup03Act1To12Mixin:
                     id="DiscoPriestHealRaid",
                     to=[lb],
                 ):
-                    CAN.KEY_4()
-
-            # label_list = label_list_druid_resto + label_list_shaman_resto
-            # if len(label_list) == 0:
-            #     # 没有奶德奶萨
-            #     pass
-            # elif len(label_list) == 1:
-            #     with hk.SendLabel(
-            #         id="SlowTankHealer",
-            #         to=label_list,
-            #     ):
-            #         act.Target.TARGET_FOCUS()
-            #         hk.Key.make(KN.KEY_1)
-            # else:
-            #     with hk.SendLabel(
-            #         id="SlowTankHealer1",
-            #         to=[
-            #             label_list[0],
-            #         ],
-            #     ):
-            #         self.target_leader_1()
-            #         hk.Key.make(KN.KEY_1)
-            #     with hk.SendLabel(
-            #         id="SlowTankHealer2",
-            #         to=[
-            #             label_list[1],
-            #         ],
-            #     ):
-            #         self.target_leader_2()
-            #         hk.Key.make(KN.KEY_1)
-            #     with hk.SendLabel(
-            #         id="SlowTankHealerOther",
-            #         to=label_list[2:],
-            #     ):
-            #         act.Target.TARGET_FOCUS()
-            #         hk.Key.make(KN.KEY_1)
-
-            # 戒律牧, 随机给团上盾
-            # self._build_send_label_by_talent(
-            #     talent=list(TC.priest_disco.talents),
-            #     target=None,
-            #     key=KN.KEY_1,
-            # )
+                    act.PriestDiscipline.MB_HEAL_RAID()
 
             # 奶骑, 随机奶团, 因为道标的存在, 它肯定也是在奶坦克的
-            self._build_send_label_by_talent(
-                talent=list(TC.paladin_holy.talents),
-                target=act.Target.TARGET_RAID,
-                key=KN.KEY_1,
-            )
+            if len(label_list_paladin_holy):
+                lb = label_list_paladin_holy[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="HolyPaladinHealRaid",
+                    to=[lb],
+                ):
+                    act.Target.TARGET_RAID()
+                    act.PaladinHoly.One_Minute_Heal_Rotation_Macro_copy_1()
+
+            # 如果还有其他治疗没活干, 那么它们也帮着治疗焦点
+            if len(label_list_all):
+                with hk.SendLabel(
+                    id="HolyPaladinHealRaid",
+                    to=label_list_all,
+                ):
+                    act.Target.TARGET_FOCUS()
+                    CAN.KEY_1()
 
     def build_hk_2_heal_nothing(self: "Mode"):
         with hk.Hotkey(
@@ -375,54 +352,97 @@ class HotkeyGroup03Act1To12Mixin:
                     act.Target.TARGET_FOCUS()
                     hk.Key.make(KN.KEY_3)
 
-            # 奶萨, 奶德 用大治疗奶坦克
-            label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
+            # 先获得所有可能在这个组里的治疗职业的 Label, 然后根据人数, 天赋给它们分配任务
             label_list_druid_resto = self.lbs_by_tc(TC.druid_resto)
-            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
-            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
+            label_list_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
             label_list_priest_holy = self.lbs_by_tc(TC.priest_holy)
-            label_list = label_list_shaman_resto + label_list_druid_resto
+            label_list_priest_disco = self.lbs_by_tc(TC.priest_disco)
+            label_list_paladin_holy = self.lbs_by_tc(TC.paladin_holy)
 
-            # 如果没有奶萨奶德, 那么看看有没有其他的治疗能补位
-            if len(label_list) == 0:
-                pass
-            elif len(label_list) == 1:
+            # 优先级最高的最后 append, 放在队尾, 方便 pop
+            label_list_heal_tank = list()
+            label_list_heal_tank.extend(label_list_priest_disco)
+            label_list_heal_tank.extend(label_list_priest_holy)
+            label_list_heal_tank.extend(label_list_shaman_resto)
+            label_list_heal_tank.extend(label_list_druid_resto)
+
+            # 把所有可能的治疗都放在这个列表里, 用于最后的分配任务
+            label_list_all = list()
+            label_list_all.extend(label_list_paladin_holy)
+            label_list_all.extend(label_list_heal_tank)
+
+            assign_task = AssignTask(
+                groups=[
+                    label_list_druid_resto,
+                    label_list_shaman_resto,
+                    label_list_priest_holy,
+                    label_list_priest_disco,
+                    label_list_heal_tank,
+                ]
+            )
+
+            # 确保有人奶 1 号坦克.
+            if len(label_list_heal_tank):
+                lb = label_list_heal_tank[-1]
+                assign_task.remove(lb)
                 with hk.SendLabel(
-                    id="BigTankHealer",
-                    to=label_list,
-                ):
-                    act.Target.TARGET_FOCUS()
-                    hk.Key.make(KN.KEY_3)
-            else:
-                with hk.SendLabel(
-                    id="BigTankHealer1",
-                    to=[
-                        label_list[0],
-                    ],
+                    id="SlowTankHealer1",
+                    to=[lb],
                 ):
                     self.target_leader_1()
-                    hk.Key.make(KN.KEY_3)
+                    CAN.KEY_1()
+
+            # 如果有 2 号坦克, 就尝试派人去奶
+            if self.lb_leader2:
+                if len(label_list_heal_tank):
+                    lb = label_list_heal_tank[-1]
+                    assign_task.remove(lb)
+                    with hk.SendLabel(
+                        id="SlowTankHealer2",
+                        to=[lb],
+                    ):
+                        self.target_leader_2()
+                        CAN.KEY_1()
+
+            # 神牧, 随机给团上恢复
+            if len(label_list_priest_holy):
+                lb = label_list_priest_holy[-1]
+                assign_task.remove(lb)
                 with hk.SendLabel(
-                    id="BigTankHealer2",
-                    to=[
-                        label_list[1],
-                    ],
+                    id="HolyPriestHealRaid",
+                    to=[lb],
                 ):
-                    self.target_leader_2()
-                    hk.Key.make(KN.KEY_3)
-                with hk.SendLabel(
-                    id="BigTankHealerOther",
-                    to=label_list[2:],
-                ):
-                    act.Target.TARGET_FOCUS()
-                    hk.Key.make(KN.KEY_3)
+                    act.PriestHoly.MB_HEAL_RAID()
 
             # 戒律牧, 随机给团上盾
-            self._build_send_label_by_talent(
-                talent=list(TC.priest_disco.talents),
-                target=None,
-                key=KN.KEY_3,
-            )
+            if len(label_list_priest_disco):
+                lb = label_list_priest_disco[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="DiscoPriestHealRaid",
+                    to=[lb],
+                ):
+                    act.PriestDiscipline.MB_HEAL_RAID()
+
+            # 奶骑, 随机奶团, 因为道标的存在, 它肯定也是在奶坦克的
+            if len(label_list_paladin_holy):
+                lb = label_list_paladin_holy[-1]
+                assign_task.remove(lb)
+                with hk.SendLabel(
+                    id="HolyPaladinHealRaid",
+                    to=[lb],
+                ):
+                    act.Target.TARGET_RAID()
+                    act.PaladinHoly.One_Minute_Heal_Rotation_Macro_copy_1()
+
+            # 如果还有其他治疗没活干, 那么它们也帮着治疗焦点
+            if len(label_list_all):
+                with hk.SendLabel(
+                    id="HolyPaladinHealRaid",
+                    to=label_list_all,
+                ):
+                    act.Target.TARGET_FOCUS()
+                    CAN.KEY_1()
 
     def build_hk_4_heal_nothing(self: "Mode"):
         with hk.Hotkey(

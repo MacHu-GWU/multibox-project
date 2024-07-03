@@ -106,6 +106,27 @@ class PriestDiscipline(Priest):
     Penance = CAN.R  # 苦修, 通道型治疗技能, 戒律系天赋技能
     Desperate_Prayer = CAN.ALT_F1  # 绝望祷言, 神圣系天赋技能
 
+    MB_SLOW_HEAL = CAN.KEY_1
+    """
+    以 15 秒为一个循环 (因为每 15 秒可以上一次盾) 的治疗宏. 用于慢慢治疗单目标 (主要是坦克).
+    
+    宏命令的例子如下::
+
+        /castsequence reset=15 愈合祷言,,苦修,,愈合祷言,,
+    """
+    MB_HEAL_RAID = CAN.KEY_2
+    """
+    随机选择团队成员套盾.
+    """
+    MB_FAST_HEAL = CAN.KEY_3
+    """
+    单体快速治疗. 一般放一个 "快速治疗" 技能就可以了, 不需要宏
+    """
+    MB_AOE_HEAL = CAN.KEY_5
+    """
+    群体治疗, 一般放一个 "治疗祷言" 技能就可以了.
+    """
+
 
 class PriestHoly(Priest):
     Inner_Focus = CAN.SHIFT_C  # 心灵专注, 使你的下一个法术必暴击, 戒律系天赋技能
@@ -114,6 +135,31 @@ class PriestHoly(Priest):
     Circle_of_Healing = CAN.R  # 治疗之环, 群体治疗技能, 神圣系天赋技能
     Lightwell = None  # 光明之井, 神圣系天赋技能
     Guardian_Spirit = CAN.ALT_F  # 守护天使, 保护目标不被一击必杀一次, 神圣系天赋技能
+
+    MB_SLOW_HEAL = CAN.KEY_1
+    """
+    以 15 秒为一个循环 (因为每 15 秒可以上一次盾) 的治疗宏. 用于慢慢治疗单目标 (主要是坦克).
+    
+    宏命令的例子如下::
+    
+        /castsequence reset=15 恢复,真言术盾,愈合祷言,快速治疗,快速治疗,快速治疗
+    """
+    MB_HEAL_RAID = CAN.KEY_2
+    """
+    随机选择团队成员套盾.
+    """
+    MB_FAST_HEAL = CAN.KEY_3
+    """
+    单体快速治疗. 一般放一个 "快速治疗" 技能就可以了, 不需要宏
+    """
+    MB_AOE_HEAL = CAN.KEY_5
+    """
+    群体治疗.
+    
+    宏命令的例子如下::
+        
+        /castsequence reset=6 治疗之环,治疗祷言,治疗祷言,治疗祷言
+    """
 
 
 class PriestShadow(Priest):

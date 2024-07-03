@@ -154,4 +154,43 @@ class ShamanRestoration(Shaman):
     HB_Cleanse_Spirit = CAN.CTRL_LEFT_CLICK  # 净化灵魂, 驱散 中毒, 疾病, 诅咒, 恢复系天赋技能
     HB_Earth_Shield = CAN.ALT_RIGHT_CLICK  # 大地之盾, 当被保护的人受到伤害时治疗他, 恢复系天赋技能
     HB_Riptide = CAN.RIGHT_CLICK  # 激流, 恢复系天赋技能
+
+    MB_SLOW_HEAL = CAN.KEY_1
+    """
+    以 15 秒为一个循环 (因为一般大地之盾 15 秒就可以补了) 的治疗宏. 用于慢慢治疗单目标 (主要是坦克).
+    
+    宏命令的例子如下::
+    
+        #showtooltip
+        /castsequence [nochanneling] reset=target 大地之盾,,次级治疗波,,次级治疗波,,次级治疗波
+    """
+    MB_HEAL_RAID = CAN.KEY_2
+    """
+    恢复萨的治疗循环. 无脑随机选择团队目标, 在激流6 秒CD的周期内完成一个循环. 平时该宏如下::
+    
+        #showtooltip
+        #/targetraid
+        /castsequence reset=6 激流,治疗链,治疗波,次级治疗波
+    
+    在长时间的的战斗中为了保证不空蓝, 可以在循环中穿插不耗蓝的水之盾技能, 降低蓝耗::
+    
+        #showtooltip
+        #/targetraid
+        /castsequence reset=6 激流,治疗链,水之护盾,治疗波,次级治疗波
+    
+    甚至可以更极端一点::
+    
+        #showtooltip
+        #/targetraid
+        /castsequence reset=6 激流,治疗链,水之护盾,治疗波,次级治疗波,水之护盾
+    """
+    MB_FAST_HEAL = CAN.KEY_3
+    """
+    单体快速治疗. 一般放一个 "治疗波" 技能就可以了, 不需要宏
+    """
+    MB_AOE_HEAL = CAN.KEY_5
+    """
+    群体治疗, 一般放一个 "治疗链" 技能就可以了.
+    """
+
 # fmt: on

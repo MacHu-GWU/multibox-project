@@ -153,6 +153,33 @@ class DruidRestoration(Druid):
     Tree_of_LifeShapeshift = CAN.SHIFT_E  # 治疗之树形态
     Nature_s_Swiftness = CAN.ALT_F  # 自然迅捷, 下一个技能瞬发, 恢复系天赋技能
 
+    MB_SLOW_HEAL = CAN.KEY_1
+    """
+    以 15 秒为一个循环 (因为回春术的一个周期是 15) 的治疗宏. 用于慢慢治疗单目标 (主要是坦克).
+    
+    宏命令的例子如下::
+    
+        #showtooltip
+        /castsequence [nochanneling] reset=target 回春术,愈合,生命绽放,生命绽放,生命绽放,,,,
+    """
+    MB_HEAL_RAID = CAN.KEY_2
+    """
+    随机选择团队成员丢回春和野性成长 (AOE 治疗 HOT).
+    
+    宏命令的例子如下::
+    
+        /cast [stance:0/1/2/3/4] 生命之树
+        /castsequence reset=15 回春术,回春术,回春术,回春术,回春术,野性成长
+    """
+    MB_FAST_HEAL = CAN.KEY_3
+    """
+    单体快速治疗. 一般放一个 "滋养" 技能就可以了, 不需要宏
+    """
+    MB_AOE_HEAL = CAN.KEY_5
+    """
+    群体治疗, 一般放一个 "野性成长" 技能就可以了.
+    """
+
 
 class DruidFeral(Druid):
     Feral_Charge_Bear = None  # 野性冲锋 熊形态, 野性系天赋技能
