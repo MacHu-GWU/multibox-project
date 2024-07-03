@@ -262,6 +262,25 @@ class Mode(AttrsClass):
             if label not in all_labels:
                 label_list.remove(label)
 
+    def remove_leader_labels(self, label_list: T.List[str]) -> None:
+        """
+        给定一个 label 的列表, 从中删除那些属于 Leader 角色的 label.
+
+        有时候我们希望全团进行一些动作, 但唯独 Leader 职业不动.
+
+        注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
+        一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
+        """
+        all_tank_labels = [
+            char.window.label
+            for char in self.active_chars
+            if char.is_leader_1 or char.is_leader_2
+        ]
+
+        for label in list(label_list):
+            if label in all_tank_labels:
+                label_list.remove(label)
+
     def remove_tank_labels(self, label_list: T.List[str]) -> None:
         """
         给定一个 label 的列表, 从中删除那些属于坦克角色的 label.

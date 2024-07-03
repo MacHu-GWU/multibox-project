@@ -17,11 +17,33 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-class HotkeyGroup02MovementMixin:
-    def _convert_int_lbs_to_str_lbs(self: "Mode", lbs: T.List[int]) -> T.List[str]:
-        return [f"w{str(ind).zfill(2)}" for ind in lbs]
+T_LABEL_LIKE = T.Union[str, int]
+T_LABEL_ARG = T.Union[T_LABEL_LIKE, T.List[T_LABEL_LIKE]]
 
-    def _go_up(self, lbs: T.List[int]):
+
+class HotkeyGroup02MovementMixin:
+    def _convert_int_lbs_to_str_lbs(
+        self: "Mode",
+        lbs: T_LABEL_ARG,
+    ) -> T.List[str]:
+        """
+        把用户传进来的参数转化成字符串形式的 labels.
+
+        - 如果输入不是 list, 则转化成 list.
+        - 如果 list 里的元素是 int, 则转化成 "w01" 这种形式.
+        - 如果 list 里的元素是 str, 则不做处理.
+        """
+        if isinstance(lbs, list) is False:
+            lbs = [lbs]
+        new_lbs = list()
+        for ind in lbs:
+            if isinstance(ind, int):
+                new_lbs.append(f"w{str(ind).zfill(2)}")
+            else:
+                new_lbs.append(ind)
+        return new_lbs
+
+    def _go_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="up",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -29,7 +51,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_FORWARD()
             return send_label
 
-    def _go_down(self, lbs: T.List[int]):
+    def _go_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="down",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -37,7 +59,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_BACKWARD()
             return send_label
 
-    def _go_left(self, lbs: T.List[int]):
+    def _go_left(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -45,7 +67,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_LEFT()
             return send_label
 
-    def _go_right(self, lbs: T.List[int]):
+    def _go_right(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -53,7 +75,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_RIGHT()
             return send_label
 
-    def _go_left_up(self, lbs: T.List[int]):
+    def _go_left_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left_up",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -61,7 +83,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_LEFT_TOP()
             return send_label
 
-    def _go_left_down(self, lbs: T.List[int]):
+    def _go_left_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="left_down",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -69,7 +91,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_LEFT_BOTTOM()
             return send_label
 
-    def _go_right_up(self, lbs: T.List[int]):
+    def _go_right_up(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right_up",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -77,7 +99,7 @@ class HotkeyGroup02MovementMixin:
             act.Movement.MOVE_RIGHT_TOP()
             return send_label
 
-    def _go_right_down(self, lbs: T.List[int]):
+    def _go_right_down(self, lbs: T_LABEL_ARG):
         with hk.SendLabel(
             id="right_down",
             to=self._convert_int_lbs_to_str_lbs(lbs),
@@ -165,34 +187,68 @@ class HotkeyGroup02MovementMixin:
 
         法师    奶德     鸟德    奶骑     暗牧
         """
-        with hk.MovementHotkey(
-            id="Spread Matrix 1",
-            key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
-        ) as self.hk_spread_matrix_1:
-            send_label_list: T.List[hk.SendLabel] = [
-                self._go_left([6, 15, 14]),
-                self._go_right([3, 11, 18]),
-                self._go_left_down([4, 8, 16, 13]),
-                self._go_right_down([5, 9, 12, 17]),
-                self._go_down(
-                    [
-                        2,
-                    ]
-                ),
-            ]
-            for send_label in send_label_list:
-                self.remove_inactive_labels(send_label.to)
+        # 人数少于 5 人时, 做精细化处理
+        if len(self.lbs_all) <= 5:
+            lbs_all = self.lbs_all
+            lbs_healer = self.lbs_by_tc(TC.healer)
+            self.remove_leader_labels(lbs_all)
+            self.remove_leader_labels(lbs_healer)
+            if len(lbs_healer):
+                lb_healer = lbs_healer[0]
+                lbs_all.remove(lb_healer)
+                if lbs_all:
+                    self._go_left(lbs_all[-1])
+                    lbs_all.pop()
+                if lbs_all:
+                    self._go_right(lbs_all[-1])
+                    lbs_all.pop()
+                if lbs_all:
+                    self._go_down(lbs_all[-1])
+                    lbs_all.pop()
+            else:
+                if lbs_all:
+                    self._go_left_down(lbs_all[-1])
+                    lbs_all.pop()
+                if lbs_all:
+                    self._go_left(lbs_all[-1])
+                    lbs_all.pop()
+                if lbs_all:
+                    self._go_right(lbs_all[-1])
+                    lbs_all.pop()
+                if lbs_all:
+                    self._go_right_down(lbs_all[-1])
+                    lbs_all.pop()
 
-        with hk.MovementHotkey(
-            id="Spread Matrix 2",
-            key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
-        ) as self.hk_spread_matrix_2:
-            send_label_list: T.List[hk.SendLabel] = [
-                self._go_left([4, 11, 12]),
-                self._go_right([5, 15, 16]),
-            ]
-            for send_label in send_label_list:
-                self.remove_inactive_labels(send_label.to)
+        # 人数大于 5 人时, 用矩阵分散
+        else:
+            with hk.MovementHotkey(
+                id="Spread Matrix 1",
+                key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
+            ) as self.hk_spread_matrix_1:
+                send_label_list: T.List[hk.SendLabel] = [
+                    self._go_left([6, 15, 14]),
+                    self._go_right([3, 11, 18]),
+                    self._go_left_down([4, 8, 16, 13]),
+                    self._go_right_down([5, 9, 12, 17]),
+                    self._go_down(
+                        [
+                            2,
+                        ]
+                    ),
+                ]
+                for send_label in send_label_list:
+                    self.remove_inactive_labels(send_label.to)
+
+            with hk.MovementHotkey(
+                id="Spread Matrix 2",
+                key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
+            ) as self.hk_spread_matrix_2:
+                send_label_list: T.List[hk.SendLabel] = [
+                    self._go_left([4, 11, 12]),
+                    self._go_right([5, 15, 16]),
+                ]
+                for send_label in send_label_list:
+                    self.remove_inactive_labels(send_label.to)
 
     def build_hk_spread_circle(self: "Mode"):
         """
