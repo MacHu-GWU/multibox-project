@@ -5,6 +5,7 @@ Example Google Sheet: https://docs.google.com/spreadsheets/d/19m889kimzCkbfoc2Q2
 """
 
 import typing as T
+import sys
 import copy
 import enum
 import subprocess
@@ -328,7 +329,7 @@ class Dataset:
         if test:
             print("Test the generated script ...")
             with path_character_py.parent.temp_cwd():
-                subprocess.run(["python", f"{path_character_py}"], check=True)
+                subprocess.run([sys.executable, f"{path_character_py}"], check=True)
             print("✅Test passed.")
 
     @classmethod
