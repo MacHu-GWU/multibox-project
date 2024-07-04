@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from multibox.app.acore.dataset import mode_fact
+from multibox.app.acore.paths import path_acore_hkn
 
 # -----------------------------------------------------------------------------
 # Azerothcore - Alliance - Dungeon
 # -----------------------------------------------------------------------------
-# mode = mode_fact.alliance_r_abcde_solo_dungeon
+mode = mode_fact.alliance_r_abcde_solo_dungeon
 
 # -----------------------------------------------------------------------------
 # Azerothcore - Alliance - Raid
@@ -19,10 +20,12 @@ from multibox.app.acore.dataset import mode_fact
 # -----------------------------------------------------------------------------
 # Azerothcore - Horde - Dungeon
 # -----------------------------------------------------------------------------
-mode = mode_fact.horde_s_abcde_solo_dungeon
+# mode = mode_fact.horde_s_abcde_solo_dungeon
 
 # -----------------------------------------------------------------------------
 # Don't Touch
 # -----------------------------------------------------------------------------
+mode.script_path = path_acore_hkn
+
 # mode.dump(verbose=True)
 mode.dump(verbose=False)

@@ -192,7 +192,11 @@ class HotkeyGroup02MovementMixin:
         """
         # 人数少于 5 人时, 做精细化处理
         if len(self.lbs_all) <= 5:
-            self._build_hk_spread_matrix_less_than_5p()
+            with hk.MovementHotkey(
+                id="Spread Matrix 1",
+                key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
+            ) as self.hk_spread_matrix_1:
+                self._build_hk_spread_matrix_less_than_5p()
 
         # 人数大于 5 人时, 用矩阵分散
         else:

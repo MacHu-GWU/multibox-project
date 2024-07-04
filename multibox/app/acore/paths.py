@@ -6,5 +6,5 @@
 
 from multibox.paths import dir_app
 
-dir_app_azerothcore_alliance_v2 = dir_app / "azerothcore_alliance_v2"
-path_azerothcore_alliance_v2_hkn = dir_app_azerothcore_alliance_v2 / "hotkeynet.js"
+dir_app_acore = dir_app / "acore"
+path_acore_hkn = dir_app_acore / "hotkeynet.js"
