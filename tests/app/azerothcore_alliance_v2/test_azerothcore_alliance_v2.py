@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from multibox.app.azerothcore_alliance_v2.api import (
-    dungeon_mode_fact,
-    raid_mode_fact,
-)
+from multibox.app.azerothcore_alliance_v2.dataset import mode_fact
 
 
 def test():
     for mode in [
-        dungeon_mode_fact.x5p_alliance_r_abcde,
-        # raid_mode_fact.x10p_alliance_r_abcdefghij,
+        mode_fact.alliance_r_abcde_solo_dungeon,
+        mode_fact.alliance_r_abcdefghij_solo_raid,
+        mode_fact.horde_s_abcde_solo_dungeon,
     ]:
         mode.render(verbose=False)
 

@@ -4,4 +4,4 @@
 if __name__ == "__main__":
     from multibox.tests import run_cov_test
 
-    run_cov_test(__file__, "multibox.app.azerothcore_horde", preview=False, is_folder=True)
+    run_cov_test(__file__, "multibox.game", preview=False, is_folder=True)

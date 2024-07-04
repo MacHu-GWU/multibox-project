@@ -5,6 +5,7 @@ Todo: doc string here
 """
 
 import typing as T
+from collections import Counter
 
 import attrs
 from attrs_mate import AttrsClass
@@ -111,6 +112,10 @@ class Mode(AttrsClass):
     # --------------------------------------------------------------------------
     def _ensure_no_duplicate_window(self, chars: T.List[Character]):
         if len(chars) != len({char.window.label for char in chars}):
+            counter = Counter([char.window.label for char in chars])
+            for label, count in counter.items():
+                if count > 1:
+                    print("Duplicate window label:", label)
             raise ValueError(
                 f"Character list {chars} cannot has duplicate window label!"
             )

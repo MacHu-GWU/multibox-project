@@ -14,6 +14,7 @@ import jinja2
 import polars as pl
 from pathlib_mate import Path
 from ordered_set import OrderedSet
+from hotkeynet.api import KeyMaker
 
 from ...wow.account import Account
 from ...wow.window import Window
@@ -29,6 +30,7 @@ class SpreadSheetTabEnum(str, enum.Enum):
     build = "build"
     build_group = "build_group"
     client = "client"
+    target_leader = "target_leader"
     mode = "mode"
 
 
@@ -59,8 +61,15 @@ class ClientTabColumnEnum(str, enum.Enum):
     client = "client"
 
 
+class TargetLeaderTabColumnEnum(str, enum.Enum):
+    setup = "setup"
+    window = "window"
+    keyboard = "keyboard"
+
+
 class ModeTabColumnEnum(str, enum.Enum):
     mode = "mode"
+    target_leader = "target_leader"
 
 
 dir_home = Path.home()
@@ -74,6 +83,7 @@ class Dataset:
     builds: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     build_groups: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     clients: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
+    target_leaders: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     modes: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     # fmt: on
 
@@ -85,15 +95,24 @@ class Dataset:
         df_character = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.character.value)
         df_build = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build.value)
         df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value)
+        df_target_leader = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.target_leader.value)
         df_client = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.client.value)
         df_mode = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.mode.value)
         # fmt: on
 
         # validation
-        if df_account["account"].n_unique() != df_account.shape[0]:
+        if df_account["account"].n_unique() != df_account.shape[0]:  # pragma: no cover
             raise ValueError("Found duplicated account in sheet 'account'")
 
-        if df_character["character"].n_unique() != df_character.shape[0]:
+        if (
+            df_character["character"].n_unique() != df_character.shape[0]
+        ):  # pragma: no cover
+            df_not_unique = (
+                df_character[CharacterTabColumnEnum.character.value]
+                .value_counts()
+                .filter(pl.col("count") > 1)
+            )
+            print(df_not_unique)
             raise ValueError("Found duplicated character in sheet 'account'")
         df_character_joined = df_character.join(
             df_account,
@@ -101,20 +120,28 @@ class Dataset:
             how="inner",
             coalesce=True,
         )
-        if df_character_joined.shape[0] != df_character.shape[0]:
+        if df_character_joined.shape[0] != df_character.shape[0]:  # pragma: no cover
             raise ValueError(
                 "Found character without a valid account in sheet 'character'"
             )
 
-        if df_build[BuildTabColumnEnum.build.value].n_unique() != df_build.shape[0]:
-            raise ValueError("Found duplicated build in sheet 'account'")
+        if (
+            df_build[BuildTabColumnEnum.build.value].n_unique() != df_build.shape[0]
+        ):  # pragma: no cover
+            df_not_unique = (
+                df_build[BuildTabColumnEnum.build.value]
+                .value_counts()
+                .filter(pl.col("count") > 1)
+            )
+            print(df_not_unique)
+            raise ValueError("Found duplicated build in sheet 'build'")
         df_build_joined = df_build.join(
             df_character_joined,
             on=CharacterTabColumnEnum.character.value,
             how="inner",
             coalesce=True,
         )
-        if df_build_joined.shape[0] != df_build.shape[0]:
+        if df_build_joined.shape[0] != df_build.shape[0]:  # pragma: no cover
             raise ValueError("Found build without a valid character in sheet 'build'")
 
         df_build_group_joined = df_build_group.join(
@@ -123,15 +150,29 @@ class Dataset:
             how="inner",
             coalesce=True,
         )
-        if df_build_group_joined.shape[0] != df_build_group.shape[0]:
+        if (
+            df_build_group_joined.shape[0] != df_build_group.shape[0]
+        ):  # pragma: no cover
             raise ValueError(
                 "Found build group without a valid build in sheet 'build_group'"
             )
 
-        if df_client["client"].n_unique() != df_client.shape[0]:
+        if df_client["client"].n_unique() != df_client.shape[0]:  # pragma: no cover
+            df_not_unique = (
+                df_client[ClientTabColumnEnum.client.value]
+                .value_counts()
+                .filter(pl.col("count") > 1)
+            )
+            print(df_not_unique)
             raise ValueError("Found duplicated client in sheet 'client'")
 
-        if df_mode["mode"].n_unique() != df_mode.shape[0]:
+        if df_mode["mode"].n_unique() != df_mode.shape[0]:  # pragma: no cover
+            df_not_unique = (
+                df_mode[ModeTabColumnEnum.mode.value]
+                .value_counts()
+                .filter(pl.col("count") > 1)
+            )
+            print(df_not_unique)
             raise ValueError("Found duplicated mode in sheet 'mode'")
 
         # convert
@@ -158,26 +199,26 @@ class Dataset:
             dct[ClientTabColumnEnum.client.value]: dct for dct in df_client.to_dicts()
         }
 
-        modes = {dct[ModeTabColumnEnum.mode.value]: dct for dct in df_mode.to_dicts()}
+        target_leaders = {}
+        for (setup,), sub_df in df_target_leader.group_by(
+            TargetLeaderTabColumnEnum.setup.value, maintain_order=True
+        ):
+            mapping = {
+                dct[TargetLeaderTabColumnEnum.window.value]: dct[
+                    TargetLeaderTabColumnEnum.keyboard.value
+                ]
+                for dct in sub_df.to_dicts()
+            }
+            target_leaders[setup] = mapping
 
-        # headers = list(df_client.columns)
-        # headers.remove(ClientTabColumnEnum.client.value)
-        # clients = {header: dict() for header in headers}
-        # for dct in df_client.to_dicts():
-        #     attr = dct[ClientTabColumnEnum.client.value]
-        #     for header in headers:
-        #         try:
-        #             value = int(dct[header])
-        #         except:
-        #             value = dct[header]
-        #         clients[header][attr] = value
-        # print(clients)
+        modes = {dct[ModeTabColumnEnum.mode.value]: dct for dct in df_mode.to_dicts()}
 
         return cls(
             accounts=accounts,
             builds=builds,
             build_groups=build_groups,
             clients=clients,
+            target_leaders=target_leaders,
             modes=modes,
         )
 
@@ -229,12 +270,19 @@ class Dataset:
                     chars.difference_update(self.get_build_group(value))
             return chars
 
+        target_leader = dct[ModeTabColumnEnum.target_leader.value]
+        mapping = self.target_leaders[target_leader]
+        target_leader_key_mapper = {
+            Window.make(index).label: KeyMaker(key=keyboard)
+            for index, keyboard in mapping.items()
+        }
+
         mode = mode_class(
             name=dct[ModeTabColumnEnum.mode.value],
             client=self.get_client(dct["client"]),
             active_chars=get_active_login_chars("active"),
             login_chars=get_active_login_chars("login"),
-            # target_leader_key_mapper: T_TARGET_LEAD_KEY_MAPPER = attrs.field(factory=dict)
+            target_leader_key_mapper=target_leader_key_mapper,
             leader1=self.get_character(dct["leader1"]) if dct["leader1"] else None,
             leader2=self.get_character(dct["leader2"]) if dct["leader2"] else None,
             tank1=self.get_character(dct["tank1"]) if dct["tank1"] else None,
@@ -280,7 +328,7 @@ class Dataset:
         if test:
             print("Test the generated script ...")
             with path_character_py.parent.temp_cwd():
-                subprocess.run(["python", f"{path_character_py}"])
+                subprocess.run(["python", f"{path_character_py}"], check=True)
             print("✅Test passed.")
 
     @classmethod

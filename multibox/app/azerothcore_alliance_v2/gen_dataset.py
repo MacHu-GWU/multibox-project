@@ -8,11 +8,16 @@ from pathlib_mate import Path
 from multibox.game.wow.wlk.dataset import Dataset
 
 dir_here = Path.dir_here(__file__)
-path_excel = dir_here.joinpath("multibox-game-wow-wotlk-azerothcore_alliance_v2.xlsx")
+path_excel = Dataset.locate_excel(prefix="multibox-game-wow-wotlk-azerothcore_alliance_v2")
 ds = Dataset.from_excel(path_excel)
 
 if __name__ == "__main__":
     from pathlib_mate import Path
 
     dir_here = Path.dir_here(__file__)
-    ds.to_module(dir_module=dir_here, overwrite=True, test=True)
+    ds.to_module(
+        dir_module=dir_here,
+        import_mode="from multibox.game.wow.wlk.preset.my_mode.api import Mode",
+        overwrite=True,
+        test=True,
+    )

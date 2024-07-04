@@ -226,6 +226,8 @@ class HotkeyGroup02MovementMixin:
 
         # 人数大于 5 人时, 用矩阵分散
         else:
+            lbs_all = self.lbs_all
+
             with hk.MovementHotkey(
                 id="Spread Matrix 1",
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
@@ -235,14 +237,10 @@ class HotkeyGroup02MovementMixin:
                     self._move_right([3, 11, 18]),
                     self._move_left_down([4, 8, 16, 13]),
                     self._move_right_down([5, 9, 12, 17]),
-                    self._move_down(
-                        [
-                            2,
-                        ]
-                    ),
+                    self._move_down([2]),
                 ]
                 for send_label in send_label_list:
-                    self.remove_inactive_labels(send_label.to)
+                    send_label.to.difference_update(lbs_all)
 
             with hk.MovementHotkey(
                 id="Spread Matrix 2",
@@ -253,7 +251,7 @@ class HotkeyGroup02MovementMixin:
                     self._move_right([5, 15, 16]),
                 ]
                 for send_label in send_label_list:
-                    self.remove_inactive_labels(send_label.to)
+                    send_label.to.difference_update(lbs_all)
 
     def build_hk_spread_circle(self: "Mode"):
         """
