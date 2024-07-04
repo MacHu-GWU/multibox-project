@@ -221,8 +221,65 @@ class HotkeyGroup11Healbot:
             )
             self._build_send_label_non_shaman_dps(),
 
+    def build_hk_healbot_innervate(self: "Mode"):
+        with hk.Hotkey(
+            id="Healbot Innervate",
+            key=KN.SCROLOCK_ON(KN.CTRL_SHIFT_(KN.MOUSE_LButton)),
+        ) as self.hk_healbot_innervate:
+            lbs_druid = self.lbs_by_tc(TC.druid)
+            if len(lbs_druid):
+                with hk.SendLabel(
+                    id="Healbot Druid 1 cast innervate",
+                    to=[lbs_druid[0]],
+                ) as send_label:
+                    act.Druid.HB_Innervate()
+            # self.build_send_label_by_tc(
+            #     tc=TC.paladin_holy,
+            #     funcs=[
+            #         act.PaladinHoly.HB_Holy_Light,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.shaman_resto,
+            #     funcs=[
+            #         act.ShamanRestoration.HB_Healing_Wave,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.druid_resto,
+            #     funcs=[
+            #         act.DruidRestoration.HB_Nourish,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.priest_disco,
+            #     funcs=[
+            #         act.PriestDiscipline.HB_Power_Word_Shield,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.priest_holy,
+            #     funcs=[
+            #         act.PriestHoly.HB_Flash_Heal,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.tank,
+            #     funcs=[
+            #         CAN.KEY_2,
+            #     ],
+            # )
+            # self.build_send_label_by_tc(
+            #     tc=TC.dps,
+            #     funcs=[
+            #         act.Target.TARGET_FOCUS_TARGET,
+            #         CAN.KEY_2,
+            #     ],
+            # )
+
     def build_hk_group_11_healbot_mixin(self: "Mode"):
         self.build_hk_healbot_small_heal()
         self.build_hk_healbot_big_heal()
         self.build_hk_healbot_aoe_heal()
         self.build_hk_healbot_dispel()
+        self.build_hk_healbot_innervate()
