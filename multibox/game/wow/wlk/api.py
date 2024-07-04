@@ -5,6 +5,8 @@
 而是通过这个 API 模块 import.
 """
 
+from ...wow.api import T_LABEL_LIKE
+from ...wow.api import T_LABELS_ARG
 from ...wow.api import Window
 from ...wow.api import Account
 from ...wow.api import LocaleEnum
@@ -14,3 +16,5 @@ from .talent import Talent
 from .talent import TalentCategory
 from .client import Client
 from .mode import Mode
+TL = Talent
+TC = TalentCategory

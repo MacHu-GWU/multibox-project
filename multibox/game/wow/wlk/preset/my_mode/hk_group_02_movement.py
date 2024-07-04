@@ -8,8 +8,9 @@ import typing as T
 
 from hotkeynet import api as hk
 from hotkeynet.api import KN
+from ordered_set import OrderedSet
 
-from multibox.game.wow.wlk.api import TalentCategory as TC
+from multibox.game.wow.wlk.api import TC, T_LABELS_ARG, Window
 from ..my_act import api as act
 
 
@@ -17,98 +18,44 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-T_LABEL_LIKE = T.Union[str, int]
-T_LABEL_ARG = T.Union[T_LABEL_LIKE, T.List[T_LABEL_LIKE]]
-
-
 class HotkeyGroup02MovementMixin:
-    def preprocess_labels(
-        self: "Mode",
-        lbs: T_LABEL_ARG,
-    ) -> T.List[str]:
-        """
-        把 "label liked" 参数转化成字符串形式的 labels. 可供 ``SendLabel(to=...)``
-        API 使用.
 
-        - 如果输入不是 list, 则转化成 list.
-        - 如果 list 里的元素是 int, 则转化成 "w01" 这种形式.
-        - 如果 list 里的元素是 str, 则不做处理.
-
-        :param lbs: int, str, or list of int, list of str.
-        """
-        if isinstance(lbs, list) is False:
-            lbs = [lbs]
-        new_lbs = list()
-        for ind in lbs:
-            if isinstance(ind, int):
-                new_lbs.append(f"w{str(ind).zfill(2)}")
-            else:
-                new_lbs.append(ind)
-        return new_lbs
-
-    def _go_up(self, lbs: T_LABEL_ARG):
+    def _move_xyz(
+        self,
+        lbs: T_LABELS_ARG,
+        id: str,
+        method: str,
+    ):
         with hk.SendLabel(
-            id="up",
-            to=self.preprocess_labels(lbs),
+            id=id,
+            to=OrderedSet(Window.to_labels(lbs)),
         ) as send_label:
-            act.Movement.MOVE_FORWARD()
+            getattr(act.Movement, method)()
             return send_label
 
-    def _go_down(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="down",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_BACKWARD()
-            return send_label
+    def _move_up(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "up", "MOVE_FORWARD")
 
-    def _go_left(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="left",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_LEFT()
-            return send_label
+    def _move_down(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "down", "MOVE_BACKWARD")
 
-    def _go_right(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="right",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_RIGHT()
-            return send_label
+    def _move_left(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "left", "MOVE_LEFT")
 
-    def _go_left_up(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="left_up",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_LEFT_TOP()
-            return send_label
+    def _move_right(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "right", "MOVE_RIGHT")
 
-    def _go_left_down(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="left_down",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_LEFT_BOTTOM()
-            return send_label
+    def _move_left_up(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "left_up", "MOVE_LEFT_TOP")
 
-    def _go_right_up(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="right_up",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_RIGHT_TOP()
-            return send_label
+    def _move_left_down(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "left_down", "MOVE_LEFT_BOTTOM")
 
-    def _go_right_down(self, lbs: T_LABEL_ARG):
-        with hk.SendLabel(
-            id="right_down",
-            to=self.preprocess_labels(lbs),
-        ) as send_label:
-            act.Movement.MOVE_RIGHT_BOTTOM()
-            return send_label
+    def _move_right_up(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "right_up", "MOVE_RIGHT_TOP")
+
+    def _move_right_down(self, lbs: T_LABELS_ARG):
+        return self._move_xyz(lbs, "right_down", "MOVE_RIGHT_BOTTOM")
 
     def build_hk_all_move_up_down_turn_left_right(self: "Mode"):
         """
@@ -168,6 +115,60 @@ class HotkeyGroup02MovementMixin:
             ):
                 act.Movement.JUMP()
 
+    def _build_hk_spread_matrix_less_than_5p(self: "Mode"):
+        """
+        矩阵分散站位.
+
+        情况 1. 1 Tank, 3 Range DPS, 1 Healer. 站位如下::
+
+                    坦克
+                    boss
+
+
+            DPS1    治疗    DPS3
+
+                    DPS2
+
+        情况 2. 1 Leader, 4 个 DPS (没有治疗的情况). 站位如下. 如果 DPS 是近战
+        就站近一点, 如果 DPS 是远程就站远一点::
+
+                    坦克
+                    boss
+            DPS1            DPS3
+                DPS2    DPS3
+        """
+        lbs_non_leader = self.lbs_non_leader
+
+        lbs_all = self.lbs_all
+        lbs_healer = self.lbs_by_tc(TC.healer)
+        self.remove_leader_labels(lbs_all)
+        self.remove_leader_labels(lbs_healer)
+        if len(lbs_healer):
+            lb_healer = lbs_healer[0]
+            lbs_all.remove(lb_healer)
+            if lbs_all:
+                self._move_left(lbs_all[-1])
+                lbs_all.pop()
+            if lbs_all:
+                self._move_right(lbs_all[-1])
+                lbs_all.pop()
+            if lbs_all:
+                self._move_down(lbs_all[-1])
+                lbs_all.pop()
+        else:
+            if lbs_all:
+                self._move_left_down(lbs_all[-1])
+                lbs_all.pop()
+            if lbs_all:
+                self._move_left(lbs_all[-1])
+                lbs_all.pop()
+            if lbs_all:
+                self._move_right(lbs_all[-1])
+                lbs_all.pop()
+            if lbs_all:
+                self._move_right_down(lbs_all[-1])
+                lbs_all.pop()
+
     def build_hk_spread_matrix(self: "Mode"):
         """
         **矩阵分散站位***
@@ -194,32 +195,33 @@ class HotkeyGroup02MovementMixin:
         if len(self.lbs_all) <= 5:
             lbs_all = self.lbs_all
             lbs_healer = self.lbs_by_tc(TC.healer)
-            self.remove_leader_labels(lbs_all)
-            self.remove_leader_labels(lbs_healer)
+            lbs_leader = self.lbs_leader
+            lbs_all.difference_update(lbs_leader)
+            lbs_healer.difference_update(lbs_leader)
             if len(lbs_healer):
                 lb_healer = lbs_healer[0]
                 lbs_all.remove(lb_healer)
                 if lbs_all:
-                    self._go_left(lbs_all[-1])
+                    self._move_left(lbs_all[-1])
                     lbs_all.pop()
                 if lbs_all:
-                    self._go_right(lbs_all[-1])
+                    self._move_right(lbs_all[-1])
                     lbs_all.pop()
                 if lbs_all:
-                    self._go_down(lbs_all[-1])
+                    self._move_down(lbs_all[-1])
                     lbs_all.pop()
             else:
                 if lbs_all:
-                    self._go_left_down(lbs_all[-1])
+                    self._move_left_down(lbs_all[-1])
                     lbs_all.pop()
                 if lbs_all:
-                    self._go_left(lbs_all[-1])
+                    self._move_left(lbs_all[-1])
                     lbs_all.pop()
                 if lbs_all:
-                    self._go_right(lbs_all[-1])
+                    self._move_right(lbs_all[-1])
                     lbs_all.pop()
                 if lbs_all:
-                    self._go_right_down(lbs_all[-1])
+                    self._move_right_down(lbs_all[-1])
                     lbs_all.pop()
 
         # 人数大于 5 人时, 用矩阵分散
@@ -229,11 +231,11 @@ class HotkeyGroup02MovementMixin:
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
             ) as self.hk_spread_matrix_1:
                 send_label_list: T.List[hk.SendLabel] = [
-                    self._go_left([6, 15, 14]),
-                    self._go_right([3, 11, 18]),
-                    self._go_left_down([4, 8, 16, 13]),
-                    self._go_right_down([5, 9, 12, 17]),
-                    self._go_down(
+                    self._move_left([6, 15, 14]),
+                    self._move_right([3, 11, 18]),
+                    self._move_left_down([4, 8, 16, 13]),
+                    self._move_right_down([5, 9, 12, 17]),
+                    self._move_down(
                         [
                             2,
                         ]
@@ -247,8 +249,8 @@ class HotkeyGroup02MovementMixin:
                 key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
             ) as self.hk_spread_matrix_2:
                 send_label_list: T.List[hk.SendLabel] = [
-                    self._go_left([4, 11, 12]),
-                    self._go_right([5, 15, 16]),
+                    self._move_left([4, 11, 12]),
+                    self._move_right([5, 15, 16]),
                 ]
                 for send_label in send_label_list:
                     self.remove_inactive_labels(send_label.to)
@@ -280,18 +282,20 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.OEM5_PIPE_OR_BACK_SLASH),
         ) as self.hk_spread_circle1:
             send_label_list: T.List[hk.SendLabel] = [
-                self._go_up([3, 14, 15]),
-                self._go_down([6, 11, 18]),
-                self._go_left([8, 12, 16]),
-                self._go_right([9, 13, 17]),
-                self._go_left_up([7, 19]),
-                self._go_left_down([4, 20]),
-                self._go_right_up([5, 21]),
-                self._go_right_down([2, 22]),
+                self._move_up([3, 14, 15]),
+                self._move_down([6, 11, 18]),
+                self._move_left([8, 12, 16]),
+                self._move_right([9, 13, 17]),
+                self._move_left_up([7, 19]),
+                self._move_left_down([4, 20]),
+                self._move_right_up([5, 21]),
+                self._move_right_down([2, 22]),
             ]
+            lbs_tank = self.lbs_by_tc(TC.tank)
+            lbs_all = self.lbs_all
             for send_label in send_label_list:
-                self.remove_tank_labels(send_label.to)
-                self.remove_inactive_labels(send_label.to)
+                send_label.to.difference_update(lbs_tank)
+                send_label.to.intersection_update(lbs_all)
 
     def build_hk_group_02_movement_mixin(self: "Mode"):
         self.build_hk_all_move_up_down_turn_left_right()

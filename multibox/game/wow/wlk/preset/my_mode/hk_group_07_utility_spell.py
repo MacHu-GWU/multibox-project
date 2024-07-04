@@ -13,7 +13,7 @@ from hotkeynet.api import KN
 from multibox.game.wow.wlk.api import TalentCategory as TC
 from ..my_act import api as act
 
-if T.TYPE_CHECKING: # pragma: no cover
+if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
@@ -167,7 +167,7 @@ class HotkeyGroup07UtilitySpellMixin:
         #         hk.Key.trigger()
 
         with hk.Hotkey(
-            id="Ctrl + `",
+            id="Ctrl + ` - 所有人下坐骑",
             key=KN.SCROLOCK_ON(KN.CTRL_(KN.OEM3_WAVE_OR_BACK_QUOTE)),
         ) as self.hk_ctrl_oem3_wave_dismount:
             with hk.SendLabel(
@@ -261,103 +261,10 @@ class HotkeyGroup07UtilitySpellMixin:
                         act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                         act.DruidBalance.Starfall()
 
-    def build_hk_domino_action_bar_3(self: "Mode"):
-        # with hk.Hotkey(
-        #     id="Shift + Z",
-        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.Z)),
-        # ) as self.hk_shift_z:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-        #
-        # with hk.Hotkey(
-        #     id="Shift + T",
-        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.T)),
-        # ) as self.hk_shift_t:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-        #
-        # with hk.Hotkey(
-        #     id="Shift + X",
-        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.X)),
-        # ) as self.hk_shift_x:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-
-        # 所有人使用陆地坐骑
-        with hk.Hotkey(
-            id="Ctrl + Z",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.Z)),
-        ) as self.hk_ctrl_z_use_land_mount:
-            with hk.SendLabel(
-                to=self.lbs_all,
-            ):
-                act.General.LAND_MOUNT_SPELL_KEY_CTRL_Z()
-
-        # 吃食物
-        with hk.Hotkey(
-            id="Ctrl + T",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.T)),
-        ) as self.hk_ctrl_t_eat_and_drink_food:
-            with hk.SendLabel(
-                to=self.lbs_all,
-            ):
-                act.General.EAT_FOOD_KEY_CTRL_T()
-
-        # with hk.Hotkey(
-        #     id="Ctrl + G",
-        #     key=KN.SCROLOCK_ON(KN.CTRL_(KN.G)),
-        # ) as self.hk_ctrl_g:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-
-        # with hk.Hotkey(
-        #     id="Ctrl + X",
-        #     key=KN.SCROLOCK_ON(KN.CTRL_(KN.X)),
-        # ) as self.hk_ctrl_x:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-        #
-        # with hk.Hotkey(
-        #     id="Alt + Z",
-        #     key=KN.SCROLOCK_ON(KN.ALT_(KN.Z)),
-        # ) as self.hk_alt_z:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-        #
-        # with hk.Hotkey(
-        #     id="Alt + T",
-        #     key=KN.SCROLOCK_ON(KN.ALT_(KN.T)),
-        # ) as self.hk_alt_t:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-
-        with hk.Hotkey(
-            id="Alt + G - 所有鸟德轮流放台风, 推波击退",
-            key=KN.SCROLOCK_ON(KN.ALT_(KN.G)),
-        ) as self.hk_alt_g_druid_typhoon:
-            for label in self.lbs_by_tc(TC.druid_balance):
-                with hk.Toggle():
-                    with hk.SendLabel(
-                        to=[
-                            label,
-                        ],
-                    ):
-                        act.DruidBalance.Typhoon()
-
+    def build_hk_selective_aoe(self: "Mode"):
+        """
+        点击后会出现选择的 AOE 技能, 例如法师的暴风雪, DK 的死亡凋零.
+        """
         with hk.Hotkey(
             id="Alt + X - 所有 AOE 职业放区域选定 AOE 技能, 例如法师暴风雪, DK死亡凋零",
             key=KN.SCROLOCK_ON(KN.ALT_(KN.X)),
@@ -397,126 +304,92 @@ class HotkeyGroup07UtilitySpellMixin:
                 # act.General.ESC()
                 act.Mage.Blizzard()
 
-    def build_hk_domino_action_bar_2(self: "Mode"):
+    def build_hk_domino_action_bar_3(self: "Mode"):
         # with hk.Hotkey(
-        #     id="R - 能打断的职业打断",
-        #     key=KN.SCROLOCK_ON(KN.ALT_(KN.G)),
-        # ) as self.hk_alt_g_druid_typhoon:
+        #     id="Shift + Z",
+        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.Z)),
+        # ) as self.hk_shift_z:
         #     with hk.SendLabel(
-        #         id=TC.paladin_protect.name,
-        #         to=self.lbs_by_tc(TC.paladin_protect),
+        #         to=self.lbs_all,
         #     ):
-        #         hk.Key(key=KN.R)
+        #         hk.Key.trigger()
         #
+        # with hk.Hotkey(
+        #     id="Shift + T",
+        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.T)),
+        # ) as self.hk_shift_t:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
         #
-        # _hk_r_actions = [
-        #     # paladin
-        #     SendLabel(
-        #         name=TC.paladin_protect.name,
-        #         to=self.lbs_by_tc(TC.paladin_protect),
-        #         actions=[
-        #             Key(name=KN.R),
-        #         ]
-        #     ),
-        #     SendLabel(
-        #         name=TC.paladin_holy.name,
-        #         to=self.lbs_by_tc(TC.paladin_holy),
-        #         actions=[
-        #             act.Paladin.HOLY_SPEC_KEY_R_FOCUS_JUDGEMENT,
-        #         ]
-        #     ),
-        #     # death knight
-        #     SendLabel(
-        #         name=TC.dk_tank.name,
-        #         to=self.lbs_by_tc(TC.dk_tank),
-        #         actions=[
-        #             act.DK.ALL_SPEC_MIND_FREEZE_KEY_R,
-        #         ]
-        #     ),
-        #     SendLabel(
-        #         name=TC.dk_dps.name,
-        #         to=self.lbs_by_tc(TC.dk_dps),
-        #         actions=[
-        #             act.Target.TARGET_FOCUS_TARGET,
-        #             act.DK.ALL_SPEC_MIND_FREEZE_KEY_R,
-        #         ]
-        #     ),
-        #     # hunter
-        #     SendLabel(
-        #         name=TC.hunter_marksman.name,
-        #         to=self.lbs_by_tc(TC.hunter_marksman),
-        #         actions=[
-        #             act.Target.TARGET_FOCUS_TARGET,
-        #             act.Hunter.MARKSMAN_SPEC_DPS_ROTATE_MACRO,
-        #         ]
-        #     ),
-        #     # shaman
-        #     SendLabel(
-        #         name=TC.shaman.name,
-        #         to=self.lbs_by_tc(TC.shaman),
-        #         actions=[
-        #             act.Target.TARGET_FOCUS_TARGET,
-        #             act.Shaman.ALL_SPEC_WIND_SHEAR_MACRO,
-        #         ]
-        #     ),
-        #
-        #     # mage
-        #     SendLabel(
-        #         name=TC.mage.name,
-        #         to=self.lbs_by_tc(TC.mage),
-        #         actions=[
-        #             act.Target.TARGET_FOCUS_TARGET,
-        #             act.Mage.ALL_SPEC_COUNTER_SPELL_MACRO,
-        #         ]
-        #     ),
-        # ]
-        #
-        # special_labels = union_list(*[
-        #     sl.to
-        #     for sl in _hk_r_actions
-        # ])
-        #
-        # regular_tank_labels = difference_list(
-        #     self.lbs_by_tc(TC.tank),
-        #     special_labels,
-        # )
-        #
-        # regular_dps_labels = difference_list(
-        #     self.lbs_by_tc(TC.dps),
-        #     special_labels,
-        # )
-        #
-        # regular_healer_labels = difference_list(
-        #     self.lbs_by_tc(TC.healer),
-        #     special_labels,
-        # )
-        #
-        # _hk_r_actions.extend([
-        #     SendLabel(
-        #         name="other_tank",
-        #         to=regular_tank_labels,
-        #         actions=[
-        #             Key(name=KN.KEY_2),
-        #         ]
-        #     ),
-        #     SendLabel(
-        #         name="other_dps",
-        #         to=regular_dps_labels,
-        #         actions=[
-        #             act.Target.TARGET_FOCUS_TARGET,
-        #             Key(name=KN.KEY_3),
-        #         ]
-        #     ),
-        #     SendLabel(
-        #         name="other_healer",
-        #         to=regular_healer_labels,
-        #         actions=[
-        #             act.Target.TARGET_FOCUS,
-        #             Key(name=KN.KEY_3),
-        #         ]
-        #     ),
-        # ])
+        # with hk.Hotkey(
+        #     id="Shift + X",
+        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.X)),
+        # ) as self.hk_shift_x:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
 
+        # 所有人使用陆地坐骑
+        with hk.Hotkey(
+            id="Ctrl + Z - 所有人使用陆地坐骑",
+            key=KN.SCROLOCK_ON(KN.CTRL_(KN.Z)),
+        ) as self.hk_ctrl_z_use_land_mount:
+            with hk.SendLabel(
+                to=self.lbs_all,
+            ):
+                act.General.LAND_MOUNT_SPELL_KEY_CTRL_Z()
+
+        # 吃食物
+        with hk.Hotkey(
+            id="Ctrl + T - 所有人吃食物",
+            key=KN.SCROLOCK_ON(KN.CTRL_(KN.T)),
+        ) as self.hk_ctrl_t_eat_and_drink_food:
+            with hk.SendLabel(
+                to=self.lbs_all,
+            ):
+                act.General.EAT_FOOD_KEY_CTRL_T()
+
+        self.build_hk_selective_aoe()
+        # with hk.Hotkey(
+        #     id="Ctrl + G",
+        #     key=KN.SCROLOCK_ON(KN.CTRL_(KN.G)),
+        # ) as self.hk_ctrl_g:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
+
+        # with hk.Hotkey(
+        #     id="Ctrl + X",
+        #     key=KN.SCROLOCK_ON(KN.CTRL_(KN.X)),
+        # ) as self.hk_ctrl_x:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
+        #
+        # with hk.Hotkey(
+        #     id="Alt + Z",
+        #     key=KN.SCROLOCK_ON(KN.ALT_(KN.Z)),
+        # ) as self.hk_alt_z:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
+        #
+        # with hk.Hotkey(
+        #     id="Alt + T",
+        #     key=KN.SCROLOCK_ON(KN.ALT_(KN.T)),
+        # ) as self.hk_alt_t:
+        #     with hk.SendLabel(
+        #         to=self.lbs_all,
+        #     ):
+        #         hk.Key.trigger()
+
+    def build_hk_interrupt_casting(self: "Mode"):
         """
         创建轮流打断快捷键.
 
@@ -530,35 +403,33 @@ class HotkeyGroup07UtilitySpellMixin:
             key=KN.SCROLOCK_ON(KN.R),
         ) as self.hk_r_interrupt:
             # 近战打断, CD 都是 10 秒
-            # warrior_lbs = self.lbs_by_tc(TC.warrior)
-            # rogue_lbs = self.lbs_by_tc(TC.rogue)
-            dk_lbs = self.lbs_by_tc(TC.dk)
+            # lbs_warrior = self.lbs_by_tc(TC.warrior)
+            # lbs_rogue = self.lbs_by_tc(TC.rogue)
+            lbs_dk = self.lbs_by_tc(TC.dk)
 
             # 远程打断
-            shaman_non_resto_lbs = self.lbs_by_tc(
-                TC.shaman_non_resto
-            )  # 萨满打断技能 CD 很短, 只有 6 秒
-            shaman_resto_lbs = self.lbs_by_tc(
-                TC.shaman_resto
-            )  # 萨满打断技能 CD 很短, 只有 6 秒
-            shaman_lbs = shaman_non_resto_lbs + shaman_resto_lbs
-            mage_lbs = self.lbs_by_tc(TC.mage)  # 法师反制 CD 24 秒
-            marksman_hunter_lbs = self.lbs_by_tc(
-                TC.hunter_marksman
-            )  # 猎人 沉默射击 CD 24 秒
+            # 萨满打断技能 CD 很短, 只有 6 秒
+            lbs_shaman_non_resto = self.lbs_by_tc(TC.shaman_non_resto)
+            # 萨满打断技能 CD 很短, 只有 6 秒
+            lbs_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
+            lbs_shaman = lbs_shaman_non_resto.union(lbs_shaman_resto)
+            # 法师反制 CD 24 秒
+            lbs_mage = self.lbs_by_tc(TC.mage)
+            # 猎人 沉默射击 CD 24 秒
+            lbs_marksman_hunter = self.lbs_by_tc(TC.hunter_marksman)
             # shadow_priest_lbs = self.lbs_by_tc(TC.priest_shadow) # 不是每一个牧师都会点出沉默
 
-            n_melee = len(dk_lbs)
-            n_shaman = len(shaman_lbs)
-            n_range = len(mage_lbs) + len(marksman_hunter_lbs)
+            n_melee = len(lbs_dk)
+            n_shaman = len(lbs_shaman)
+            n_range = len(lbs_mage) + len(lbs_marksman_hunter)
 
-            melee_pairs = [(label, act.DK.Mind_Freeze) for label in dk_lbs]
-            shaman_pairs = [(label, act.Shaman.Wind_Shear) for label in shaman_lbs]
+            melee_pairs = [(label, act.DK.Mind_Freeze) for label in lbs_dk]
+            shaman_pairs = [(label, act.Shaman.Wind_Shear) for label in lbs_shaman]
 
-            mage_pairs = [(label, act.Mage.Counterspell) for label in mage_lbs]
+            mage_pairs = [(label, act.Mage.Counterspell) for label in lbs_mage]
             hunter_pairs = [
                 (label, act.HunterMarksmanship.Silencing_Shot)
-                for label in marksman_hunter_lbs
+                for label in lbs_marksman_hunter
             ]
             range_pairs = mage_pairs + hunter_pairs
 
@@ -566,11 +437,11 @@ class HotkeyGroup07UtilitySpellMixin:
             loop_range = itertools.cycle(range_pairs)
 
             # 没有萨满的情况:
-            if len(shaman_lbs) == 0:
+            if len(lbs_shaman) == 0:
                 pass
             # 有一个 萨满的情况
-            elif len(shaman_lbs) == 1:
-                shaman_label, shaman_key = shaman_lbs[0], act.Shaman.Wind_Shear
+            elif len(lbs_shaman) == 1:
+                shaman_label, shaman_key = lbs_shaman[0], act.Shaman.Wind_Shear
                 # 如果没有其他远程打断角色, 那么每次都是这个萨满来打断
                 if n_range == 0:
                     with hk.SendLabel(
@@ -584,11 +455,7 @@ class HotkeyGroup07UtilitySpellMixin:
                 elif len(range_pairs) <= 2:
                     for label, key in range_pairs:
                         with hk.Toggle():
-                            with hk.SendLabel(
-                                to=[
-                                    label,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label]):
                                 key()
                         with hk.Toggle():
                             with hk.SendLabel(
@@ -602,78 +469,50 @@ class HotkeyGroup07UtilitySpellMixin:
                 else:
                     for label, key in range_pairs:
                         with hk.Toggle():
-                            with hk.SendLabel(
-                                to=[
-                                    label,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label]):
                                 key()
-                            with hk.SendLabel(
-                                to=[
-                                    shaman_label,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[shaman_label]):
                                 shaman_key()
             # 有两个 萨满的情况, 两个萨满配合其他人轮流来
-            elif len(shaman_lbs) >= 2:
+            elif len(lbs_shaman) >= 2:
                 # 如果有其他远程打断角色, 那么这两个萨满还是轮流来
                 # 但是穿插其他远程打断角色 以及 近战打断角色
                 for label, key in shaman_pairs:
                     with hk.Toggle():
-                        with hk.SendLabel(
-                            to=[
-                                label,
-                            ]
-                        ):
+                        with hk.SendLabel(to=[label]):
                             key()
                         if n_melee:
                             label_melee, key_melee = next(loop_melee)
-                            with hk.SendLabel(
-                                to=[
-                                    label_melee,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label_melee]):
                                 key_melee()
                         if n_range:
                             label_range, key_range = next(loop_range)
-                            with hk.SendLabel(
-                                to=[
-                                    label_range,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label_range]):
                                 key_range()
                 # 重复两次是因为我们有可能 近战 / 远程 打断的数量多于萨满
                 for label, key in shaman_pairs:
                     with hk.Toggle():
-                        with hk.SendLabel(
-                            to=[
-                                label,
-                            ]
-                        ):
+                        with hk.SendLabel(to=[label]):
                             key()
                         if n_melee:
                             label_melee, key_melee = next(loop_melee)
-                            with hk.SendLabel(
-                                to=[
-                                    label_melee,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label_melee]):
                                 key_melee()
                         if n_range:
                             label_range, key_range = next(loop_range)
-                            with hk.SendLabel(
-                                to=[
-                                    label_range,
-                                ]
-                            ):
+                            with hk.SendLabel(to=[label_range]):
                                 key_range()
 
-        # 创建团队随机驱散快捷键
-        # paladin put cleansing skill on Action Bar Key T
-        # shaman put curse toxin skill on Action Bar Key on T
-        # druid put remove curse skill on Action Bar Key on T
-        # mage put remove curse skill on Action Bar Key on T
-        # priest put dispel magic skill on Action Bar Key on T
+    def build_hk_defensive_dispel(self: "Mode"):
+        """
+        创建团队随机防御性驱散团队身上的 debuff 快捷键.
+
+        - paladin put cleansing skill on Action Bar Key T
+        - shaman put curse toxin skill on Action Bar Key on T
+        - druid put remove curse skill on Action Bar Key on T
+        - mage put remove curse skill on Action Bar Key on T
+        - priest put dispel magic skill on Action Bar Key on T
+        """
         with hk.Hotkey(
             id="T - 所有驱散职业随机选择团队成员驱散",
             key=KN.SCROLOCK_ON(KN.T),
@@ -684,6 +523,22 @@ class HotkeyGroup07UtilitySpellMixin:
             ):
                 act.Target.TARGET_RAID()
                 hk.Key.trigger()
+
+    def build_hk_balance_druid_typhoon(self: "Mode"):
+        with hk.Hotkey(
+            id="Alt Shift G - 鸟德轮流放台风",
+            key=KN.SCROLOCK_ON(KN.ALT_SHIFT_(KN.G)),
+        ) as self.hk_alt_shift_g_take_turn_typhoon:
+            for label in self.lbs_by_tc(TC.druid_balance):
+                with hk.Toggle():
+                    with hk.SendLabel(to=[label]):
+                        act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
+                        act.DruidBalance.Typhoon()
+
+    def build_hk_domino_action_bar_2(self: "Mode"):
+        self.build_hk_interrupt_casting()
+        self.build_hk_defensive_dispel()
+        self.build_hk_balance_druid_typhoon()
 
         # with hk.Hotkey(
         #     id="Z",
@@ -702,20 +557,6 @@ class HotkeyGroup07UtilitySpellMixin:
         #         to=self.lbs_all,
         #     ):
         #         hk.Key.trigger()
-
-        with hk.Hotkey(
-            id="Alt Shift G - 鸟德轮流放台风",
-            key=KN.SCROLOCK_ON(KN.ALT_SHIFT_(KN.G)),
-        ) as self.hk_alt_shift_g_take_turn_typhoon:
-            for label in self.lbs_by_tc(TC.druid_balance):
-                with hk.Toggle():
-                    with hk.SendLabel(
-                        to=[
-                            label,
-                        ]
-                    ):
-                        act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
-                        act.DruidBalance.Typhoon()
 
         # with hk.Hotkey(
         #     id="X",

@@ -150,43 +150,119 @@ class Mode(AttrsClass):
         return window_and_account_pairs
 
     @property
-    def lbs_all(self) -> T.List[str]:
+    def target_leader_1(self) -> hkn.KeyMaker:
+        return self.target_leader_key_mapper[
+            CharacterHelper.find_leader_1(self.active_chars).label
+        ]
+
+    @property
+    def target_leader_2(self) -> hkn.KeyMaker:
+        return self.target_leader_key_mapper[
+            CharacterHelper.find_leader_2(self.active_chars).label
+        ]
+
+    # --------------------------------------------------------------------------
+    # 下面都是一些根据各种条件, 获取 label list 的方法. 这些 label 之后会被用在
+    # ``hotkeynet.api.SendLabel(to=...)`` API 中
+    # --------------------------------------------------------------------------
+    # def remove_inactive_labels(self, label_list: T.List[str]) -> None:
+    #     """
+    #     给定一个 label 的列表, 从中删除那些不存在相对应的 active character 的 label.
+    #
+    #     在多开热键定义中, 你可能在 Hotkey 按键中定义了一大批 label, 但是不同的游戏模式下
+    #     你启用的队伍里不见得有这些 label, 所以我们希望将这些 label 移除. 该技巧适合定义
+    #     一个较为通用的键位逻辑, 然后用该函数删除那些不可能有意义的 SendLabel 事件.
+    #
+    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
+    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
+    #     """
+    #     all_labels = set(self.lbs_all)
+    #     for label in list(label_list):
+    #         if label not in all_labels:
+    #             label_list.remove(label)
+    #
+    # def remove_leader_labels(self, lbs: OrderedSet[str]) -> None:
+    #     """
+    #     给定一个 label 的列表, 从中删除那些属于 Leader 角色的 label.
+    #
+    #     有时候我们希望全团进行一些动作, 但唯独 Leader 职业不动.
+    #
+    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
+    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
+    #     """
+    #     all_tank_labels = [
+    #         char.window.label
+    #         for char in self.active_chars
+    #         if char.is_leader_1 or char.is_leader_2
+    #     ]
+    #     lbs_tank = self.lbs_tank
+    #     lbs.difference(lbs_tank)
+    #
+    #     for label in list(label_list):
+    #         if label in all_tank_labels:
+    #             label_list.remove(label)
+
+    # def remove_tank_labels(self, label_list: T.List[str]) -> None:
+    #     """
+    #     给定一个 label 的列表, 从中删除那些属于坦克角色的 label.
+    #
+    #     有时候我们希望全团进行一些动作, 但唯独坦克职业不动.
+    #
+    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
+    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
+    #     """
+    #     all_tank_labels = [
+    #         char.window.label
+    #         for char in self.active_chars
+    #         if char.is_tank_1 or char.is_tank_2
+    #     ]
+    #
+    #     for label in list(label_list):
+    #         if label in all_tank_labels:
+    #             label_list.remove(label)
+
+    @property
+    def lbs_all(self) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色所对应的游戏窗口的 label.
 
         在多开热键定义中, 常用于那些对所有角色生效的按键. 比如 1234, 前进后退等.
         """
-        return [char.window.label for char in self.active_chars]
+        return OrderedSet([char.window.label for char in self.active_chars])
 
-    def lbs_by_tl(self, tl: TL) -> T.List[str]:
+    def lbs_by_tl(self, tl: TL) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色中, 匹配某个 **具体天赋** 的角色所对应的游戏窗口的 label.
         例如防护骑士.
 
         在多开热键定义中, 常用于根据天赋筛选部分角色.
         """
-        return [
-            char.window.label
-            for char in CharacterHelper.filter_by_talent(
-                chars=self.active_chars,
-                tl=tl,
-            ).values()
-        ]
+        return OrderedSet(
+            [
+                char.window.label
+                for char in CharacterHelper.filter_by_talent(
+                    chars=self.active_chars,
+                    tl=tl,
+                ).values()
+            ]
+        )
 
-    def lbs_by_tc(self, tc: TC) -> T.List[str]:
+    def lbs_by_tc(self, tc: TC) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色中, 匹配某个 **天赋分组** 的角色所对应的游戏窗口的 label.
         例如全部的近战物理 DPS.
 
         在多开热键定义中, 常用于根据天赋筛选部分角色.
         """
-        return [
-            char.window.label
-            for char in CharacterHelper.filter_by_talent_category(
-                chars=self.active_chars,
-                tc=tc,
-            ).values()
-        ]
+        return OrderedSet(
+            [
+                char.window.label
+                for char in CharacterHelper.filter_by_talent_category(
+                    chars=self.active_chars,
+                    tc=tc,
+                ).values()
+            ]
+        )
 
     @property
     def lb_leader1(self) -> str:
@@ -212,92 +288,104 @@ class Mode(AttrsClass):
             raise ValueError("Your team cannot have more than one leader 2!")
 
     @property
-    def lbs_tank1(self) -> T.List[str]:
-        """
-        获得 1 号坦克的 label 列表 (通常只有一个人).
-        """
-        return [char.window.label for char in self.active_chars if char.is_tank_1]
-
-    @property
-    def lbs_tank2(self) -> T.List[str]:
+    def lbs_leader(self) -> OrderedSet[str]:
         """
         获得 2 号坦克的 label 列表 (通常只有一个人).
         """
-        return [char.window.label for char in self.active_chars if char.is_tank_2]
+        return OrderedSet(
+            [
+                char.window.label
+                for char in self.active_chars
+                if char.is_leader_1 or char.is_leader_2
+            ]
+        )
 
     @property
-    def target_leader_1(self) -> hkn.KeyMaker:
-        return self.target_leader_key_mapper[
-            CharacterHelper.find_leader_1(self.active_chars).label
-        ]
+    def lbs_tank1(self) -> OrderedSet[str]:
+        """
+        获得 1 号坦克的 label 列表 (通常只有一个人).
+        """
+        return OrderedSet(
+            [char.window.label for char in self.active_chars if char.is_tank_1]
+        )
 
     @property
-    def target_leader_2(self) -> hkn.KeyMaker:
-        return self.target_leader_key_mapper[
-            CharacterHelper.find_leader_2(self.active_chars).label
-        ]
+    def lbs_tank2(self) -> OrderedSet[str]:
+        """
+        获得 2 号坦克的 label 列表 (通常只有一个人).
+        """
+        return OrderedSet(
+            [char.window.label for char in self.active_chars if char.is_tank_2]
+        )
 
     @property
-    def lbs_dr_pala1(self) -> T.List[str]:
-        return [char.window.label for char in self.active_chars if char.is_dr_pala_1]
+    def lbs_tank(self) -> OrderedSet[str]:
+        """
+        获得 2 号坦克的 label 列表 (通常只有一个人).
+        """
+        return OrderedSet(
+            [
+                char.window.label
+                for char in self.active_chars
+                if char.is_tank_1 or char.is_tank_2
+            ]
+        )
 
     @property
-    def lbs_dr_pala2(self) -> T.List[str]:
-        return [char.window.label for char in self.active_chars if char.is_dr_pala_2]
+    def lbs_dr_pala1(self) -> OrderedSet[str]:
+        return OrderedSet(
+            [char.window.label for char in self.active_chars if char.is_dr_pala_1]
+        )
 
-    def remove_inactive_labels(self, label_list: T.List[str]) -> None:
-        """
-        给定一个 label 的列表, 从中删除那些不存在相对应的 active character 的 label.
+    @property
+    def lbs_dr_pala2(self) -> OrderedSet[str]:
+        return OrderedSet(
+            [char.window.label for char in self.active_chars if char.is_dr_pala_2]
+        )
 
-        在多开热键定义中, 你可能在 Hotkey 按键中定义了一大批 label, 但是不同的游戏模式下
-        你启用的队伍里不见得有这些 label, 所以我们希望将这些 label 移除. 该技巧适合定义
-        一个较为通用的键位逻辑, 然后用该函数删除那些不可能有意义的 SendLabel 事件.
+    @property
+    def lbs_non_leader(self) -> OrderedSet[str]:
+        return OrderedSet(
+            [
+                char.window.label
+                for char in self.active_chars
+                if (char.is_leader_1 is False) and (char.is_leader_2 is False)
+            ]
+        )
 
-        注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-        一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-        """
-        all_labels = set(self.lbs_all)
-        for label in list(label_list):
-            if label not in all_labels:
-                label_list.remove(label)
+    @property
+    def lbs_non_tank(self) -> OrderedSet[str]:
+        return OrderedSet(
+            [
+                char.window.label
+                for char in self.active_chars
+                if (char.is_tank_1 is False) and (char.is_tank_2 is False)
+            ]
+        )
 
-    def remove_leader_labels(self, label_list: T.List[str]) -> None:
-        """
-        给定一个 label 的列表, 从中删除那些属于 Leader 角色的 label.
+    @property
+    def lbs_healer(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.healer)
 
-        有时候我们希望全团进行一些动作, 但唯独 Leader 职业不动.
+    @property
+    def lbs_druid_resto(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.druid_resto)
 
-        注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-        一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-        """
-        all_tank_labels = [
-            char.window.label
-            for char in self.active_chars
-            if char.is_leader_1 or char.is_leader_2
-        ]
+    @property
+    def lbs_shaman_resto(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.shaman_resto)
 
-        for label in list(label_list):
-            if label in all_tank_labels:
-                label_list.remove(label)
+    @property
+    def lbs_priest_holy(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.priest_holy)
 
-    def remove_tank_labels(self, label_list: T.List[str]) -> None:
-        """
-        给定一个 label 的列表, 从中删除那些属于坦克角色的 label.
+    @property
+    def lbs_priest_disco(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.priest_disco)
 
-        有时候我们希望全团进行一些动作, 但唯独坦克职业不动.
-
-        注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-        一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-        """
-        all_tank_labels = [
-            char.window.label
-            for char in self.active_chars
-            if char.is_tank_1 or char.is_tank_2
-        ]
-
-        for label in list(label_list):
-            if label in all_tank_labels:
-                label_list.remove(label)
+    @property
+    def lbs_paladin_holy(self) -> OrderedSet[str]:
+        return self.lbs_by_tc(TC.paladin_holy)
 
     def build_send_label_by_tc(
         self,
@@ -318,6 +406,9 @@ class Mode(AttrsClass):
                 func()
             return send_label
 
+    # --------------------------------------------------------------------------
+    # 把 Mode 对象转换成 hotkey 脚本
+    # --------------------------------------------------------------------------
     def render(self, verbose: bool = False) -> str:
         """
         Render the hotkeynet script as string.
