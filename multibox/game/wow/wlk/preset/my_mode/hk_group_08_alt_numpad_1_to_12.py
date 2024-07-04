@@ -13,7 +13,7 @@ from hotkeynet.utils import difference_list
 from multibox.game.wow.wlk.api import TalentCategory as TC
 from ..my_act import api as act
 
-if T.TYPE_CHECKING: # pragma: no cover
+if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
@@ -103,7 +103,7 @@ class HotkeyGroup08AltNumpad1To12:
 
     def build_hk_alt_numpad_7_8_9_first_raid_damage_reduction(self: "Mode"):
         with hk.Hotkey(
-            id="Alt Numpad7",
+            id="Alt Numpad7 - 放第一个神圣牺牲团队减伤技能",
             key=KN.SCROLOCK_ON(KN.ALT_(KN.NUMPAD_7)),
         ) as self.hk_alt_numpad_7_raid_damage_reduction:
             with hk.SendLabel(
@@ -115,7 +115,7 @@ class HotkeyGroup08AltNumpad1To12:
                 act.PaladinProtection.Divine_Sacrifice()
 
         with hk.Hotkey(
-            id="Alt Numpad8",
+            id="Alt Numpad8 - 放第二个神圣牺牲团队减伤技能",
             key=KN.SCROLOCK_ON(KN.ALT_(KN.NUMPAD_8)),
         ) as self.hk_alt_numpad_8_raid_damage_reduction:
             with hk.SendLabel(
@@ -127,7 +127,7 @@ class HotkeyGroup08AltNumpad1To12:
                 act.PaladinProtection.Divine_Sacrifice()
 
         with hk.Hotkey(
-            id="Alt Numpad9",
+            id="Alt Numpad9 - 放第三个神圣牺牲团队减伤技能",
             key=KN.SCROLOCK_ON(KN.ALT_(KN.NUMPAD_9)),
         ) as self.hk_alt_numpad_9_raid_damage_reduction:
             with hk.SendLabel(

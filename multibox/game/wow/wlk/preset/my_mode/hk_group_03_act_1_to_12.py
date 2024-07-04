@@ -11,7 +11,6 @@ from hotkeynet import api as hk
 from hotkeynet.api import KN, CAN
 
 from multibox.game.wow.wlk.api import Talent as TL, TalentCategory as TC
-from multibox.game.assign_task import AssignTask
 from ..my_act import api as act
 
 

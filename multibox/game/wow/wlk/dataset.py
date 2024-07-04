@@ -300,13 +300,13 @@ class Dataset:
         import_ds: str = (
             "try:\n"
             "    from .gen_dataset import ds\n"
-            "except ImportError:\n"
+            "except ImportError: # pragma: no cover\n"
             "    from gen_dataset import ds\n"
         ),
         import_mode: str = (
             "try:\n"
             "    from .mode import Mode\n"
-            "except ImportError:\n"
+            "except ImportError: # pragma: no cover\n"
             "    from multibox.game.wow.wlk.api import Mode\n"
         ),
         dataset_var_name: str = "ds",

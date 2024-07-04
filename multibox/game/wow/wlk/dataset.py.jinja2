@@ -11,7 +11,7 @@ from multibox.game.wow.wlk.api import (
 
 
 # fmt: off
-class AccountFactory:
+class AccountFactory: # pragma: no cover
     {%- for name in dataset.accounts %}
     {{ name }} = {{ dataset_var_name }}.get_account("{{ name }}")
     {%- endfor %}
@@ -20,7 +20,7 @@ class AccountFactory:
 acc_fact = AccountFactory()
 
 
-class CharacterFactory:
+class CharacterFactory: # pragma: no cover
     {%- for name in dataset.builds %}
 
     @property
@@ -32,7 +32,7 @@ class CharacterFactory:
 char_fact = CharacterFactory()
 
 
-class CharacterGroupFactory:
+class CharacterGroupFactory: # pragma: no cover
     {%- for name in dataset.build_groups %}
 
     @property
@@ -44,7 +44,7 @@ class CharacterGroupFactory:
 char_group_fact = CharacterGroupFactory()
 
 
-class ClientFactory:
+class ClientFactory: # pragma: no cover
     {%- for name in dataset.clients %}
 
     @property
@@ -56,7 +56,7 @@ class ClientFactory:
 client_fact = ClientFactory()
 
 
-class ModeFactory:
+class ModeFactory: # pragma: no cover
     {%- for name in dataset.modes %}
 
     @property
@@ -68,7 +68,7 @@ class ModeFactory:
 mode_fact = ModeFactory()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     # You can run this script as "main" to test it
     {%- for name in dataset.accounts %}
     print(acc_fact.{{ name }})

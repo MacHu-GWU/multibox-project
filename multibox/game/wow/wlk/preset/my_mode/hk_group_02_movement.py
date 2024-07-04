@@ -137,12 +137,11 @@ class HotkeyGroup02MovementMixin:
             DPS1            DPS3
                 DPS2    DPS3
         """
-        lbs_non_leader = self.lbs_non_leader
-
         lbs_all = self.lbs_all
         lbs_healer = self.lbs_by_tc(TC.healer)
-        self.remove_leader_labels(lbs_all)
-        self.remove_leader_labels(lbs_healer)
+        lbs_leader = self.lbs_leader
+        lbs_all.difference_update(lbs_leader)
+        lbs_healer.difference_update(lbs_leader)
         if len(lbs_healer):
             lb_healer = lbs_healer[0]
             lbs_all.remove(lb_healer)
@@ -193,36 +192,7 @@ class HotkeyGroup02MovementMixin:
         """
         # 人数少于 5 人时, 做精细化处理
         if len(self.lbs_all) <= 5:
-            lbs_all = self.lbs_all
-            lbs_healer = self.lbs_by_tc(TC.healer)
-            lbs_leader = self.lbs_leader
-            lbs_all.difference_update(lbs_leader)
-            lbs_healer.difference_update(lbs_leader)
-            if len(lbs_healer):
-                lb_healer = lbs_healer[0]
-                lbs_all.remove(lb_healer)
-                if lbs_all:
-                    self._move_left(lbs_all[-1])
-                    lbs_all.pop()
-                if lbs_all:
-                    self._move_right(lbs_all[-1])
-                    lbs_all.pop()
-                if lbs_all:
-                    self._move_down(lbs_all[-1])
-                    lbs_all.pop()
-            else:
-                if lbs_all:
-                    self._move_left_down(lbs_all[-1])
-                    lbs_all.pop()
-                if lbs_all:
-                    self._move_left(lbs_all[-1])
-                    lbs_all.pop()
-                if lbs_all:
-                    self._move_right(lbs_all[-1])
-                    lbs_all.pop()
-                if lbs_all:
-                    self._move_right_down(lbs_all[-1])
-                    lbs_all.pop()
+            self._build_hk_spread_matrix_less_than_5p()
 
         # 人数大于 5 人时, 用矩阵分散
         else:

@@ -111,7 +111,7 @@ class Mode(AttrsClass):
     # Validation
     # --------------------------------------------------------------------------
     def _ensure_no_duplicate_window(self, chars: T.List[Character]):
-        if len(chars) != len({char.window.label for char in chars}):
+        if len(chars) != len({char.window.label for char in chars}):  # pragma: no cover
             counter = Counter([char.window.label for char in chars])
             for label, count in counter.items():
                 if count > 1:
@@ -164,66 +164,6 @@ class Mode(AttrsClass):
             CharacterHelper.find_leader_2(self.active_chars).label
         ]
 
-    # --------------------------------------------------------------------------
-    # 下面都是一些根据各种条件, 获取 label list 的方法. 这些 label 之后会被用在
-    # ``hotkeynet.api.SendLabel(to=...)`` API 中
-    # --------------------------------------------------------------------------
-    # def remove_inactive_labels(self, label_list: T.List[str]) -> None:
-    #     """
-    #     给定一个 label 的列表, 从中删除那些不存在相对应的 active character 的 label.
-    #
-    #     在多开热键定义中, 你可能在 Hotkey 按键中定义了一大批 label, 但是不同的游戏模式下
-    #     你启用的队伍里不见得有这些 label, 所以我们希望将这些 label 移除. 该技巧适合定义
-    #     一个较为通用的键位逻辑, 然后用该函数删除那些不可能有意义的 SendLabel 事件.
-    #
-    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-    #     """
-    #     all_labels = set(self.lbs_all)
-    #     for label in list(label_list):
-    #         if label not in all_labels:
-    #             label_list.remove(label)
-    #
-    # def remove_leader_labels(self, lbs: OrderedSet[str]) -> None:
-    #     """
-    #     给定一个 label 的列表, 从中删除那些属于 Leader 角色的 label.
-    #
-    #     有时候我们希望全团进行一些动作, 但唯独 Leader 职业不动.
-    #
-    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-    #     """
-    #     all_tank_labels = [
-    #         char.window.label
-    #         for char in self.active_chars
-    #         if char.is_leader_1 or char.is_leader_2
-    #     ]
-    #     lbs_tank = self.lbs_tank
-    #     lbs.difference(lbs_tank)
-    #
-    #     for label in list(label_list):
-    #         if label in all_tank_labels:
-    #             label_list.remove(label)
-
-    # def remove_tank_labels(self, label_list: T.List[str]) -> None:
-    #     """
-    #     给定一个 label 的列表, 从中删除那些属于坦克角色的 label.
-    #
-    #     有时候我们希望全团进行一些动作, 但唯独坦克职业不动.
-    #
-    #     注意, 该函数会修改原有的 label_list, 而不是返回一个新的列表. 因为这个函数的应用场景
-    #     一般是用来修改已经被定义好的 SendLabel 中的 label, 而不是用来生成一个新的 SendLabel.
-    #     """
-    #     all_tank_labels = [
-    #         char.window.label
-    #         for char in self.active_chars
-    #         if char.is_tank_1 or char.is_tank_2
-    #     ]
-    #
-    #     for label in list(label_list):
-    #         if label in all_tank_labels:
-    #             label_list.remove(label)
-
     @property
     def lbs_all(self) -> OrderedSet[str]:
         """
@@ -273,7 +213,7 @@ class Mode(AttrsClass):
         获得 1 号 Leader 的 label, 必然得有一个人.
         """
         lbs = [char.window.label for char in self.active_chars if char.is_leader_1]
-        if len(lbs) != 1:
+        if len(lbs) != 1:  # pragma: no cover
             raise ValueError("Your team has to have exact one leader 1!")
         return lbs[0]
 
@@ -283,11 +223,11 @@ class Mode(AttrsClass):
         获得 2 号 Leader 的 label, 可能有一个人或者没有.
         """
         lbs = [char.window.label for char in self.active_chars if char.is_leader_2]
-        if len(lbs) == 0:
+        if len(lbs) == 0:  # pragma: no cover
             return None
         elif len(lbs) == 1:
             return lbs[0]
-        else:
+        else:  # pragma: no cover
             raise ValueError("Your team cannot have more than one leader 2!")
 
     @property
@@ -418,7 +358,7 @@ class Mode(AttrsClass):
         """
         return self.script.render(verbose=verbose)
 
-    def dump(self, verbose: bool = False):
+    def dump(self, verbose: bool = False):  # pragma: no cover
         """
         Generate the hotkeynet script and write to file.
         """
