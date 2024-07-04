@@ -11,6 +11,7 @@ import enum
 import subprocess
 import dataclasses
 
+import attrs
 import jinja2
 import polars as pl
 from pathlib_mate import Path
@@ -50,12 +51,12 @@ class BuildTabColumnEnum(str, enum.Enum):
     build = "build"
     character = "character"
     spec = "spec"
-    window = "window"
 
 
 class BuildGroupTabColumnEnum(str, enum.Enum):
     build_group = "build_group"
     build = "build"
+    window = "window"
 
 
 class ClientTabColumnEnum(str, enum.Enum):
@@ -190,9 +191,22 @@ class Dataset:
         for (build_group,), sub_df in df_build_group_joined.group_by(
             BuildGroupTabColumnEnum.build_group.value, maintain_order=True
         ):
+            if sub_df["build"].n_unique() != sub_df.shape[0]:  # pragma: no cover
+                df_not_unique = (
+                    sub_df[BuildTabColumnEnum.build.value]
+                    .value_counts()
+                    .filter(pl.col("count") > 1)
+                )
+                print(df_not_unique)
+                raise ValueError(
+                    f"Found duplicated build in build group '{build_group}'"
+                )
             dct = {
                 BuildGroupTabColumnEnum.build_group.value: build_group,
-                "build_list": list(sub_df[BuildGroupTabColumnEnum.build.value]),
+                "build_list": [
+                    {"build": sub_dct["build"], "window": sub_dct["window"]}
+                    for sub_dct in sub_df.to_dicts()
+                ],
             }
             build_groups[build_group] = dct
 
@@ -235,7 +249,6 @@ class Dataset:
         return Character(
             account=self.get_account(dct[AccountTabColumnEnum.account.value]),
             name=dct[CharacterTabColumnEnum.character.value],
-            window=Window.make(dct[BuildTabColumnEnum.window.value]),
             nth_char=dct[CharacterTabColumnEnum.nth_char.value],
             talent=Talent[dct[BuildTabColumnEnum.spec.value]],
         )
@@ -243,8 +256,10 @@ class Dataset:
     def get_build_group(self, build_group: str) -> OrderedSet[Character]:
         dct = self.build_groups[build_group]
         chars = list()
-        for build in dct["build_list"]:
-            chars.append(self.get_character(build))
+        for build_dct in dct["build_list"]:
+            char = self.get_character(build_dct["build"])
+            new_char = attrs.evolve(char, window=Window.make(build_dct["window"]))
+            chars.append(new_char)
         return OrderedSet(chars)
 
     def get_client(self, client: str) -> Client:

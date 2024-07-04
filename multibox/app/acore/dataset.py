@@ -46,6 +46,33 @@ class AccountFactory: # pragma: no cover
     Rab03 = ds.get_account("Rab03")
     Rab04 = ds.get_account("Rab04")
     Rab05 = ds.get_account("Rab05")
+    Fatmulti1 = ds.get_account("Fatmulti1")
+    Fatmulti2 = ds.get_account("Fatmulti2")
+    Fatmulti3 = ds.get_account("Fatmulti3")
+    Fatmulti4 = ds.get_account("Fatmulti4")
+    Fatmulti5 = ds.get_account("Fatmulti5")
+    Fitsheep = ds.get_account("Fitsheep")
+    Fatmulti6 = ds.get_account("Fatmulti6")
+    Fatmulti8 = ds.get_account("Fatmulti8")
+    Fatmulti9 = ds.get_account("Fatmulti9")
+    Fatmulti10 = ds.get_account("Fatmulti10")
+    Fatmulti11 = ds.get_account("Fatmulti11")
+    Fatmulti12 = ds.get_account("Fatmulti12")
+    Fatmulti13 = ds.get_account("Fatmulti13")
+    Fatmulti14 = ds.get_account("Fatmulti14")
+    Fatmulti15 = ds.get_account("Fatmulti15")
+    Fatmulti16 = ds.get_account("Fatmulti16")
+    Fatmulti17 = ds.get_account("Fatmulti17")
+    Fatmulti18 = ds.get_account("Fatmulti18")
+    Fatmulti19 = ds.get_account("Fatmulti19")
+    Fatmulti20 = ds.get_account("Fatmulti20")
+    Fatmulti21 = ds.get_account("Fatmulti21")
+    Fatmulti22 = ds.get_account("Fatmulti22")
+    Fatmulti23 = ds.get_account("Fatmulti23")
+    Fatmulti24 = ds.get_account("Fatmulti24")
+    Fatmulti25 = ds.get_account("Fatmulti25")
+    Fatmulti26 = ds.get_account("Fatmulti26")
+    Makun7551 = ds.get_account("Makun7551")
 
 
 acc_fact = AccountFactory()
@@ -62,8 +89,16 @@ class CharacterFactory: # pragma: no cover
         return ds.get_character("rb_shaman_pve_elemental")
 
     @property
+    def rb_shaman_pve_resto(self) -> Character:
+        return ds.get_character("rb_shaman_pve_resto")
+
+    @property
     def rc_druid_pve_balance(self) -> Character:
         return ds.get_character("rc_druid_pve_balance")
+
+    @property
+    def rc_druid_pve_bear(self) -> Character:
+        return ds.get_character("rc_druid_pve_bear")
 
     @property
     def rd_mage_pve_arcane(self) -> Character:
@@ -72,6 +107,10 @@ class CharacterFactory: # pragma: no cover
     @property
     def re_priest_pve_shadow(self) -> Character:
         return ds.get_character("re_priest_pve_shadow")
+
+    @property
+    def re_priest_pve_holy(self) -> Character:
+        return ds.get_character("re_priest_pve_holy")
 
     @property
     def rf_warlock_pve_demonology(self) -> Character:
@@ -90,8 +129,8 @@ class CharacterFactory: # pragma: no cover
         return ds.get_character("ri_paladin_pve_holy")
 
     @property
-    def rj_dk_pve_blood_tank_leader2(self) -> Character:
-        return ds.get_character("rj_dk_pve_blood_tank_leader2")
+    def rj_dk_pve_blood_tank(self) -> Character:
+        return ds.get_character("rj_dk_pve_blood_tank")
 
     @property
     def rk_druid_pve_balance(self) -> Character:
@@ -154,26 +193,6 @@ class CharacterFactory: # pragma: no cover
         return ds.get_character("ry_priest_pve_disco")
 
     @property
-    def re_priest_pve_holy(self) -> Character:
-        return ds.get_character("re_priest_pve_holy")
-
-    @property
-    def re_priest_pve_shadow_5p_team2(self) -> Character:
-        return ds.get_character("re_priest_pve_shadow_5p_team2")
-
-    @property
-    def rh_druid_pve_resto_5p_team1(self) -> Character:
-        return ds.get_character("rh_druid_pve_resto_5p_team1")
-
-    @property
-    def ri_paladin_pve_holy_5p_team2(self) -> Character:
-        return ds.get_character("ri_paladin_pve_holy_5p_team2")
-
-    @property
-    def rj_dk_pve_blood_tank_leader1(self) -> Character:
-        return ds.get_character("rj_dk_pve_blood_tank_leader1")
-
-    @property
     def sa_paladin_pve_protect(self) -> Character:
         return ds.get_character("sa_paladin_pve_protect")
 
@@ -193,6 +212,318 @@ class CharacterFactory: # pragma: no cover
     def se_shaman_pve_resto(self) -> Character:
         return ds.get_character("se_shaman_pve_resto")
 
+    @property
+    def batlefury_paladin_pve_protect(self) -> Character:
+        return ds.get_character("batlefury_paladin_pve_protect")
+
+    @property
+    def batlefury_paladin_pve_retri(self) -> Character:
+        return ds.get_character("batlefury_paladin_pve_retri")
+
+    @property
+    def litgoatssa_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("litgoatssa_warlock_pve_demonology")
+
+    @property
+    def litgoatdka_dk_pve_blood_tank(self) -> Character:
+        return ds.get_character("litgoatdka_dk_pve_blood_tank")
+
+    @property
+    def litgoatdka_dk_pvp_frost(self) -> Character:
+        return ds.get_character("litgoatdka_dk_pvp_frost")
+
+    @property
+    def quentinquinn_shaman_pve_elemental(self) -> Character:
+        return ds.get_character("quentinquinn_shaman_pve_elemental")
+
+    @property
+    def quentinquinn_shaman_pve_resto(self) -> Character:
+        return ds.get_character("quentinquinn_shaman_pve_resto")
+
+    @property
+    def litgoatssb_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("litgoatssb_warlock_pve_demonology")
+
+    @property
+    def litgoatdkb_dk_pve_unholy_dps(self) -> Character:
+        return ds.get_character("litgoatdkb_dk_pve_unholy_dps")
+
+    @property
+    def litgoatdkb_dk_pvp_frost(self) -> Character:
+        return ds.get_character("litgoatdkb_dk_pvp_frost")
+
+    @property
+    def opiitou_druid_pve_balance(self) -> Character:
+        return ds.get_character("opiitou_druid_pve_balance")
+
+    @property
+    def opiitou_druid_pve_bear(self) -> Character:
+        return ds.get_character("opiitou_druid_pve_bear")
+
+    @property
+    def litgoatssc_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("litgoatssc_warlock_pve_demonology")
+
+    @property
+    def litgoatdkc_dk_pve_unholy_dps(self) -> Character:
+        return ds.get_character("litgoatdkc_dk_pve_unholy_dps")
+
+    @property
+    def litgoatdkc_dk_pvp_frost(self) -> Character:
+        return ds.get_character("litgoatdkc_dk_pvp_frost")
+
+    @property
+    def swagsonic_mage_pve_arcane(self) -> Character:
+        return ds.get_character("swagsonic_mage_pve_arcane")
+
+    @property
+    def swagsonic_mage_pve_fire(self) -> Character:
+        return ds.get_character("swagsonic_mage_pve_fire")
+
+    @property
+    def litgoatssd_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("litgoatssd_warlock_pve_demonology")
+
+    @property
+    def litgoatdkd_dk_pve_unholy_dps(self) -> Character:
+        return ds.get_character("litgoatdkd_dk_pve_unholy_dps")
+
+    @property
+    def litgoatdkd_dk_pvp_frost(self) -> Character:
+        return ds.get_character("litgoatdkd_dk_pvp_frost")
+
+    @property
+    def kangliu_priest_pve_shadow(self) -> Character:
+        return ds.get_character("kangliu_priest_pve_shadow")
+
+    @property
+    def kangliu_priest_pve_disco(self) -> Character:
+        return ds.get_character("kangliu_priest_pve_disco")
+
+    @property
+    def litgoatsse_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("litgoatsse_warlock_pve_demonology")
+
+    @property
+    def litgoatdke_dk_pve_unholy_dps(self) -> Character:
+        return ds.get_character("litgoatdke_dk_pve_unholy_dps")
+
+    @property
+    def litgoatdke_dk_pvp_frost(self) -> Character:
+        return ds.get_character("litgoatdke_dk_pvp_frost")
+
+    @property
+    def kindhearted_warlock_pve_demonology(self) -> Character:
+        return ds.get_character("kindhearted_warlock_pve_demonology")
+
+    @property
+    def kindhearted_warlock_pve_destruction(self) -> Character:
+        return ds.get_character("kindhearted_warlock_pve_destruction")
+
+    @property
+    def bordercollie_priest_pve_disco(self) -> Character:
+        return ds.get_character("bordercollie_priest_pve_disco")
+
+    @property
+    def bordercollie_priest_pve_shadow(self) -> Character:
+        return ds.get_character("bordercollie_priest_pve_shadow")
+
+    @property
+    def sweetmonk_warrior_pve_fury(self) -> Character:
+        return ds.get_character("sweetmonk_warrior_pve_fury")
+
+    @property
+    def sweetmonk_warrior_pve_protect(self) -> Character:
+        return ds.get_character("sweetmonk_warrior_pve_protect")
+
+    @property
+    def kapacuk_hunter_pve_marksman(self) -> Character:
+        return ds.get_character("kapacuk_hunter_pve_marksman")
+
+    @property
+    def healthymonk_paladin_pve_holy(self) -> Character:
+        return ds.get_character("healthymonk_paladin_pve_holy")
+
+    @property
+    def bunnysisters_druid_pve_resto(self) -> Character:
+        return ds.get_character("bunnysisters_druid_pve_resto")
+
+    @property
+    def bunnysisters_druid_pve_balance(self) -> Character:
+        return ds.get_character("bunnysisters_druid_pve_balance")
+
+    @property
+    def honeymonk_shaman_pve_enhancement(self) -> Character:
+        return ds.get_character("honeymonk_shaman_pve_enhancement")
+
+    @property
+    def glowyy_paladin_pve_holy(self) -> Character:
+        return ds.get_character("glowyy_paladin_pve_holy")
+
+    @property
+    def glowyy_paladin_pve_protect(self) -> Character:
+        return ds.get_character("glowyy_paladin_pve_protect")
+
+    @property
+    def chubbymonk_druid_pve_balance(self) -> Character:
+        return ds.get_character("chubbymonk_druid_pve_balance")
+
+    @property
+    def luxiaofeng_dk_pve_unholy_tank(self) -> Character:
+        return ds.get_character("luxiaofeng_dk_pve_unholy_tank")
+
+    @property
+    def luxiaofeng_dk_pve_blood_tank(self) -> Character:
+        return ds.get_character("luxiaofeng_dk_pve_blood_tank")
+
+    @property
+    def shinymonk_priest_pve_shadow(self) -> Character:
+        return ds.get_character("shinymonk_priest_pve_shadow")
+
+    @property
+    def litgugua_druid_pve_balance(self) -> Character:
+        return ds.get_character("litgugua_druid_pve_balance")
+
+    @property
+    def litgugua_druid_pve_resto(self) -> Character:
+        return ds.get_character("litgugua_druid_pve_resto")
+
+    @property
+    def litgugub_druid_pve_balance(self) -> Character:
+        return ds.get_character("litgugub_druid_pve_balance")
+
+    @property
+    def litgugub_druid_pve_resto(self) -> Character:
+        return ds.get_character("litgugub_druid_pve_resto")
+
+    @property
+    def litguguc_druid_pve_balance(self) -> Character:
+        return ds.get_character("litguguc_druid_pve_balance")
+
+    @property
+    def litguguc_druid_pve_resto(self) -> Character:
+        return ds.get_character("litguguc_druid_pve_resto")
+
+    @property
+    def litgugud_druid_pve_balance(self) -> Character:
+        return ds.get_character("litgugud_druid_pve_balance")
+
+    @property
+    def litgugud_druid_pve_resto(self) -> Character:
+        return ds.get_character("litgugud_druid_pve_resto")
+
+    @property
+    def litgugue_druid_pvp_balance(self) -> Character:
+        return ds.get_character("litgugue_druid_pvp_balance")
+
+    @property
+    def litgugue_druid_pvp_resto(self) -> Character:
+        return ds.get_character("litgugue_druid_pvp_resto")
+
+    @property
+    def litguguf_druid_pvp_balance(self) -> Character:
+        return ds.get_character("litguguf_druid_pvp_balance")
+
+    @property
+    def litguguf_druid_pvp_resto(self) -> Character:
+        return ds.get_character("litguguf_druid_pvp_resto")
+
+    @property
+    def litgugug_druid_pvp_balance(self) -> Character:
+        return ds.get_character("litgugug_druid_pvp_balance")
+
+    @property
+    def litgugug_druid_pvp_resto(self) -> Character:
+        return ds.get_character("litgugug_druid_pvp_resto")
+
+    @property
+    def litguguh_druid_pvp_balance(self) -> Character:
+        return ds.get_character("litguguh_druid_pvp_balance")
+
+    @property
+    def litguguh_druid_pvp_resto(self) -> Character:
+        return ds.get_character("litguguh_druid_pvp_resto")
+
+    @property
+    def lgmsi_priest_pve_shadow(self) -> Character:
+        return ds.get_character("lgmsi_priest_pve_shadow")
+
+    @property
+    def lgmsi_priest_pve_disco(self) -> Character:
+        return ds.get_character("lgmsi_priest_pve_disco")
+
+    @property
+    def lgmsj_priest_pve_shadow(self) -> Character:
+        return ds.get_character("lgmsj_priest_pve_shadow")
+
+    @property
+    def lgmsj_priest_pve_disco(self) -> Character:
+        return ds.get_character("lgmsj_priest_pve_disco")
+
+    @property
+    def lgmsk_priest_pve_shadow(self) -> Character:
+        return ds.get_character("lgmsk_priest_pve_shadow")
+
+    @property
+    def lgmsk_priest_pve_disco(self) -> Character:
+        return ds.get_character("lgmsk_priest_pve_disco")
+
+    @property
+    def lgmsl_priest_pve_shadow(self) -> Character:
+        return ds.get_character("lgmsl_priest_pve_shadow")
+
+    @property
+    def lgmsl_priest_pve_disco(self) -> Character:
+        return ds.get_character("lgmsl_priest_pve_disco")
+
+    @property
+    def lgsmm_shaman_pve_elemental(self) -> Character:
+        return ds.get_character("lgsmm_shaman_pve_elemental")
+
+    @property
+    def lgsmm_shaman_pve_resto(self) -> Character:
+        return ds.get_character("lgsmm_shaman_pve_resto")
+
+    @property
+    def lgsmn_shaman_pve_elemental(self) -> Character:
+        return ds.get_character("lgsmn_shaman_pve_elemental")
+
+    @property
+    def lgsmn_shaman_pve_resto(self) -> Character:
+        return ds.get_character("lgsmn_shaman_pve_resto")
+
+    @property
+    def lgsmo_shaman_pve_elemental(self) -> Character:
+        return ds.get_character("lgsmo_shaman_pve_elemental")
+
+    @property
+    def lgsmo_shaman_pve_resto(self) -> Character:
+        return ds.get_character("lgsmo_shaman_pve_resto")
+
+    @property
+    def lgsmp_shaman_pve_elemental(self) -> Character:
+        return ds.get_character("lgsmp_shaman_pve_elemental")
+
+    @property
+    def lgsmp_shaman_pve_resto(self) -> Character:
+        return ds.get_character("lgsmp_shaman_pve_resto")
+
+    @property
+    def laoshou_paladin_pve_protect(self) -> Character:
+        return ds.get_character("laoshou_paladin_pve_protect")
+
+    @property
+    def laoshou_paladin_pve_retri(self) -> Character:
+        return ds.get_character("laoshou_paladin_pve_retri")
+
+    @property
+    def ganjj_dk_pve_blood_tank(self) -> Character:
+        return ds.get_character("ganjj_dk_pve_blood_tank")
+
+    @property
+    def ganjj_dk_pve_unholy_tank(self) -> Character:
+        return ds.get_character("ganjj_dk_pve_unholy_tank")
+
 
 char_fact = CharacterFactory()
 
@@ -206,6 +537,14 @@ class CharacterGroupFactory: # pragma: no cover
     @property
     def r_1_to_10(self) -> OrderedSet[Character]:
         return ds.get_build_group("r_1_to_10")
+
+    @property
+    def r_1_to_10_solo_dungeon_team1(self) -> OrderedSet[Character]:
+        return ds.get_build_group("r_1_to_10_solo_dungeon_team1")
+
+    @property
+    def r_1_to_10_solo_dungeon_team2(self) -> OrderedSet[Character]:
+        return ds.get_build_group("r_1_to_10_solo_dungeon_team2")
 
     @property
     def s_1_to_5(self) -> OrderedSet[Character]:
@@ -307,16 +646,46 @@ if __name__ == "__main__": # pragma: no cover
     print(acc_fact.Rab03)
     print(acc_fact.Rab04)
     print(acc_fact.Rab05)
+    print(acc_fact.Fatmulti1)
+    print(acc_fact.Fatmulti2)
+    print(acc_fact.Fatmulti3)
+    print(acc_fact.Fatmulti4)
+    print(acc_fact.Fatmulti5)
+    print(acc_fact.Fitsheep)
+    print(acc_fact.Fatmulti6)
+    print(acc_fact.Fatmulti8)
+    print(acc_fact.Fatmulti9)
+    print(acc_fact.Fatmulti10)
+    print(acc_fact.Fatmulti11)
+    print(acc_fact.Fatmulti12)
+    print(acc_fact.Fatmulti13)
+    print(acc_fact.Fatmulti14)
+    print(acc_fact.Fatmulti15)
+    print(acc_fact.Fatmulti16)
+    print(acc_fact.Fatmulti17)
+    print(acc_fact.Fatmulti18)
+    print(acc_fact.Fatmulti19)
+    print(acc_fact.Fatmulti20)
+    print(acc_fact.Fatmulti21)
+    print(acc_fact.Fatmulti22)
+    print(acc_fact.Fatmulti23)
+    print(acc_fact.Fatmulti24)
+    print(acc_fact.Fatmulti25)
+    print(acc_fact.Fatmulti26)
+    print(acc_fact.Makun7551)
     print(char_fact.ra_paladin_pve_protect)
     print(char_fact.rb_shaman_pve_elemental)
+    print(char_fact.rb_shaman_pve_resto)
     print(char_fact.rc_druid_pve_balance)
+    print(char_fact.rc_druid_pve_bear)
     print(char_fact.rd_mage_pve_arcane)
     print(char_fact.re_priest_pve_shadow)
+    print(char_fact.re_priest_pve_holy)
     print(char_fact.rf_warlock_pve_demonology)
     print(char_fact.rg_hunter_pve_marksman)
     print(char_fact.rh_druid_pve_resto)
     print(char_fact.ri_paladin_pve_holy)
-    print(char_fact.rj_dk_pve_blood_tank_leader2)
+    print(char_fact.rj_dk_pve_blood_tank)
     print(char_fact.rk_druid_pve_balance)
     print(char_fact.rl_druid_pve_balance)
     print(char_fact.rm_druid_pve_balance)
@@ -332,18 +701,93 @@ if __name__ == "__main__": # pragma: no cover
     print(char_fact.rw_shaman_pve_resto)
     print(char_fact.rx_paladin_pve_holy)
     print(char_fact.ry_priest_pve_disco)
-    print(char_fact.re_priest_pve_holy)
-    print(char_fact.re_priest_pve_shadow_5p_team2)
-    print(char_fact.rh_druid_pve_resto_5p_team1)
-    print(char_fact.ri_paladin_pve_holy_5p_team2)
-    print(char_fact.rj_dk_pve_blood_tank_leader1)
     print(char_fact.sa_paladin_pve_protect)
     print(char_fact.sb_shaman_pve_elemental)
     print(char_fact.sc_shaman_pve_elemental)
     print(char_fact.sd_shaman_pve_elemental)
     print(char_fact.se_shaman_pve_resto)
+    print(char_fact.batlefury_paladin_pve_protect)
+    print(char_fact.batlefury_paladin_pve_retri)
+    print(char_fact.litgoatssa_warlock_pve_demonology)
+    print(char_fact.litgoatdka_dk_pve_blood_tank)
+    print(char_fact.litgoatdka_dk_pvp_frost)
+    print(char_fact.quentinquinn_shaman_pve_elemental)
+    print(char_fact.quentinquinn_shaman_pve_resto)
+    print(char_fact.litgoatssb_warlock_pve_demonology)
+    print(char_fact.litgoatdkb_dk_pve_unholy_dps)
+    print(char_fact.litgoatdkb_dk_pvp_frost)
+    print(char_fact.opiitou_druid_pve_balance)
+    print(char_fact.opiitou_druid_pve_bear)
+    print(char_fact.litgoatssc_warlock_pve_demonology)
+    print(char_fact.litgoatdkc_dk_pve_unholy_dps)
+    print(char_fact.litgoatdkc_dk_pvp_frost)
+    print(char_fact.swagsonic_mage_pve_arcane)
+    print(char_fact.swagsonic_mage_pve_fire)
+    print(char_fact.litgoatssd_warlock_pve_demonology)
+    print(char_fact.litgoatdkd_dk_pve_unholy_dps)
+    print(char_fact.litgoatdkd_dk_pvp_frost)
+    print(char_fact.kangliu_priest_pve_shadow)
+    print(char_fact.kangliu_priest_pve_disco)
+    print(char_fact.litgoatsse_warlock_pve_demonology)
+    print(char_fact.litgoatdke_dk_pve_unholy_dps)
+    print(char_fact.litgoatdke_dk_pvp_frost)
+    print(char_fact.kindhearted_warlock_pve_demonology)
+    print(char_fact.kindhearted_warlock_pve_destruction)
+    print(char_fact.bordercollie_priest_pve_disco)
+    print(char_fact.bordercollie_priest_pve_shadow)
+    print(char_fact.sweetmonk_warrior_pve_fury)
+    print(char_fact.sweetmonk_warrior_pve_protect)
+    print(char_fact.kapacuk_hunter_pve_marksman)
+    print(char_fact.healthymonk_paladin_pve_holy)
+    print(char_fact.bunnysisters_druid_pve_resto)
+    print(char_fact.bunnysisters_druid_pve_balance)
+    print(char_fact.honeymonk_shaman_pve_enhancement)
+    print(char_fact.glowyy_paladin_pve_holy)
+    print(char_fact.glowyy_paladin_pve_protect)
+    print(char_fact.chubbymonk_druid_pve_balance)
+    print(char_fact.luxiaofeng_dk_pve_unholy_tank)
+    print(char_fact.luxiaofeng_dk_pve_blood_tank)
+    print(char_fact.shinymonk_priest_pve_shadow)
+    print(char_fact.litgugua_druid_pve_balance)
+    print(char_fact.litgugua_druid_pve_resto)
+    print(char_fact.litgugub_druid_pve_balance)
+    print(char_fact.litgugub_druid_pve_resto)
+    print(char_fact.litguguc_druid_pve_balance)
+    print(char_fact.litguguc_druid_pve_resto)
+    print(char_fact.litgugud_druid_pve_balance)
+    print(char_fact.litgugud_druid_pve_resto)
+    print(char_fact.litgugue_druid_pvp_balance)
+    print(char_fact.litgugue_druid_pvp_resto)
+    print(char_fact.litguguf_druid_pvp_balance)
+    print(char_fact.litguguf_druid_pvp_resto)
+    print(char_fact.litgugug_druid_pvp_balance)
+    print(char_fact.litgugug_druid_pvp_resto)
+    print(char_fact.litguguh_druid_pvp_balance)
+    print(char_fact.litguguh_druid_pvp_resto)
+    print(char_fact.lgmsi_priest_pve_shadow)
+    print(char_fact.lgmsi_priest_pve_disco)
+    print(char_fact.lgmsj_priest_pve_shadow)
+    print(char_fact.lgmsj_priest_pve_disco)
+    print(char_fact.lgmsk_priest_pve_shadow)
+    print(char_fact.lgmsk_priest_pve_disco)
+    print(char_fact.lgmsl_priest_pve_shadow)
+    print(char_fact.lgmsl_priest_pve_disco)
+    print(char_fact.lgsmm_shaman_pve_elemental)
+    print(char_fact.lgsmm_shaman_pve_resto)
+    print(char_fact.lgsmn_shaman_pve_elemental)
+    print(char_fact.lgsmn_shaman_pve_resto)
+    print(char_fact.lgsmo_shaman_pve_elemental)
+    print(char_fact.lgsmo_shaman_pve_resto)
+    print(char_fact.lgsmp_shaman_pve_elemental)
+    print(char_fact.lgsmp_shaman_pve_resto)
+    print(char_fact.laoshou_paladin_pve_protect)
+    print(char_fact.laoshou_paladin_pve_retri)
+    print(char_fact.ganjj_dk_pve_blood_tank)
+    print(char_fact.ganjj_dk_pve_unholy_tank)
     print(char_group_fact.r_1_to_5)
     print(char_group_fact.r_1_to_10)
+    print(char_group_fact.r_1_to_10_solo_dungeon_team1)
+    print(char_group_fact.r_1_to_10_solo_dungeon_team2)
     print(char_group_fact.s_1_to_5)
     print(client_fact.zhTW_1920_1080)
     print(client_fact.zhTW_1600_900)
