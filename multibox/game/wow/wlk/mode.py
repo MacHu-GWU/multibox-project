@@ -63,25 +63,23 @@ class Mode(AttrsClass):
     dr_pala2: T.Optional[Character] = attrs.field(default=None)
 
     def __attrs_post_init__(self):
-        # 所有关于 characters 列表的定义
+        # 对所有的 active characters 按照窗口顺序排序.
         self.active_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.active_chars).values()
         )
 
-        # def set_leader(i: int):
-        #     char1: Character = getattr(self, f"leader{i}")
-        #     if char1 is not None:
-        #         for char in self.active_chars:
-        #             if char.id == char1.id:
-        #                 meth_name = f"set_is_leader_{i}"
-        #                 getattr(char, meth_name)()
-        #                 meth_name = f"set_leader_{i}_window"
-        #                 getattr(char, meth_name)(char1)
-
+        # 根据 Mode 中设定的谁是 leader, 谁是 tank, 对所有的 active character 的属性进行设置.
         def set_role(
             attr_name: str,
             meth_name: str,
         ):
+            """
+            所有的 character 作为 :attr:`Mode.active_chars` 属性传进来时候, 它们的
+            :class:`multibox.game.wow.wlk.character.Character.is_leader_1` 等属性
+            都还没有被设置 (还是 None). 我们在定义 :class:`Mode` 的时候 定义的
+            :attr:`Mode.leader1` 等属性如果是一个 Character, 就将根据这个 Mode 的设定
+            把 active_chars 中对应的 character 的对应属性设为 True (通过调用 set_xyz 方法).
+            """
             char1 = getattr(self, attr_name)
             if char1 is not None:
                 for char in self.active_chars:
@@ -97,9 +95,12 @@ class Mode(AttrsClass):
 
         CharacterHelper.set_team_leader_and_tank(self.active_chars)
 
+        # 对所有的 login characters 按照窗口顺序排序.
         self.login_chars = OrderedSet(
             CharacterHelper.sort_chars_by_window_label(self.login_chars).values()
         )
+
+        # 将所有的仅 login 的角色设为 inactive
         for char in self.login_chars:
             char.set_inactive()
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
