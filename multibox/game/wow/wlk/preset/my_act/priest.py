@@ -79,20 +79,23 @@ class Shadow:
 
 
 class Healbot:
-    HB_Power_Word_Shield = CAN.RIGHT_CLICK  # 真言术盾
-    HB_Penance = CAN.ALT_RIGHT_CLICK  # 苦修, 通道型治疗技能, 戒律系天赋技能
-    HB_Pain_Suppression = None  # 痛苦压制, 减伤技能, 戒律系天赋技能
-    HB_Dispel_Magic = CAN.CTRL_RIGHT_CLICK  # 驱散魔法
-    HB_Abolish_Disease = CAN.CTRL_LEFT_CLICK  # 驱除疾病
-    HB_Renew = CAN.SHIFT_RIGHT_CLICK  # 恢复
-    HB_Prayer_of_Healing = CAN.ALT_LEFT_CLICK  # 愈合祷言
-    HB_Binding_Heal = None  # 联结治疗, 治疗目标与你自己
     HB_Flash_Heal = CAN.LEFT_CLICK  # 快速治疗
+    HB_Circle_of_Healing = CAN.SHIFT_LEFT_CLICK  # 治疗之环, 群体治疗技能, 神圣系天赋技能
+    HB_Abolish_Disease = CAN.CTRL_LEFT_CLICK  # 驱除疾病
+    HB_Prayer_of_Healing = CAN.ALT_LEFT_CLICK  # 愈合祷言
+
+    HB_Fear_Ward = CAN.MIDDLE_CLICK  # 防护恐惧结界
+    HB_Guardian_Spirit = CAN.SHIFT_MIDDLE_CLICK  # 守护天使, 保护目标不被一击必杀一次, 神圣系天赋技能
+
+    HB_Power_Word_Shield = CAN.RIGHT_CLICK  # 真言术盾
+    HB_Renew = CAN.SHIFT_RIGHT_CLICK  # 恢复
+    HB_Dispel_Magic = CAN.CTRL_RIGHT_CLICK  # 驱散魔法
+    HB_Penance = CAN.ALT_RIGHT_CLICK  # 苦修, 通道型治疗技能, 戒律系天赋技能
+
+    HB_Pain_Suppression = None  # 痛苦压制, 减伤技能, 戒律系天赋技能
+    HB_Binding_Heal = None  # 联结治疗, 治疗目标与你自己
     HB_Greater_Heal = None  # 超级治疗术
     HB_Holy_Nova = None  # 神圣新星
-    HB_Circle_of_Healing = CAN.SHIFT_LEFT_CLICK  # 治疗之环, 群体治疗技能, 神圣系天赋技能
-    HB_Guardian_Spirit = None  # 守护天使, 保护目标不被一击必杀一次, 神圣系天赋技能
-    HB_Fear_Ward = CAN.MIDDLE_CLICK  # 防护恐惧结界
 
 
 class Priest(Discipline, Holy, Shadow, Healbot):

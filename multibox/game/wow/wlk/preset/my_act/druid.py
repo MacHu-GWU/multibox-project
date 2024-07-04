@@ -125,15 +125,17 @@ class Feral:
 
 class Healbot:
     HB_Rejuvenation = CAN.MOUSE_LButton  # 回春术
+    HB_Wild_Growth = CAN.SHIFT_LEFT_CLICK  # 野性生长, 群体治疗, 恢复系天赋技能
+    HB_Remove_Curse = CAN.CTRL_LEFT_CLICK  # 驱散诅咒
     HB_Regrowth = CAN.ALT_LEFT_CLICK  # 愈合
+
+    HB_Innervate = CAN.MOUSE_MButton  # 激活, 为目标回复大量法力
+    HB_Lifebloom = None  # 生命之花, hot, 周期结束后会返回部分蓝耗
+
     HB_Nourish = CAN.MOUSE_RButton  # 滋养
     HB_Healing_Touch = CAN.SHIFT_RIGHT_CLICK  # 治疗之触
-    HB_Lifebloom = None  # 生命之花, hot, 周期结束后会返回部分蓝耗
-    HB_Wild_Growth = CAN.SHIFT_LEFT_CLICK  # 野性生长, 群体治疗, 恢复系天赋技能
-    HB_Swiftmend = CAN.ALT_RIGHT_CLICK  # 迅捷治愈, 恢复系天赋技能
     HB_Abolish_Poison = CAN.CTRL_RIGHT_CLICK  # 驱毒术
-    HB_Remove_Curse = CAN.CTRL_LEFT_CLICK  # 驱散诅咒
-    HB_Innervate = CAN.MOUSE_MButton  # 激活, 为目标回复大量法力
+    HB_Swiftmend = CAN.ALT_RIGHT_CLICK  # 迅捷治愈, 恢复系天赋技能
 
 
 class Druid(Balance, Restoration, Feral, Healbot):
