@@ -57,6 +57,9 @@ class ClientTabColumnEnum(str, enum.Enum):
     client = "client"
 
 
+dir_home = Path.home()
+
+
 @dataclasses.dataclass
 class Dataset:
     accounts: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
@@ -215,3 +218,31 @@ class Dataset:
             print("Test the generated script ...")
             subprocess.run(["python", f"{path_character_py}"])
             print("✅Test passed.")
+
+    @classmethod
+    def locate_excel(
+        cls,
+        prefix: str,
+        dir: Path = dir_home.joinpath("Downloads"),
+    ) -> Path:
+        """
+        Locate the excel file in the given directory. Usually it is your
+        ``${HOME}/Downloads`` directory.
+
+        这个函数可以方便地找到你刚从 Google Sheet 上下载下来的 excel 文件.
+        """
+        lst = list(
+            Path.sort_by_ctime(
+                [
+                    path
+                    for path in dir.select_by_ext(".xlsx")
+                    if path.basename.startswith(prefix)
+                ]
+            )
+        )
+        if lst:
+            return lst[-1]  # use the latest one
+        else:  # pragma: no cover
+            raise FileNotFoundError(
+                f"Cannot find any excel file start with '{prefix}' in {dir}"
+            )

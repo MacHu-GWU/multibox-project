@@ -7,7 +7,9 @@ from multibox.game.wow.wlk.dataset import Dataset
 def test():
     dir_here = Path.dir_here(__file__)
     dir_module = dir_here.joinpath("dataset")
-    ds = Dataset.from_excel(dir_module.joinpath("test_dataset.xlsx"))
+
+    path_excel = Dataset.locate_excel(prefix="test_dataset", dir=dir_module)
+    ds = Dataset.from_excel(path_excel)
 
     acc = ds.get_account("rab01")
     char = ds.get_character("sa_paladin_pve_protect")
