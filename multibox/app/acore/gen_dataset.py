@@ -8,7 +8,7 @@ from pathlib_mate import Path
 from multibox.game.wow.wlk.dataset import Dataset
 
 dir_here = Path.dir_here(__file__)
-path_excel = Dataset.locate_excel(prefix="multibox-game-wow-wotlk-azerothcore_alliance_v2")
+path_excel = Dataset.locate_excel(prefix="multibox-game-wow-wotlk-acore")
 ds = Dataset.from_excel(path_excel)
 
 if __name__ == "__main__":
