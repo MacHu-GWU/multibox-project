@@ -20,6 +20,7 @@ from ...wow.window import Window
 from .character import Character
 from .talent import Talent
 from .client import Client
+from .mode import Mode
 
 
 class SpreadSheetTabEnum(str, enum.Enum):
@@ -28,6 +29,7 @@ class SpreadSheetTabEnum(str, enum.Enum):
     build = "build"
     build_group = "build_group"
     client = "client"
+    mode = "mode"
 
 
 class AccountTabColumnEnum(str, enum.Enum):
@@ -57,20 +59,23 @@ class ClientTabColumnEnum(str, enum.Enum):
     client = "client"
 
 
+class ModeTabColumnEnum(str, enum.Enum):
+    mode = "mode"
+
+
 dir_home = Path.home()
 
 
 @dataclasses.dataclass
 class Dataset:
+    # fmt: off
     accounts: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
-    characters: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(
-        default_factory=dict
-    )
+    characters: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     builds: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
-    build_groups: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(
-        default_factory=dict
-    )
+    build_groups: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     clients: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
+    modes: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
+    # fmt: on
 
     @classmethod
     def from_excel(cls, path_excel: T.Union[str, Path]):
@@ -81,6 +86,7 @@ class Dataset:
         df_build = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build.value)
         df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value)
         df_client = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.client.value)
+        df_mode = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.mode.value)
         # fmt: on
 
         # validation
@@ -122,6 +128,12 @@ class Dataset:
                 "Found build group without a valid build in sheet 'build_group'"
             )
 
+        if df_client["client"].n_unique() != df_client.shape[0]:
+            raise ValueError("Found duplicated client in sheet 'client'")
+
+        if df_mode["mode"].n_unique() != df_mode.shape[0]:
+            raise ValueError("Found duplicated mode in sheet 'mode'")
+
         # convert
         accounts = {
             dct[AccountTabColumnEnum.account.value]: dct
@@ -142,23 +154,31 @@ class Dataset:
             }
             build_groups[build_group] = dct
 
-        headers = list(df_client.columns)
-        headers.remove(ClientTabColumnEnum.client.value)
-        clients = {header: dict() for header in headers}
-        for dct in df_client.to_dicts():
-            attr = dct[ClientTabColumnEnum.client.value]
-            for header in headers:
-                try:
-                    value = int(dct[header])
-                except:
-                    value = dct[header]
-                clients[header][attr] = value
+        clients = {
+            dct[ClientTabColumnEnum.client.value]: dct for dct in df_client.to_dicts()
+        }
+
+        modes = {dct[ModeTabColumnEnum.mode.value]: dct for dct in df_mode.to_dicts()}
+
+        # headers = list(df_client.columns)
+        # headers.remove(ClientTabColumnEnum.client.value)
+        # clients = {header: dict() for header in headers}
+        # for dct in df_client.to_dicts():
+        #     attr = dct[ClientTabColumnEnum.client.value]
+        #     for header in headers:
+        #         try:
+        #             value = int(dct[header])
+        #         except:
+        #             value = dct[header]
+        #         clients[header][attr] = value
+        # print(clients)
 
         return cls(
             accounts=accounts,
             builds=builds,
             build_groups=build_groups,
             clients=clients,
+            modes=modes,
         )
 
     def get_account(self, account: str) -> Account:
@@ -187,16 +207,58 @@ class Dataset:
 
     def get_client(self, client: str) -> Client:
         dct = self.clients[client]
+        dct = dict(dct)
+        dct.pop(ClientTabColumnEnum.client.value)
         return Client(**dct)
+
+    def get_mode(
+        self,
+        mode: str,
+        mode_class: T.Type[Mode] = Mode,
+    ) -> Mode:
+        dct = self.modes[mode]
+
+        def get_active_login_chars(type: str) -> OrderedSet[Character]:
+            chars = OrderedSet()
+            for i in range(1, 1 + 3):
+                value = dct[f"{type}_chars_include{i}"]
+                if value:
+                    chars.update(self.get_build_group(value))
+                value = dct[f"{type}_chars_exclude{i}"]
+                if value:
+                    chars.difference_update(self.get_build_group(value))
+            return chars
+
+        mode = mode_class(
+            name=dct[ModeTabColumnEnum.mode.value],
+            client=self.get_client(dct["client"]),
+            active_chars=get_active_login_chars("active"),
+            login_chars=get_active_login_chars("login"),
+            # target_leader_key_mapper: T_TARGET_LEAD_KEY_MAPPER = attrs.field(factory=dict)
+            leader1=self.get_character(dct["leader1"]) if dct["leader1"] else None,
+            leader2=self.get_character(dct["leader2"]) if dct["leader2"] else None,
+            tank1=self.get_character(dct["tank1"]) if dct["tank1"] else None,
+            tank2=self.get_character(dct["tank2"]) if dct["tank2"] else None,
+            dr_pala1=self.get_character(dct["dr_pala1"]) if dct["dr_pala1"] else None,
+            dr_pala2=self.get_character(dct["dr_pala2"]) if dct["dr_pala2"] else None,
+        )
+
+        return mode
 
     def to_module(
         self,
         dir_module: Path,
-        import_line: str = (
-            "try:\n    "
+        import_ds: str = (
+            "try:\n"
             "    from .gen_dataset import ds\n"
             "except ImportError:\n"
             "    from gen_dataset import ds\n"
+        ),
+        import_mode: str = (
+            "try:\n"
+            "    from .mode import Mode\n"
+            "except ImportError:\n"
+            "    from multibox.game.wow.wlk.api import Mode\n"
         ),
         dataset_var_name: str = "ds",
         overwrite: bool = False,
@@ -207,7 +269,8 @@ class Dataset:
         tpl = jinja2.Template(path_tpl.read_text())
         content = tpl.render(
             dataset=self,
-            import_line=import_line,
+            import_ds=import_ds,
+            import_mode=import_mode,
             dataset_var_name=dataset_var_name,
         )
         if path_character_py.exists():
@@ -216,7 +279,8 @@ class Dataset:
         path_character_py.write_text(content)
         if test:
             print("Test the generated script ...")
-            subprocess.run(["python", f"{path_character_py}"])
+            with path_character_py.parent.temp_cwd():
+                subprocess.run(["python", f"{path_character_py}"])
             print("✅Test passed.")
 
     @classmethod

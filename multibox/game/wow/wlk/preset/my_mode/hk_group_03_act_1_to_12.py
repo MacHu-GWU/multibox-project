@@ -691,17 +691,13 @@ class HotkeyGroup03Act1To12Mixin:
                 if char.is_leader_1:  # 司机本人清除焦点
                     with hk.SendLabel(
                         id=char.account.username,
-                        to=[
-                            char.window.label,
-                        ],
+                        to=[char.window.label],
                     ):
                         act.General.CLEAR_FOCUS_NUMPAD_7()
                 else:  # 其他人设置焦点
                     with hk.SendLabel(
                         id=char.account.username,
-                        to=[
-                            char.window.label,
-                        ],
+                        to=[char.window.label],
                     ):
                         self.target_leader_key_mapper[char.leader_1_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()
@@ -718,17 +714,13 @@ class HotkeyGroup03Act1To12Mixin:
                 if char.is_leader_2:  # 司机本人清除焦点
                     with hk.SendLabel(
                         id=char.account.username,
-                        to=[
-                            char.window.label,
-                        ],
+                        to=[char.window.label],
                     ):
                         act.General.CLEAR_FOCUS_NUMPAD_7()
                 else:  # 其他人设置焦点
                     with hk.SendLabel(
                         name=char.account.username,
-                        to=[
-                            char.window.label,
-                        ],
+                        to=[char.window.label],
                     ):
                         self.target_leader_key_mapper[char.leader_2_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()

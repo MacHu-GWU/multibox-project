@@ -111,8 +111,6 @@ class Mode(AttrsClass):
     # --------------------------------------------------------------------------
     def _ensure_no_duplicate_window(self, chars: T.List[Character]):
         if len(chars) != len({char.window.label for char in chars}):
-            for char in chars:
-                print(char.window.label, char.account.username)
             raise ValueError(
                 f"Character list {chars} cannot has duplicate window label!"
             )

@@ -6,8 +6,9 @@ from multibox.game.wow.wlk.api import (
     Character,
     Client,
 )
+{{ import_mode }}
+{{ import_ds }}
 
-{{ import_line }}
 
 # fmt: off
 class AccountFactory:
@@ -55,6 +56,18 @@ class ClientFactory:
 client_fact = ClientFactory()
 
 
+class ModeFactory:
+    {%- for name in dataset.modes %}
+
+    @property
+    def {{ name }}(self) -> Mode:
+        return {{ dataset_var_name }}.get_mode("{{ name }}", Mode)
+    {%- endfor %}
+
+
+mode_fact = ModeFactory()
+
+
 if __name__ == "__main__":
     # You can run this script as "main" to test it
     {%- for name in dataset.accounts %}
@@ -71,5 +84,9 @@ if __name__ == "__main__":
 
     {%- for name in dataset.clients %}
     print(client_fact.{{ name }})
+    {%- endfor %}
+
+    {%- for name in dataset.modes %}
+    print(mode_fact.{{ name }})
     {%- endfor %}
 # fmt: on
