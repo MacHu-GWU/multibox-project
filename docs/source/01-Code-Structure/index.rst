@@ -67,3 +67,19 @@ Folder Structure
     /app/azerothcore # 魔兽世界 巫妖王之怒版本 azerothcore 服务器
     /app/warmane # 魔兽世界 巫妖王之怒版本 warmane 服务器
     /app/tauri # 魔兽世界 熊猫人之谜 tarui 服务器
+
+
+
+Multibox Source Code Structure
+------------------------------------------------------------------------------
+`multibox <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox>`_ 目录是项目的 Python 源代码. 它实现了各种游戏的多开功能. 之所以我们用一个 Python 库来解决所有游戏的多开问题是因为多开的本质就是多个窗口的键盘鼠标同步. 这在不同的游戏中是差不太多的, 特别是 MMORPG 网游中有 90% 的逻辑是相同的.
+
+源代码中对于不同游戏的实现是分层的.
+
+例如, 第一层是 `multibox/game/ <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game>`_, 也就是不同的游戏. 该目录下的 ``.py`` 模块是对所有游戏通用的工具. 而该目录下的每个子目录则是一个具体的游戏, 例如 `multibox/game/wow/ <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game/wow>`_ 就是魔兽世界.
+
+第二层是谋个具体的游戏, 例如 `multibox/game/wow/ <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game/wow>`_ 就是魔兽世界. 该目录下的 ``.py`` 模块是对所有版本通用的工具. 例如对于魔兽世界来说都一定有账号, 所以我们就有 `account.py <https://github.com/MacHu-GWU/multibox-project/blob/app/azerothecore_horde_refactor/multibox/game/wow/account.py>`_, 以及一定有角色, 所以我们就有 `character.py <https://github.com/MacHu-GWU/multibox-project/blob/app/azerothecore_horde_refactor/multibox/game/wow/account.py>`_. 这一层通用的模块都会被汇总到 `api.py <https://github.com/MacHu-GWU/multibox-project/blob/app/azerothecore_horde_refactor/multibox/game/wow/api.py>`_ 中供其他模块 import. 例如魔兽世界某个具体版本的源码中就会从这个 ``api.py`` 中导入一些工具.
+
+第三层是一个游戏下面具体的不同版本, 例如 `multibox/game/wow/wlk/ <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game/wow/wtk>`_ 就是魔兽世界巫妖王之怒. 该目录下的 ``.py`` 模块是对该特定版本有效的工具. 又例如 `multibox/game/wow/wlk/talent.py <https://github.com/MacHu-GWU/multibox-project/blob/app/azerothecore_horde_refactor/multibox/game/wow/wlk/talent.py>`_ 枚举了魔兽世界巫妖王之怒版本中的所有天赋. 又例如 `multibox/game/wow/wlk/act/ <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game/wow/wlk/act>`_ 枚举了巫妖王之怒版本中的所有职业的所有技能.
+
+第四层则是我自己最习惯, 最喜欢的一种代码架构和预设. 包含键位设定, 快捷键和技能的逻辑对应关系等. 例如 `preset <https://github.com/MacHu-GWU/multibox-project/tree/app/azerothecore_horde_refactor/multibox/game/wow/wlk/preset>`_ 中有我最习惯的快捷键和键位设置, 以及多开的操作逻辑定义.
