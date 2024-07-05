@@ -305,6 +305,10 @@ class HotkeyGroup07UtilitySpellMixin:
                 act.Mage.Blizzard()
 
     def build_hk_domino_action_bar_3(self: "Mode"):
+        """
+        注: 特殊战斗下的特殊按键 Shift + Z, Shift + X, Shift + V
+        由 hk_group_12_special 模块定义.
+        """
         # with hk.Hotkey(
         #     id="Shift + Z",
         #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.Z)),
