@@ -194,25 +194,25 @@ class HotkeyGroup03Act1To12Mixin:
             lbs_healer.update(self.lbs_druid_resto)
 
             # 确保有人奶 1 号坦克.
-            if self.lb_leader1:
+            if self.lb_tank1:
                 if len(lbs_healer):
                     lb = lbs_healer.pop()
                     with hk.SendLabel(
                         id="SlowHealLeader1",
                         to=[lb],
                     ):
-                        self.target_leader_1_key_maker()
+                        self.target_tank_1_key_maker()
                         CAN.KEY_1()
 
             # 如果有 2 号坦克, 就尝试派人去奶
-            if self.lb_leader2:
+            if self.lb_tank2:
                 if len(lbs_healer):
                     lb = lbs_healer.pop()
                     with hk.SendLabel(
                         id="SlowHealLeader2",
                         to=[lb],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_2_key_maker()
                         CAN.KEY_1()
 
             # 神牧, 随机给团上恢复
@@ -301,14 +301,14 @@ class HotkeyGroup03Act1To12Mixin:
             lbs_paladin_holy = self.lbs_paladin_holy
 
             # 确保有人奶 1 号坦克.
-            if self.lb_leader1:
+            if self.lb_tank1:
                 if len(lbs_healer):
                     lb = lbs_healer.pop()
                     with hk.SendLabel(
                         id="FastHealLeader1",
                         to=[lb],
                     ):
-                        self.target_leader_1_key_maker()
+                        self.target_tank_1_key_maker()
                         CAN.KEY_3()
 
                 if len(lbs_paladin_holy):
@@ -317,18 +317,18 @@ class HotkeyGroup03Act1To12Mixin:
                         id="HolyPaladinBeaconOnLeader1",
                         to=[lb],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_1_key_maker()
                         CAN.KEY_3()
 
             # 如果有 2 号坦克, 就尝试派人去奶
-            if self.lb_leader2:
+            if self.lb_tank2:
                 if len(lbs_healer):
                     lb = lbs_healer.pop()
                     with hk.SendLabel(
                         id="FastHealLeader2",
                         to=[lb],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_2_key_maker()
                         CAN.KEY_3()
 
                 if len(lbs_paladin_holy):
@@ -337,7 +337,7 @@ class HotkeyGroup03Act1To12Mixin:
                         id="HolyPaladinBeaconOnLeader2",
                         to=[lb],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_2_key_maker()
                         CAN.KEY_3()
 
             # 神牧, 随机给团上恢复
@@ -403,20 +403,20 @@ class HotkeyGroup03Act1To12Mixin:
                     CAN.KEY_4()
             # 如果有 2 或 2 个以上的奶骑, 两个奶骑分别给两个 leader 的目标补圣光审判
             elif len(lbs_paladin_healer) >= 2:
-                if self.lb_leader1:
+                if self.lb_tank1:
                     with hk.SendLabel(
                         id="HolyPaladin1",
                         to=[lbs_paladin_healer[0]],
                     ):
-                        self.target_leader_1_key_maker()
+                        self.target_tank_1_key_maker()
                         act.Target.ASSIST_TARGET()
                         CAN.KEY_4()
-                if self.lb_leader2:
+                if self.lb_tank2:
                     with hk.SendLabel(
                         id="HolyPaladin2",
                         to=[lbs_paladin_healer[1]],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_2_key_maker()
                         act.Target.ASSIST_TARGET()
                         CAN.KEY_4()
                 if len(lbs_paladin_healer) > 2:
@@ -443,19 +443,19 @@ class HotkeyGroup03Act1To12Mixin:
             # 如果有 2 或 2 个以上的奶萨, 两个奶萨分别给两个坦克补大地之盾
             # 其他多余的奶萨什么也不做
             elif len(lbs_shaman_resto) == 2:
-                if self.lb_leader1:
+                if self.lb_tank1:
                     with hk.SendLabel(
                         id="RestoShaman1",
                         to=[lbs_shaman_resto[0]],
                     ):
-                        self.target_leader_1_key_maker()
+                        self.target_tank_1_key_maker()
                         CAN.KEY_4()
-                if self.lb_leader2:
+                if self.lb_tank2:
                     with hk.SendLabel(
                         id="RestoShaman2",
                         to=[lbs_shaman_resto[1]],
                     ):
-                        self.target_leader_2_key_maker()
+                        self.target_tank_2_key_maker()
                         CAN.KEY_4()
 
             # 德鲁伊, 用位于 4 号键位上的一键治疗宏
@@ -478,25 +478,23 @@ class HotkeyGroup03Act1To12Mixin:
                     act.Target.TARGET_FOCUS()
                     CAN.KEY_4()
 
-            # 如果有 2 或 2 个以上的奶萨, 两个奶萨分别给两个 leader 的补大地之盾
+            # 如果有 2 或 2 个以上的奶萨, 两个奶萨分别给两个 tank 的补大地之盾
             # 其他多余的奶萨什么也不做
             elif len(label_list) == 2:
-                with hk.SendLabel(
-                    id="DiscoPriest1",
-                    to=[
-                        label_list[0],
-                    ],
-                ):
-                    self.target_leader_1_key_maker()
-                    CAN.KEY_4()
-                with hk.SendLabel(
-                    id="DiscoPriest2",
-                    to=[
-                        label_list[1],
-                    ],
-                ):
-                    self.target_leader_2_key_maker()
-                    CAN.KEY_4()
+                if self.lb_tank1:
+                    with hk.SendLabel(
+                        id="DiscoPriest1",
+                        to=[label_list[0]],
+                    ):
+                        self.target_tank_1_key_maker()
+                        CAN.KEY_4()
+                if self.lb_tank2:
+                    with hk.SendLabel(
+                        id="DiscoPriest2",
+                        to=[label_list[1]],
+                    ):
+                        self.target_tank_2_key_maker()
+                        CAN.KEY_4()
 
     def build_hk_5_aoe_heal_self(self: "Mode"):
         with hk.Hotkey(
@@ -619,42 +617,43 @@ class HotkeyGroup03Act1To12Mixin:
                 act.DK.Horn_of_Winter()
 
             # 奶骑 上道标, 这里稍微有点复杂
-            label_list = self.lbs_by_tc(TC.paladin_healer)
-            if len(label_list) == 0:
+            lbs_paladin_healer = self.lbs_by_tc(TC.paladin_healer)
+            if len(lbs_paladin_healer) == 0:
                 pass
             # 如果只有 1 个奶骑, 则给焦点加圣光道标
-            elif len(label_list) == 1:
+            elif len(lbs_paladin_healer) == 1:
                 with hk.SendLabel(
                     id=TC.paladin_healer.name,
                     to=self.lbs_by_tc(TC.paladin_healer),
                 ):
                     act.Target.TARGET_FOCUS()
                     act.PaladinHoly.Beacon_of_Light()
-            # 如果有 2 或 2 个以上的奶骑, 两个奶骑分别给两个 leader 加圣光道标
+            # 如果有 2 或 2 个以上的奶骑, 两个奶骑分别给两个 tank 加圣光道标
             # 其他的奶骑给焦点加圣光道标
-            elif len(label_list) == 2:
-                with hk.SendLabel(
-                    id="HolyPaladin1",
-                    to=[
-                        label_list[0],
-                    ],
-                ):
-                    self.target_leader_1_key_maker()
-                    act.PaladinHoly.Beacon_of_Light()
-                with hk.SendLabel(
-                    id="HolyPaladin2",
-                    to=[
-                        label_list[1],
-                    ],
-                ):
-                    self.target_leader_2_key_maker()
-                    act.PaladinHoly.Beacon_of_Light()
-                with hk.SendLabel(
-                    id="HolyPaladin3andAbove",
-                    to=label_list[2:],
-                ):
-                    act.Target.TARGET_FOCUS()
-                    act.PaladinHoly.Beacon_of_Light()
+            elif len(lbs_paladin_healer) >= 2:
+                if self.lb_tank1:
+                    with hk.SendLabel(
+                        id="HolyPaladin1",
+                        to=[lbs_paladin_healer[0]],
+                    ):
+                        self.target_tank_1_key_maker()
+                        act.PaladinHoly.Beacon_of_Light()
+                if self.lb_tank2:
+                    with hk.SendLabel(
+                        id="HolyPaladin2",
+                        to=[
+                            lbs_paladin_healer[1],
+                        ],
+                    ):
+                        self.target_tank_2_key_maker()
+                        act.PaladinHoly.Beacon_of_Light()
+                if len(lbs_paladin_healer) > 2:
+                    with hk.SendLabel(
+                        id="HolyPaladin3andAbove",
+                        to=lbs_paladin_healer[2:],
+                    ):
+                        act.Target.TARGET_FOCUS()
+                        act.PaladinHoly.Beacon_of_Light()
 
             # 恢复萨上水盾
             with hk.SendLabel(
@@ -693,12 +692,13 @@ class HotkeyGroup03Act1To12Mixin:
                     ):
                         act.General.CLEAR_FOCUS_NUMPAD_7()
                 else:  # 其他人设置焦点
-                    with hk.SendLabel(
-                        id=char.account.username,
-                        to=[char.window.label],
-                    ):
-                        self.target_leader_1_key_maker()
-                        act.General.SET_FOCUS_KEY_NUMPAD_6()
+                    if char.leader_1 is not None:
+                        with hk.SendLabel(
+                            id=char.account.username,
+                            to=[char.window.label],
+                        ):
+                            self.target_key_mapping[char.leader_1.window.label]()
+                            act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     def build_hk_12_focus_mode_2(self: "Mode"):
         """
@@ -716,12 +716,13 @@ class HotkeyGroup03Act1To12Mixin:
                     ):
                         act.General.CLEAR_FOCUS_NUMPAD_7()
                 else:  # 其他人设置焦点
-                    with hk.SendLabel(
-                        name=char.account.username,
-                        to=[char.window.label],
-                    ):
-                        self.target_leader_2_key_maker()
-                        act.General.SET_FOCUS_KEY_NUMPAD_6()
+                    if char.leader_2 is not None:
+                        with hk.SendLabel(
+                            name=char.account.username,
+                            to=[char.window.label],
+                        ):
+                            self.target_key_mapping[char.leader_2.window.label]()
+                            act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     # # --- alt 1,2,3,4,5
     def build_hk_alt_5(self: "Mode"):

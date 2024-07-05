@@ -25,36 +25,40 @@ class HotkeyGroup02MovementMixin:
         lbs: T_LABELS_ARG,
         id: str,
         method: str,
-    ):
-        with hk.SendLabel(
-            id=id,
-            to=OrderedSet(Window.to_labels(lbs)),
-        ) as send_label:
-            getattr(act.Movement, method)()
-            return send_label
+    ) -> T.Optional[hk.SendLabel]:
+        lbs = Window.to_labels(lbs)
+        if len(lbs):
+            with hk.SendLabel(
+                id=id,
+                to=OrderedSet(lbs),
+            ) as send_label:
+                getattr(act.Movement, method)()
+                return send_label
+        else:  # pragma: no cover
+            return None
 
-    def _move_up(self, lbs: T_LABELS_ARG):
+    def _move_up(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "up", "MOVE_FORWARD")
 
-    def _move_down(self, lbs: T_LABELS_ARG):
+    def _move_down(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "down", "MOVE_BACKWARD")
 
-    def _move_left(self, lbs: T_LABELS_ARG):
+    def _move_left(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "left", "MOVE_LEFT")
 
-    def _move_right(self, lbs: T_LABELS_ARG):
+    def _move_right(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "right", "MOVE_RIGHT")
 
-    def _move_left_up(self, lbs: T_LABELS_ARG):
+    def _move_left_up(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "left_up", "MOVE_LEFT_TOP")
 
-    def _move_left_down(self, lbs: T_LABELS_ARG):
+    def _move_left_down(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "left_down", "MOVE_LEFT_BOTTOM")
 
-    def _move_right_up(self, lbs: T_LABELS_ARG):
+    def _move_right_up(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "right_up", "MOVE_RIGHT_TOP")
 
-    def _move_right_down(self, lbs: T_LABELS_ARG):
+    def _move_right_down(self, lbs: T_LABELS_ARG) -> T.Optional[hk.SendLabel]:
         return self._move_xyz(lbs, "right_down", "MOVE_RIGHT_BOTTOM")
 
     def build_hk_all_move_up_down_turn_left_right(self: "Mode"):
@@ -200,32 +204,23 @@ class HotkeyGroup02MovementMixin:
 
         # 人数大于 5 人时, 用矩阵分散
         else:
-            lbs_all = self.lbs_all
-
+            lbs_non_tank = self.lbs_non_tank
             with hk.MovementHotkey(
                 id="Spread Matrix 1",
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
             ) as self.hk_spread_matrix_1:
-                send_label_list: T.List[hk.SendLabel] = [
-                    self._move_left([6, 15, 14]),
-                    self._move_right([3, 11, 18]),
-                    self._move_left_down([4, 8, 16, 13]),
-                    self._move_right_down([5, 9, 12, 17]),
-                    self._move_down([2]),
-                ]
-                for send_label in send_label_list:
-                    send_label.to.difference_update(lbs_all)
+                self._move_left(lbs_non_tank.intersection([6, 15, 14]))
+                self._move_right(lbs_non_tank.intersection([3, 11, 18]))
+                self._move_left_down(lbs_non_tank.intersection([4, 8, 16, 13]))
+                self._move_right_down(lbs_non_tank.intersection([5, 9, 12, 17]))
+                self._move_down(lbs_non_tank.intersection([2]))
 
             with hk.MovementHotkey(
                 id="Spread Matrix 2",
                 key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
             ) as self.hk_spread_matrix_2:
-                send_label_list: T.List[hk.SendLabel] = [
-                    self._move_left([4, 11, 12]),
-                    self._move_right([5, 15, 16]),
-                ]
-                for send_label in send_label_list:
-                    send_label.to.difference_update(lbs_all)
+                self._move_left(lbs_non_tank.intersection([4, 11, 12]))
+                self._move_right(lbs_non_tank.intersection([5, 15, 16]))
 
     def build_hk_spread_circle(self: "Mode"):
         """
@@ -253,21 +248,15 @@ class HotkeyGroup02MovementMixin:
             id="Spread Circle",
             key=KN.SCROLOCK_ON(KN.OEM5_PIPE_OR_BACK_SLASH),
         ) as self.hk_spread_circle1:
-            send_label_list: T.List[hk.SendLabel] = [
-                self._move_up([3, 14, 15]),
-                self._move_down([6, 11, 18]),
-                self._move_left([8, 12, 16]),
-                self._move_right([9, 13, 17]),
-                self._move_left_up([7, 19]),
-                self._move_left_down([4, 20]),
-                self._move_right_up([5, 21]),
-                self._move_right_down([2, 22]),
-            ]
-            lbs_tank = self.lbs_by_tc(TC.tank)
-            lbs_all = self.lbs_all
-            for send_label in send_label_list:
-                send_label.to.difference_update(lbs_tank)
-                send_label.to.intersection_update(lbs_all)
+            lbs_non_tank = self.lbs_non_tank
+            self._move_up(lbs_non_tank.intersection([3, 14, 15]))
+            self._move_down(lbs_non_tank.intersection([6, 11, 18]))
+            self._move_left(lbs_non_tank.intersection([8, 12, 16]))
+            self._move_right(lbs_non_tank.intersection([9, 13, 17]))
+            self._move_left_up(lbs_non_tank.intersection([7, 19]))
+            self._move_left_down(lbs_non_tank.intersection([4, 20]))
+            self._move_right_up(lbs_non_tank.intersection([5, 21]))
+            self._move_right_down(lbs_non_tank.intersection([2, 22]))
 
     def build_hk_group_02_movement_mixin(self: "Mode"):
         self.build_hk_all_move_up_down_turn_left_right()

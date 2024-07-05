@@ -11,12 +11,13 @@ from functools import cached_property
 import attrs
 from attrs_mate import AttrsClass
 
+from ordered_set import OrderedSet
 from ..utils.models import BaseSemiMutableModel
 
 # 类似于 window label 的数据类型
 T_LABEL_LIKE = T.Union[str, int]
 # 类似于 windows label 的列表的数据类型
-T_LABELS_ARG = T.Union[T_LABEL_LIKE, T.List[T_LABEL_LIKE]]
+T_LABELS_ARG = T.Union[T_LABEL_LIKE, T.List[T_LABEL_LIKE], OrderedSet[T_LABEL_LIKE]]
 
 
 @attrs.define(eq=False, slots=False)
@@ -106,10 +107,10 @@ class Window(BaseSemiMutableModel):
 
         :param lbs: int, str, or list of int, list of str.
         """
-        if isinstance(labels, list):
-            _labels = labels
-        else:
+        if isinstance(labels, (int, str)):
             _labels = [labels]
+        else:
+            _labels = labels
 
         new_labels = list()
         for label_like in _labels:

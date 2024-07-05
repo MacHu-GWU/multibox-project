@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import attrs
+from ordered_set import OrderedSet
 from multibox.game.window import Window as BaseWindow
 
 
@@ -27,6 +28,7 @@ class TestWindow:
         assert Window.to_labels(1) == ["w01"]
         assert Window.to_labels("w01") == ["w01"]
         assert Window.to_labels([1, "w02"]) == ["w01", "w02"]
+        assert Window.to_labels(OrderedSet([1, "w02"])) == ["w01", "w02"]
 
 
 if __name__ == "__main__":

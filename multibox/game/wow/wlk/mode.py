@@ -62,8 +62,8 @@ class Mode(AttrsClass):
     target_key_mapping: T_TARGET_KEY_MAPPING = attrs.field(factory=dict)
     script: hkn.Script = attrs.field(factory=hkn.Script)
     script_path: T.Optional[Path] = attrs.field(default=None)
-    leader1: T.Optional[Character] = attrs.field(default=None)
-    leader2: T.Optional[Character] = attrs.field(default=None)
+    leader1: OrderedSet[Character] = attrs.field(default=None)
+    leader2: OrderedSet[Character] = attrs.field(default=None)
     tank1: T.Optional[Character] = attrs.field(default=None)
     tank2: T.Optional[Character] = attrs.field(default=None)
     dr_pala1: T.Optional[Character] = attrs.field(default=None)
@@ -72,8 +72,9 @@ class Mode(AttrsClass):
     def __attrs_post_init__(self):
         # 定位队伍中的关键人物
         # fmt: off
-        self.leader1 = Character.find_xyz(chars=self.chars, field="is_leader_1", is_active=True)
-        self.leader2 = Character.find_xyz(chars=self.chars, field="is_leader_2", is_active=True)
+        active_chars = self.active_chars
+        self.leader1 = OrderedSet([char for char in active_chars if char.is_leader_1])
+        self.leader2 = OrderedSet([char for char in active_chars if char.is_leader_2])
         self.tank1 = Character.find_xyz(chars=self.chars, field="is_tank_1", is_active=True)
         self.tank2 = Character.find_xyz(chars=self.chars, field="is_tank_2", is_active=True)
         self.dr_pala1 = Character.find_xyz(chars=self.chars, field="is_dr_pala_1", is_active=True)
@@ -106,13 +107,21 @@ class Mode(AttrsClass):
         ]
         return window_and_account_pairs
 
-    @property
-    def target_leader_1_key_maker(self) -> hkn.KeyMaker:
-        return self.target_key_mapping[self.leader1.window.label]
+    # @property
+    # def target_leader_1_key_maker(self) -> hkn.KeyMaker:
+    #     return self.target_key_mapping[self.leader1.window.label]
+    #
+    # @property
+    # def target_leader_2_key_maker(self) -> hkn.KeyMaker:
+    #     return self.target_key_mapping[self.leader2.window.label]
 
     @property
-    def target_leader_2_key_maker(self) -> hkn.KeyMaker:
-        return self.target_key_mapping[self.leader2.window.label]
+    def target_tank_1_key_maker(self) -> hkn.KeyMaker:
+        return self.target_key_mapping[self.lb_tank1]
+
+    @property
+    def target_tank_2_key_maker(self) -> hkn.KeyMaker:
+        return self.target_key_mapping[self.lb_tank2]
 
     @property
     def lbs_all(self) -> OrderedSet[str]:
@@ -157,23 +166,23 @@ class Mode(AttrsClass):
             ]
         )
 
-    @property
-    def lb_leader1(self) -> T.Optional[str]:
-        """
-        获得 1 号 Leader 的 label, 可能有一个人或者没有 (如果只是登录不玩游戏的化就没有 leader).
-        """
-        if self.leader1 is not None:
-            return self.leader1.window.label
-        return None
-
-    @property
-    def lb_leader2(self) -> T.Optional[str]:
-        """
-        获得 2 号 Leader 的 label, 可能有一个人或者没有.
-        """
-        if self.leader2 is not None:
-            return self.leader2.window.label
-        return None
+    # @property
+    # def lb_leader1(self) -> T.Optional[str]:
+    #     """
+    #     获得 1 号 Leader 的 label, 可能有一个人或者没有 (如果只是登录不玩游戏的化就没有 leader).
+    #     """
+    #     if self.leader1 is not None:
+    #         return self.leader1.window.label
+    #     return None
+    #
+    # @property
+    # def lb_leader2(self) -> T.Optional[str]:
+    #     """
+    #     获得 2 号 Leader 的 label, 可能有一个人或者没有.
+    #     """
+    #     if self.leader2 is not None:
+    #         return self.leader2.window.label
+    #     return None
 
     @property
     def lb_tank1(self) -> T.Optional[str]:
@@ -212,13 +221,29 @@ class Mode(AttrsClass):
         return None
 
     @property
+    def lbs_leader1(self) -> OrderedSet[str]:
+        """
+        获得所有 leader1 角色的 Label 集合.
+        """
+        return OrderedSet([char.window.label for char in self.leader1])
+
+    @property
+    def lbs_leader2(self) -> OrderedSet[str]:
+        """
+        获得所有 leader1 角色的 Label 集合.
+        """
+        return OrderedSet([char.window.label for char in self.leader2])
+
+    @property
     def lbs_leader(self) -> OrderedSet[str]:
         """
         获得所有 leader 角色的 Label 集合.
         """
-        return OrderedSet(
-            [lb for lb in [self.lb_leader1, self.lb_leader2] if lb is not None]
-        )
+        return self.lbs_leader1.union(self.lbs_leader2)
+
+    @property
+    def lbs_non_leader(self) -> OrderedSet[str]:
+        return self.lbs_all.difference(self.lbs_leader)
 
     @property
     def lbs_tank(self) -> OrderedSet[str]:
@@ -227,16 +252,6 @@ class Mode(AttrsClass):
         """
         return OrderedSet(
             [lb for lb in [self.lb_tank1, self.lb_tank2] if lb is not None]
-        )
-
-    @property
-    def lbs_non_leader(self) -> OrderedSet[str]:
-        return OrderedSet(
-            [
-                char.window.label
-                for char in self.active_chars
-                if (char.is_leader_1 is False) and (char.is_leader_2 is False)
-            ]
         )
 
     @property

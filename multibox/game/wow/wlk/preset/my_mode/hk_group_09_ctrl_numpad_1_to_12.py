@@ -123,11 +123,11 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Priest.Hymn_of_Hope()
 
     def build_hk_ctrl_numpad_11_tank_1_taunt(self: "Mode"):
-        if self.lb_tank1:
-            with hk.Hotkey(
-                id="Ctrl Numpad11 - 主坦克嘲讽",
-                key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_11_DIVIDE)),
-            ) as self.hk_ctrl_numpad_11:
+        with hk.Hotkey(
+            id="Ctrl Numpad11 - 主坦克嘲讽",
+            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_11_DIVIDE)),
+        ) as self.hk_ctrl_numpad_11:
+            if self.lb_tank1:
                 with hk.SendLabel(
                     id="tank1",
                     to=[self.lb_tank1],
@@ -136,11 +136,11 @@ class HotkeyGroup09CtrlNumpad1To12:
                     act.PaladinProtection.Hand_of_Reckoning()
 
     def build_hk_ctrl_numpad_12_tank_2_taunt(self: "Mode"):
-        if self.lb_tank2:
-            with hk.Hotkey(
-                id="Ctrl Numpad12 - 副坦克嘲讽",
-                key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_12_MULTIPLY)),
-            ) as self.hk_ctrl_numpad_12:
+        with hk.Hotkey(
+            id="Ctrl Numpad12 - 副坦克嘲讽",
+            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_12_MULTIPLY)),
+        ) as self.hk_ctrl_numpad_12:
+            if self.lb_tank2:
                 with hk.SendLabel(
                     id="tank2",
                     to=[self.lb_tank2],
