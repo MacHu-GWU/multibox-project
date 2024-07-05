@@ -71,17 +71,26 @@ class Mode(AttrsClass):
 
     def __attrs_post_init__(self):
         # 定位队伍中的关键人物
-        self.leader1 = Character.find_xyz(self.chars, "is_leader_1")
-        self.leader2 = Character.find_xyz(self.chars, "is_leader_2")
-        self.tank1 = Character.find_xyz(self.chars, "is_tank_1")
-        self.tank2 = Character.find_xyz(self.chars, "is_tank_2")
-        self.dr_pala1 = Character.find_xyz(self.chars, "is_dr_pala_1")
-        self.dr_pala2 = Character.find_xyz(self.chars, "is_dr_pala_2")
+        # fmt: off
+        self.leader1 = Character.find_xyz(chars=self.chars, field="is_leader_1", is_active=True)
+        self.leader2 = Character.find_xyz(chars=self.chars, field="is_leader_2", is_active=True)
+        self.tank1 = Character.find_xyz(chars=self.chars, field="is_tank_1", is_active=True)
+        self.tank2 = Character.find_xyz(chars=self.chars, field="is_tank_2", is_active=True)
+        self.dr_pala1 = Character.find_xyz(chars=self.chars, field="is_dr_pala_1", is_active=True)
+        self.dr_pala2 = Character.find_xyz(chars=self.chars, field="is_dr_pala_2", is_active=True)
+        # fmt: on
 
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
         # 先调用 ``with Script()`` 的语法然后才能定义 Command, Hotkey, 这样很麻烦.
         # 所以我们手动将它设为 context 的顶层, 这样就可以直接定义 Command, Hotkey 了.
         hkn.context.push(self.script)
+
+    @property
+    def active_chars(self) -> OrderedSet[Character]:
+        """
+        筛选出 active 的角色.
+        """
+        return OrderedSet([char for char in self.chars if char.is_active])
 
     @property
     def login_window_and_account_pairs(self) -> T.List[T.Tuple[Window, Account]]:
@@ -93,17 +102,16 @@ class Mode(AttrsClass):
         个 char 占用了 1 号窗口, 那么 active_chars 中的角色将会占用 1 号窗口 (优先级高)
         """
         window_and_account_pairs: T.List[T.Tuple[Window, Account]] = [
-            (char.window, char.account)
-            for char in self.chars
+            (char.window, char.account) for char in self.chars
         ]
         return window_and_account_pairs
 
     @property
-    def target_leader_1_key(self) -> hkn.KeyMaker:
+    def target_leader_1_key_maker(self) -> hkn.KeyMaker:
         return self.target_key_mapping[self.leader1.window.label]
 
     @property
-    def target_leader_2(self) -> hkn.KeyMaker:
+    def target_leader_2_key_maker(self) -> hkn.KeyMaker:
         return self.target_key_mapping[self.leader2.window.label]
 
     @property
@@ -125,10 +133,10 @@ class Mode(AttrsClass):
         return OrderedSet(
             [
                 char.window.label
-                for char in CharacterHelper.filter_by_talent(
+                for char in Character.filter_by_talent(
                     chars=self.active_chars,
                     tl=tl,
-                ).values()
+                )
             ]
         )
 
@@ -142,90 +150,83 @@ class Mode(AttrsClass):
         return OrderedSet(
             [
                 char.window.label
-                for char in CharacterHelper.filter_by_talent_category(
+                for char in Character.filter_by_talent_category(
                     chars=self.active_chars,
                     tc=tc,
-                ).values()
+                )
             ]
         )
 
     @property
-    def lb_leader1(self) -> str:
+    def lb_leader1(self) -> T.Optional[str]:
         """
-        获得 1 号 Leader 的 label, 必然得有一个人.
+        获得 1 号 Leader 的 label, 可能有一个人或者没有 (如果只是登录不玩游戏的化就没有 leader).
         """
-        lbs = [char.window.label for char in self.active_chars if char.is_leader_1]
-        if len(lbs) != 1:  # pragma: no cover
-            raise ValueError("Your team has to have exact one leader 1!")
-        return lbs[0]
+        if self.leader1 is not None:
+            return self.leader1.window.label
+        return None
 
     @property
     def lb_leader2(self) -> T.Optional[str]:
         """
         获得 2 号 Leader 的 label, 可能有一个人或者没有.
         """
-        lbs = [char.window.label for char in self.active_chars if char.is_leader_2]
-        if len(lbs) == 0:  # pragma: no cover
-            return None
-        elif len(lbs) == 1:
-            return lbs[0]
-        else:  # pragma: no cover
-            raise ValueError("Your team cannot have more than one leader 2!")
+        if self.leader2 is not None:
+            return self.leader2.window.label
+        return None
+
+    @property
+    def lb_tank1(self) -> T.Optional[str]:
+        """
+        获得 1 号坦克的 label, 可能有一个人或者没有.
+        """
+        if self.tank1 is not None:
+            return self.tank1.window.label
+        return None
+
+    @property
+    def lb_tank2(self) -> T.Optional[str]:
+        """
+        获得 2 号坦克的 label, 可能有一个人或者没有.
+        """
+        if self.tank2 is not None:
+            return self.tank2.window.label
+        return None
+
+    @property
+    def lb_dr_pala1(self) -> T.Optional[str]:
+        """
+        获得 1 号开团队减伤骑士的 label, 可能有一个人或者没有.
+        """
+        if self.dr_pala1 is not None:
+            return self.dr_pala1.window.label
+        return None
+
+    @property
+    def lb_dr_pala2(self) -> T.Optional[str]:
+        """
+        获得 2 号开团队减伤骑士的 label, 可能有一个人或者没有.
+        """
+        if self.dr_pala2 is not None:
+            return self.dr_pala2.window.label
+        return None
 
     @property
     def lbs_leader(self) -> OrderedSet[str]:
         """
-        获得 2 号坦克的 label 列表 (通常只有一个人).
+        获得所有 leader 角色的 Label 集合.
         """
         return OrderedSet(
-            [
-                char.window.label
-                for char in self.active_chars
-                if char.is_leader_1 or char.is_leader_2
-            ]
-        )
-
-    @property
-    def lbs_tank1(self) -> OrderedSet[str]:
-        """
-        获得 1 号坦克的 label 列表 (通常只有一个人).
-        """
-        return OrderedSet(
-            [char.window.label for char in self.active_chars if char.is_tank_1]
-        )
-
-    @property
-    def lbs_tank2(self) -> OrderedSet[str]:
-        """
-        获得 2 号坦克的 label 列表 (通常只有一个人).
-        """
-        return OrderedSet(
-            [char.window.label for char in self.active_chars if char.is_tank_2]
+            [lb for lb in [self.lb_leader1, self.lb_leader2] if lb is not None]
         )
 
     @property
     def lbs_tank(self) -> OrderedSet[str]:
         """
-        获得 2 号坦克的 label 列表 (通常只有一个人).
+        获得所有 tank 角色的 Label 集合.
         """
         return OrderedSet(
-            [
-                char.window.label
-                for char in self.active_chars
-                if char.is_tank_1 or char.is_tank_2
-            ]
-        )
-
-    @property
-    def lbs_dr_pala1(self) -> OrderedSet[str]:
-        return OrderedSet(
-            [char.window.label for char in self.active_chars if char.is_dr_pala_1]
-        )
-
-    @property
-    def lbs_dr_pala2(self) -> OrderedSet[str]:
-        return OrderedSet(
-            [char.window.label for char in self.active_chars if char.is_dr_pala_2]
+            [lb for lb in [self.lb_tank1, self.lb_tank2] if lb is not None]
         )
 
     @property
@@ -276,20 +277,23 @@ class Mode(AttrsClass):
         self,
         tc: TC,
         funcs: T.Iterable[T.Callable],
-    ) -> hkn.SendLabel:
+    ) -> T.Optional[hkn.SendLabel]:
         """
-        根据天赋组对角色进行筛选, 并生成 SendLabel 对象.
+        根据天赋组对角色进行筛选, 并生成 SendLabel 对象. 这个方法是为了简化代码而设计的.
 
         :param funcs: 一系列的函数, 用于构建在 send label 的 block 中的内容.
             比如连续按下多个按键.
         """
-        with hkn.SendLabel(
-            id=tc.name,
-            to=self.lbs_by_tc(tc),
-        ) as send_label:
-            for func in funcs:
-                func()
-            return send_label
+        lbs = self.lbs_by_tc(tc)
+        if lbs:
+            with hkn.SendLabel(
+                id=tc.name,
+                to=lbs,
+            ) as send_label:
+                for func in funcs:
+                    func()
+                return send_label
+        return None
 
     # --------------------------------------------------------------------------
     # 把 Mode 对象转换成 hotkey 脚本

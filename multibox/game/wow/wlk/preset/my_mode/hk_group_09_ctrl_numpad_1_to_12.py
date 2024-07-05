@@ -123,28 +123,30 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Priest.Hymn_of_Hope()
 
     def build_hk_ctrl_numpad_11_tank_1_taunt(self: "Mode"):
-        with hk.Hotkey(
-            id="Ctrl Numpad11 - 主坦克嘲讽",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_11_DIVIDE)),
-        ) as self.hk_ctrl_numpad_11:
-            with hk.SendLabel(
-                id="tank1",
-                to=self.lbs_tank1,
-            ):
-                act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
-                act.PaladinProtection.Hand_of_Reckoning()
+        if self.lb_tank1:
+            with hk.Hotkey(
+                id="Ctrl Numpad11 - 主坦克嘲讽",
+                key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_11_DIVIDE)),
+            ) as self.hk_ctrl_numpad_11:
+                with hk.SendLabel(
+                    id="tank1",
+                    to=[self.lb_tank1],
+                ):
+                    act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
+                    act.PaladinProtection.Hand_of_Reckoning()
 
     def build_hk_ctrl_numpad_12_tank_2_taunt(self: "Mode"):
-        with hk.Hotkey(
-            id="Ctrl Numpad12 - 副坦克嘲讽",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_12_MULTIPLY)),
-        ) as self.hk_ctrl_numpad_12:
-            with hk.SendLabel(
-                id="tank2",
-                to=self.lbs_tank2,
-            ):
-                act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
-                act.DK.Dark_Command()
+        if self.lb_tank2:
+            with hk.Hotkey(
+                id="Ctrl Numpad12 - 副坦克嘲讽",
+                key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_12_MULTIPLY)),
+            ) as self.hk_ctrl_numpad_12:
+                with hk.SendLabel(
+                    id="tank2",
+                    to=[self.lb_tank2],
+                ):
+                    act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
+                    act.DK.Dark_Command()
 
     def build_hk_group_09_ctrl_numpad_1_to_12_mixin(self: "Mode"):
         self.build_hk_ctrl_numpad_1_silence_shot_focus_target()

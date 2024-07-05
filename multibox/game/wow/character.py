@@ -117,6 +117,7 @@ class Character(BaseSemiMutableModel, AttrsClass):
         cls,
         chars: T.Iterable["T_CHARACTER"],
         field: str,
+        is_active: bool = True,
     ) -> T.Optional["T_CHARACTER"]:
         """
         一个用于内部实现的方法, 从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的
@@ -126,7 +127,11 @@ class Character(BaseSemiMutableModel, AttrsClass):
         """
         for char in chars:
             if getattr(char, field):
-                return char
+                if is_active:
+                    if char.is_active:
+                        return char
+                else:
+                    return char
         return None
 
 

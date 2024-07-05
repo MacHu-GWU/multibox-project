@@ -550,6 +550,14 @@ class CharacterGroupFactory: # pragma: no cover
     def s_1_to_5(self) -> OrderedSet[Character]:
         return ds.get_build_group("s_1_to_5")
 
+    @property
+    def warmane_quarterly_login_team1(self) -> OrderedSet[Character]:
+        return ds.get_build_group("warmane_quarterly_login_team1")
+
+    @property
+    def warmane_quarterly_login_team2(self) -> OrderedSet[Character]:
+        return ds.get_build_group("warmane_quarterly_login_team2")
+
 
 char_group_fact = CharacterGroupFactory()
 
@@ -599,16 +607,24 @@ client_fact = ClientFactory()
 class ModeFactory: # pragma: no cover
 
     @property
-    def alliance_r_abcde_solo_dungeon(self) -> Mode:
-        return ds.get_mode("alliance_r_abcde_solo_dungeon", Mode)
+    def acore_alliance_r_abcde_solo_dungeon(self) -> Mode:
+        return ds.get_mode("acore_alliance_r_abcde_solo_dungeon", Mode)
 
     @property
-    def alliance_r_abcdefghij_solo_raid(self) -> Mode:
-        return ds.get_mode("alliance_r_abcdefghij_solo_raid", Mode)
+    def acore_alliance_r_abcdefghij_solo_raid(self) -> Mode:
+        return ds.get_mode("acore_alliance_r_abcdefghij_solo_raid", Mode)
 
     @property
-    def horde_s_abcde_solo_dungeon(self) -> Mode:
-        return ds.get_mode("horde_s_abcde_solo_dungeon", Mode)
+    def acore_horde_s_abcde_solo_dungeon(self) -> Mode:
+        return ds.get_mode("acore_horde_s_abcde_solo_dungeon", Mode)
+
+    @property
+    def warmane_quarterly_login_team1(self) -> Mode:
+        return ds.get_mode("warmane_quarterly_login_team1", Mode)
+
+    @property
+    def warmane_quarterly_login_team2(self) -> Mode:
+        return ds.get_mode("warmane_quarterly_login_team2", Mode)
 
 
 mode_fact = ModeFactory()
@@ -789,6 +805,8 @@ if __name__ == "__main__": # pragma: no cover
     print(char_group_fact.r_1_to_10_solo_dungeon_team1)
     print(char_group_fact.r_1_to_10_solo_dungeon_team2)
     print(char_group_fact.s_1_to_5)
+    print(char_group_fact.warmane_quarterly_login_team1)
+    print(char_group_fact.warmane_quarterly_login_team2)
     print(client_fact.zhTW_1920_1080)
     print(client_fact.zhTW_1600_900)
     print(client_fact.zhTW_1176_664)
@@ -798,7 +816,9 @@ if __name__ == "__main__": # pragma: no cover
     print(client_fact.enUS_1920_1080)
     print(client_fact.enUS_1600_900)
     print(client_fact.enUS_1176_664)
-    print(mode_fact.alliance_r_abcde_solo_dungeon)
-    print(mode_fact.alliance_r_abcdefghij_solo_raid)
-    print(mode_fact.horde_s_abcde_solo_dungeon)
+    print(mode_fact.acore_alliance_r_abcde_solo_dungeon)
+    print(mode_fact.acore_alliance_r_abcdefghij_solo_raid)
+    print(mode_fact.acore_horde_s_abcde_solo_dungeon)
+    print(mode_fact.warmane_quarterly_login_team1)
+    print(mode_fact.warmane_quarterly_login_team2)
 # fmt: on
