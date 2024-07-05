@@ -67,7 +67,7 @@ class HotkeyGroup01WindowAndLoginMixin:
             ) as hotkey:
                 self.cmd_bring_window_to_foreground.call(
                     args=[
-                        Window.make(index).title,
+                        Window.new(index).title,
                     ]
                 )
                 self.hk_list_toggle_specific_window.append(hotkey)

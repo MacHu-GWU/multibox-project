@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-- :class:`Character`
-- :class:`CharacterHelper`
+该模块提供了在多开时的一个游戏角色的抽象.
+
+.. seealso::
+
+    - :class:`Character`
+    - :class:`CharacterHelper`
 """
 
 import typing as T
 from collections import OrderedDict
+from functools import cached_property
 
 import attrs
 from attrs_mate import AttrsClass
@@ -15,7 +20,7 @@ from .account import Account
 from .window import Window
 
 
-@attrs.define
+@attrs.define(eq=False, slots=False)
 class Character(AttrsClass):
     """
     代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
@@ -74,6 +79,18 @@ class Character(AttrsClass):
     is_leader_2: bool = AttrsClass.ib_bool(nullable=True, default=False)
     leader_1_window: Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
     leader_2_window: Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+
+    @cached_property
+    def hash_key(self) -> str:
+        return "{}_{}".format(
+            str(self.account.username.lower()).zfill(32),
+            str(self.name.lower()).zfill(32),
+        )
+
+    @cached_property
+    def sort_key(self) -> str:
+        return self.name.lower()
+
 
     def set_window(self, window: Window) -> "Character":
         self.window = window

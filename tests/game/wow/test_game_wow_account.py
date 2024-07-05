@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
+"""
+注: 这个模块没有什么特定功能, 它的方法都在 ``BaseSemiMutableModel`` 基类的单元测试中测过了.
+"""
+
 from multibox.game.wow.account import Account
 
 
 class TestAccount:
-    def test_make(self):
-        acc1_1 = Account("acc1", "pwd1")
-        acc1_2 = Account("acc1", "pwd1")
-        assert id(acc1_1) != id(acc1_2)
+    def test(self):
+        _ = Account(username="acc1", password="pass1")
 
 
 if __name__ == "__main__":

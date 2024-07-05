@@ -7,7 +7,6 @@ def test():
     _ = act.Movement
     _ = act.PetAction
     _ = act.Target
-    _ = act.target_leader_key_mapper
     _ = act.Camera
     _ = act.System
     _ = act.General

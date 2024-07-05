@@ -31,8 +31,8 @@ class TestCharacter:
             .set_not_tank_1()
             .set_tank_2()
             .set_not_tank_2()
-            .set_tank_1_window(window=Window.make(1))
-            .set_tank_2_window(window=Window.make(2))
+            .set_tank_1_window(window=Window.new(1))
+            .set_tank_2_window(window=Window.new(2))
             .set_dr_pala_1()
             .set_dr_pala_2()
             .set_leader_1_tank_1()
@@ -63,12 +63,12 @@ class TestCharacterHelper:
         a = Character(
             account=Account(username="multi1", password=""),
             name="a",
-            window=Window.make(1),
+            window=Window.new(1),
         ).set_leader_12_and_tank_12()
         b = Character(
             account=Account(username="multi2", password=""),
             name="b",
-            window=Window.make(2),
+            window=Window.new(2),
         )
         chars = [a, b]
 
@@ -87,12 +87,12 @@ class TestCharacterHelper:
         a = Character(
             account=Account(username="multi1", password=""),
             name="a",
-            window=Window.make(1),
+            window=Window.new(1),
         )
         b = Character(
             account=Account(username="multi2", password=""),
             name="b",
-            window=Window.make(2),
+            window=Window.new(2),
         )
         with pytest.raises(Exception):
             a.set_is_leader_1()
@@ -108,19 +108,19 @@ class TestCharacterHelper:
         a = Character(
             account=Account(username="multi1", password=""),
             name="a",
-            window=Window.make(1),
+            window=Window.new(1),
             talent=TL.warrior_pve_protect,
         )
         b = Character(
             account=Account(username="multi2", password=""),
             name="b",
-            window=Window.make(2),
+            window=Window.new(2),
             talent=TL.mage_pve_frost,
         )
         c = Character(
             account=Account(username="multi3", password=""),
             name="c",
-            window=Window.make(3),
+            window=Window.new(3),
             talent=TL.priest_pve_holy,
         )
         chars = [b, c, a]

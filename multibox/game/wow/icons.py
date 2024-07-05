@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
 
+"""
+对所有跟多开相关的图标文件进行枚举.
+
+.. seealso::
+
+    - :class:`Icons`
+"""
+
 from pathlib_mate import Path
 
 dir_icons = Path.dir_here(__file__) / "icons"
 
 # fmt: off
 class Icons:
+    """
+    所有图标文件的路径.
+    """
     ability_druid_starfall = (dir_icons / "ability_druid_starfall.jpg").abspath
     ability_druid_typhoon = (dir_icons / "ability_druid_typhoon.jpg").abspath
     ability_hunter_aspectoftheviper = (dir_icons / "ability_hunter_aspectoftheviper.jpg").abspath

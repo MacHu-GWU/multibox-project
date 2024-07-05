@@ -19,9 +19,9 @@ class TestCharacter:
         """
         确保这些 set 属性的方法能够正确设置 character 的属性.
         """
-        window = Window.make(3)
-        leader_1_window = Window.make(1)
-        leader_2_window = Window.make(2)
+        window = Window.new(3)
+        leader_1_window = Window.new(1)
+        leader_2_window = Window.new(2)
 
         char1 = Character(account=Account("admin", "admin"), name="gm")
         assert char1.is_leader_1 is False
@@ -72,12 +72,12 @@ class TestCharacterHelper:
         a = Character(
             account=Account(username="multi1", password=""),
             name="a",
-            window=Window.make(1),
+            window=Window.new(1),
         ).set_is_leader_1()
         b = Character(
             account=Account(username="multi2", password=""),
             name="b",
-            window=Window.make(2),
+            window=Window.new(2),
         ).set_is_leader_2()
         chars = [a, b]
 

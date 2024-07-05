@@ -77,6 +77,55 @@ class ModeTabColumnEnum(str, enum.Enum):
 dir_home = Path.home()
 
 
+def strip_whitespace(
+    df: pl.DataFrame,
+    col: T.Union[str, T.List[str]],
+) -> pl.DataFrame:
+    """
+    把表格中的某些列的字符串两边的空格去掉.
+    """
+    if isinstance(col, str):
+        cols = [col]
+    else:
+        cols = col
+    return df.with_columns([pl.col(col).str.strip_chars() for col in cols])
+
+
+def find_not_unique(df: pl.DataFrame, col: str) -> pl.DataFrame:
+    df_not_unique = df[col].value_counts().filter(pl.col("count") > 1)
+    return df_not_unique
+
+
+def validate_uniqueness(df: pl.DataFrame, col: str, sheet: str):
+    """
+    确保一个表中的某一列是唯一的.
+    """
+    if df[col].n_unique() != df.shape[0]:  # pragma: no cover
+        df_not_unique = find_not_unique(df, col)
+        print(df_not_unique)
+        raise ValueError(f"Found duplicated value in sheet {sheet!r}, column {col!r}")
+
+
+def validate_inner_join(
+    df_joined: pl.DataFrame,
+    df: pl.DataFrame,
+    on: str,
+    sheet: str,
+):
+    """
+    确保在 Join 两个表获取更多信息的时候, 没有出现因为左表 (fact 表) join 的 key 在右表中
+    找不到而导致丢失数据的情况.
+    """
+    if df_joined.shape[0] != df.shape[0]:  # pragma: no cover
+        df_not_valid = df.join(
+            df_joined,
+            on=on,
+            how="anti",
+        )
+        print(df_not_valid)
+        raise ValueError(f"Found {sheet!r} without a valid {on!r} in sheet {sheet!r}")
+
+
 @dataclasses.dataclass
 class Dataset:
     # fmt: off
@@ -102,86 +151,114 @@ class Dataset:
         df_mode = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.mode.value)
         # fmt: on
 
-        # validation
-        if df_account["account"].n_unique() != df_account.shape[0]:  # pragma: no cover
-            raise ValueError("Found duplicated account in sheet 'account'")
+        # preprocess
+        df_account = strip_whitespace(
+            df=df_account,
+            col=[
+                AccountTabColumnEnum.account.value,
+                AccountTabColumnEnum.password.value,
+            ],
+        )
+        df_character = strip_whitespace(
+            df=df_character,
+            col=[
+                CharacterTabColumnEnum.character.value,
+                CharacterTabColumnEnum.account.value,
+            ],
+        )
+        df_build = strip_whitespace(
+            df=df_build,
+            col=BuildTabColumnEnum.build.value,
+        )
+        df_build_group = strip_whitespace(
+            df=df_build_group,
+            col=[
+                BuildGroupTabColumnEnum.build_group.value,
+                BuildGroupTabColumnEnum.build.value,
+            ],
+        )
+        df_client = strip_whitespace(
+            df=df_client,
+            col=ClientTabColumnEnum.client.value,
+        )
+        df_mode = strip_whitespace(
+            df=df_mode,
+            col=ModeTabColumnEnum.mode.value,
+        )
 
-        if (
-            df_character["character"].n_unique() != df_character.shape[0]
-        ):  # pragma: no cover
-            df_not_unique = (
-                df_character[CharacterTabColumnEnum.character.value]
-                .value_counts()
-                .filter(pl.col("count") > 1)
-            )
-            print(df_not_unique)
-            raise ValueError("Found duplicated character in sheet 'account'")
+        # validation
+        validate_uniqueness(
+            df=df_account,
+            col=AccountTabColumnEnum.account.value,
+            sheet=SpreadSheetTabEnum.account.value,
+        )
+        validate_uniqueness(
+            df=df_character,
+            col=CharacterTabColumnEnum.character.value,
+            sheet=SpreadSheetTabEnum.character.value,
+        )
+        validate_uniqueness(
+            df=df_build,
+            col=BuildTabColumnEnum.build.value,
+            sheet=SpreadSheetTabEnum.build.value,
+        )
+        validate_uniqueness(
+            df=df_client,
+            col=ClientTabColumnEnum.client.value,
+            sheet=SpreadSheetTabEnum.client.value,
+        )
+        validate_uniqueness(
+            df=df_mode,
+            col=ModeTabColumnEnum.mode.value,
+            sheet=SpreadSheetTabEnum.mode.value,
+        )
+
+        # data enrichment
         df_character_joined = df_character.join(
             df_account,
             on=AccountTabColumnEnum.account.value,
             how="inner",
             coalesce=True,
         )
-        if df_character_joined.shape[0] != df_character.shape[0]:  # pragma: no cover
-            raise ValueError(
-                "Found character without a valid account in sheet 'character'"
-            )
+        validate_inner_join(
+            df_joined=df_character_joined,
+            df=df_character,
+            on=CharacterTabColumnEnum.account.value,
+            sheet=SpreadSheetTabEnum.character.value,
+        )
 
-        if (
-            df_build[BuildTabColumnEnum.build.value].n_unique() != df_build.shape[0]
-        ):  # pragma: no cover
-            df_not_unique = (
-                df_build[BuildTabColumnEnum.build.value]
-                .value_counts()
-                .filter(pl.col("count") > 1)
-            )
-            print(df_not_unique)
-            raise ValueError("Found duplicated build in sheet 'build'")
         df_build_joined = df_build.join(
             df_character_joined,
-            on=CharacterTabColumnEnum.character.value,
+            on=BuildTabColumnEnum.character.value,
             how="inner",
             coalesce=True,
         )
-        if df_build_joined.shape[0] != df_build.shape[0]:  # pragma: no cover
-            raise ValueError("Found build without a valid character in sheet 'build'")
+        validate_inner_join(
+            df_joined=df_build_joined,
+            df=df_build,
+            on=BuildTabColumnEnum.character.value,
+            sheet=SpreadSheetTabEnum.build.value,
+        )
 
         df_build_group_joined = df_build_group.join(
             df_build_joined,
-            on=BuildTabColumnEnum.build.value,
+            on=BuildGroupTabColumnEnum.build.value,
             how="inner",
             coalesce=True,
         )
-        if (
-            df_build_group_joined.shape[0] != df_build_group.shape[0]
-        ):  # pragma: no cover
-            raise ValueError(
-                "Found build group without a valid build in sheet 'build_group'"
-            )
+        validate_inner_join(
+            df_joined=df_build_group_joined,
+            df=df_build_group,
+            on=BuildGroupTabColumnEnum.build.value,
+            sheet=SpreadSheetTabEnum.build_group.value,
+        )
 
-        if df_client["client"].n_unique() != df_client.shape[0]:  # pragma: no cover
-            df_not_unique = (
-                df_client[ClientTabColumnEnum.client.value]
-                .value_counts()
-                .filter(pl.col("count") > 1)
-            )
-            print(df_not_unique)
-            raise ValueError("Found duplicated client in sheet 'client'")
-
-        if df_mode["mode"].n_unique() != df_mode.shape[0]:  # pragma: no cover
-            df_not_unique = (
-                df_mode[ModeTabColumnEnum.mode.value]
-                .value_counts()
-                .filter(pl.col("count") > 1)
-            )
-            print(df_not_unique)
-            raise ValueError("Found duplicated mode in sheet 'mode'")
-
-        # convert
+        # convert to in-memory dict
         accounts = {
             dct[AccountTabColumnEnum.account.value]: dct
             for dct in df_account.to_dicts()
         }
+
         builds = {
             dct[BuildTabColumnEnum.build.value]: dct
             for dct in df_build_joined.to_dicts()
@@ -192,11 +269,7 @@ class Dataset:
             BuildGroupTabColumnEnum.build_group.value, maintain_order=True
         ):
             if sub_df["build"].n_unique() != sub_df.shape[0]:  # pragma: no cover
-                df_not_unique = (
-                    sub_df[BuildTabColumnEnum.build.value]
-                    .value_counts()
-                    .filter(pl.col("count") > 1)
-                )
+                df_not_unique = find_not_unique(sub_df, BuildTabColumnEnum.build.value)
                 print(df_not_unique)
                 raise ValueError(
                     f"Found duplicated build in build group '{build_group}'"
@@ -258,7 +331,7 @@ class Dataset:
         chars = list()
         for build_dct in dct["build_list"]:
             char = self.get_character(build_dct["build"])
-            new_char = attrs.evolve(char, window=Window.make(build_dct["window"]))
+            new_char = attrs.evolve(char, window=Window.new(build_dct["window"]))
             chars.append(new_char)
         return OrderedSet(chars)
 
@@ -289,7 +362,7 @@ class Dataset:
         target_leader = dct[ModeTabColumnEnum.target_leader.value]
         mapping = self.target_leaders[target_leader]
         target_leader_key_mapper = {
-            Window.make(index).label: KeyMaker(key=keyboard)
+            Window.new(index).label: KeyMaker(key=keyboard)
             for index, keyboard in mapping.items()
         }
 
