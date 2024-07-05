@@ -7,7 +7,7 @@ from multibox.utils.models import BaseSemiMutableModel
 
 # @functools.total_ordering
 @attrs.define(eq=False, slots=False)
-class Account(BaseSemiMutableModel):
+class GenericAccount(BaseSemiMutableModel):
     username: str = attrs.field()
     password: str = attrs.field()
 
@@ -18,6 +18,11 @@ class Account(BaseSemiMutableModel):
     @cached_property
     def sort_key(self) -> str:
         return self.username
+
+
+@attrs.define(eq=False, slots=False)
+class Account(GenericAccount):
+    pass
 
 
 class TestBaseSemiMutableModel:
