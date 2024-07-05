@@ -102,20 +102,6 @@ class Target:
         /assist
     """
 
-    # --- Target specific person
-    # 以下的几个设置需要配合宏命令
-    # w01
-    TARGET_W01_RA = None
-
-    # w10
-    TARGET_W10_RJ = None
-
-
-target_leader_key_mapper = {
-    Window.make(1).label: Target.TARGET_W01_RA,
-    Window.make(10).label: Target.TARGET_W10_RJ,
-}
-
 
 class Camera:
     """

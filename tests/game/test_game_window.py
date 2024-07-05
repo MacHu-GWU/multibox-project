@@ -20,8 +20,8 @@ class TestWindow:
     def test_make(self):
         window = Window.new(1)
         assert window.index == 1
-        assert window.label == "w01"
         assert window.title == "WoW01"
+        assert window.label == "w01"
 
     def test_to_labels(self):
         assert Window.to_labels(1) == ["w01"]
