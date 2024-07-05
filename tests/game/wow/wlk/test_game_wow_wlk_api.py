@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from multibox.game.wow.wlk.api import (
-    Account,
-    Character,
-    CharacterHelper,
-    Talent,
-    TalentCategory,
-    Window,
-)
+import multibox.game.wow.wlk.api as api
 
 
 def test():
-    pass
+    _ = api.T_LABEL_LIKE
+    _ = api.T_LABELS_ARG
+    _ = api.Window
+    _ = api.Account
+    _ = api.LocaleEnum
+    _ = api.Character
+    _ = api.Talent
+    _ = api.TalentCategory
+    _ = api.Client
+    _ = api.Mode
+    _ = api.TL
+    _ = api.TC
 
 
 if __name__ == "__main__":

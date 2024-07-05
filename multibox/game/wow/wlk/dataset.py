@@ -32,13 +32,19 @@ class SpreadSheetTabEnum(str, enum.Enum):
     build = "build"
     build_group = "build_group"
     client = "client"
-    target_leader = "target_leader"
+    target_key_mapping = "target_key_mapping"
     mode = "mode"
 
 
 class AccountTabColumnEnum(str, enum.Enum):
     account = "account"
     password = "password"
+
+
+account_schema = {
+    AccountTabColumnEnum.account.value: pl.String,
+    AccountTabColumnEnum.password.value: pl.String,
+}
 
 
 class CharacterTabColumnEnum(str, enum.Enum):
@@ -49,29 +55,53 @@ class CharacterTabColumnEnum(str, enum.Enum):
 
 class BuildTabColumnEnum(str, enum.Enum):
     build = "build"
+    suffix = "suffix"
     character = "character"
     spec = "spec"
+    spec_simulator = "spec_simulator"
 
 
 class BuildGroupTabColumnEnum(str, enum.Enum):
     build_group = "build_group"
     build = "build"
     window = "window"
+    is_active = "is_active"
+    is_leader_1 = "is_leader_1"
+    is_leader_2 = "is_leader_2"
+    is_tank_1 = "is_tank_1"
+    is_tank_2 = "is_tank_2"
+    is_dr_pala_1 = "is_dr_pala_1"
+    is_dr_pala_2 = "is_dr_pala_2"
+
+
+build_group_schema = {
+    BuildGroupTabColumnEnum.build_group.value: pl.String,
+    BuildGroupTabColumnEnum.build.value: pl.String,
+    BuildGroupTabColumnEnum.window.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_active.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_leader_1.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_leader_2.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_tank_1.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_tank_2.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_dr_pala_1.value: pl.Int8,
+    BuildGroupTabColumnEnum.is_dr_pala_2.value: pl.Int8,
+}
 
 
 class ClientTabColumnEnum(str, enum.Enum):
     client = "client"
 
 
-class TargetLeaderTabColumnEnum(str, enum.Enum):
-    setup = "setup"
+class TargetKeyMappingTabColumnEnum(str, enum.Enum):
+    mapping = "mapping"
     window = "window"
     keyboard = "keyboard"
 
 
 class ModeTabColumnEnum(str, enum.Enum):
     mode = "mode"
-    target_leader = "target_leader"
+    chars = "chars"
+    target_key_mapping = "target_key_mapping"
 
 
 dir_home = Path.home()
@@ -134,19 +164,24 @@ class Dataset:
     builds: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     build_groups: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     clients: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
-    target_leaders: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
+    target_key_mappings: T.Dict[str, T.Dict[int, str]] = dataclasses.field(default_factory=dict)
     modes: T.Dict[str, T.Dict[str, T.Any]] = dataclasses.field(default_factory=dict)
     # fmt: on
 
     @classmethod
     def from_excel(cls, path_excel: T.Union[str, Path]):
+        """
+        从 Excel 文件中读取数据, 并转换成内存中的数据.
+
+        Sample excel: https://docs.google.com/spreadsheets/d/1gMWItF6I6e6iYZ7wBdqaN_ENjJu8XSc1-7RFmSmGnSc/edit?gid=132622854#gid=132622854
+        """
         path_excel = Path(path_excel)
         # fmt: off
-        df_account = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.account.value, schema_overrides={"account": pl.Utf8, "password": pl.Utf8})
+        df_account = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.account.value, schema_overrides=account_schema)
         df_character = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.character.value)
         df_build = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build.value)
-        df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value)
-        df_target_leader = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.target_leader.value)
+        df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value, schema_overrides=build_group_schema)
+        df_target_leader = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.target_key_mapping.value)
         df_client = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.client.value)
         df_mode = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.mode.value)
         # fmt: on
@@ -265,21 +300,53 @@ class Dataset:
         }
 
         build_groups = {}
+
+        def validate_uniqueness_in_sub_df(
+            sub_df: pl.DataFrame, col: str, build_group: str
+        ):
+            if sub_df[col].n_unique() != sub_df.shape[0]:  # pragma: no cover
+                df_not_unique = find_not_unique(sub_df, col)
+                print(df_not_unique)
+                raise ValueError(
+                    f"Found duplicated {col!r} in build group '{build_group}'"
+                )
+
+        def validate_at_most_one(sub_df: pl.DataFrame, col: str, build_group: str):
+            if sub_df[col].is_not_null().sum() > 1:
+                raise ValueError(
+                    f"Found multiple {col!r} in build group '{build_group}'"
+                )
+
+        build_group: str
         for (build_group,), sub_df in df_build_group_joined.group_by(
             BuildGroupTabColumnEnum.build_group.value, maintain_order=True
         ):
-            if sub_df["build"].n_unique() != sub_df.shape[0]:  # pragma: no cover
-                df_not_unique = find_not_unique(sub_df, BuildTabColumnEnum.build.value)
-                print(df_not_unique)
-                raise ValueError(
-                    f"Found duplicated build in build group '{build_group}'"
+            validate_uniqueness_in_sub_df(
+                sub_df=sub_df,
+                col=BuildTabColumnEnum.build.value,
+                build_group=build_group,
+            )
+            validate_uniqueness_in_sub_df(
+                sub_df=sub_df,
+                col=BuildGroupTabColumnEnum.window.value,
+                build_group=build_group,
+            )
+            for col in [
+                BuildGroupTabColumnEnum.is_leader_1.value,
+                BuildGroupTabColumnEnum.is_leader_2.value,
+                BuildGroupTabColumnEnum.is_tank_1.value,
+                BuildGroupTabColumnEnum.is_tank_2.value,
+                BuildGroupTabColumnEnum.is_dr_pala_1.value,
+                BuildGroupTabColumnEnum.is_dr_pala_2.value,
+            ]:
+                validate_at_most_one(
+                    sub_df=sub_df,
+                    col=col,
+                    build_group=build_group,
                 )
             dct = {
                 BuildGroupTabColumnEnum.build_group.value: build_group,
-                "build_list": [
-                    {"build": sub_dct["build"], "window": sub_dct["window"]}
-                    for sub_dct in sub_df.to_dicts()
-                ],
+                "build_list": sub_df.sort(by="window").to_dicts(),
             }
             build_groups[build_group] = dct
 
@@ -287,17 +354,18 @@ class Dataset:
             dct[ClientTabColumnEnum.client.value]: dct for dct in df_client.to_dicts()
         }
 
-        target_leaders = {}
+        target_key_mappings = {}
+        setup: str
         for (setup,), sub_df in df_target_leader.group_by(
-            TargetLeaderTabColumnEnum.setup.value, maintain_order=True
+            TargetKeyMappingTabColumnEnum.mapping.value, maintain_order=True
         ):
             mapping = {
-                dct[TargetLeaderTabColumnEnum.window.value]: dct[
-                    TargetLeaderTabColumnEnum.keyboard.value
+                dct[TargetKeyMappingTabColumnEnum.window.value]: dct[
+                    TargetKeyMappingTabColumnEnum.keyboard.value
                 ]
                 for dct in sub_df.to_dicts()
             }
-            target_leaders[setup] = mapping
+            target_key_mappings[setup] = mapping
 
         modes = {dct[ModeTabColumnEnum.mode.value]: dct for dct in df_mode.to_dicts()}
 
@@ -306,7 +374,7 @@ class Dataset:
             builds=builds,
             build_groups=build_groups,
             clients=clients,
-            target_leaders=target_leaders,
+            target_key_mappings=target_key_mappings,
             modes=modes,
         )
 
@@ -328,11 +396,48 @@ class Dataset:
 
     def get_build_group(self, build_group: str) -> OrderedSet[Character]:
         dct = self.build_groups[build_group]
+        # 从 build 表中拿核心数据, 从 build_group 中拿根具体玩法有关的数据
         chars = list()
         for build_dct in dct["build_list"]:
-            char = self.get_character(build_dct["build"])
-            new_char = attrs.evolve(char, window=Window.new(build_dct["window"]))
+            old_char = self.get_character(
+                build_dct[BuildGroupTabColumnEnum.build.value]
+            )
+            new_char = attrs.evolve(
+                old_char,
+                window=Window.new(build_dct[BuildGroupTabColumnEnum.window.value]),
+                is_active=bool(build_dct[BuildGroupTabColumnEnum.is_active.value]),
+                is_leader_1=bool(build_dct[BuildGroupTabColumnEnum.is_leader_1.value]),
+                is_leader_2=bool(build_dct[BuildGroupTabColumnEnum.is_leader_2.value]),
+                is_tank_1=bool(build_dct[BuildGroupTabColumnEnum.is_tank_1.value]),
+                is_tank_2=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2.value]),
+                is_dr_pala_1=bool(
+                    build_dct[BuildGroupTabColumnEnum.is_dr_pala_1.value]
+                ),
+                is_dr_pala_2=bool(
+                    build_dct[BuildGroupTabColumnEnum.is_dr_pala_2.value]
+                ),
+            )
             chars.append(new_char)
+        # 如果有一个人是 leader1, 那么让其他人知道谁是 leader1
+        # 并对 leader2, tank1, tank2 做同样的事
+        # 这里不要过度优化, 就这样枚举一遍比较清楚
+        for char in chars:
+            if char.is_leader_1:
+                for other_char in chars:
+                    if other_char.hash_key != char.hash_key:
+                        other_char.leader_1 = char
+            if char.is_leader_2:
+                for other_char in chars:
+                    if other_char.hash_key != char.hash_key:
+                        other_char.leader_2 = char
+            if char.is_tank_1:
+                for other_char in chars:
+                    if other_char.hash_key != char.hash_key:
+                        other_char.tank1 = char
+            if char.is_tank_2:
+                for other_char in chars:
+                    if other_char.hash_key != char.hash_key:
+                        other_char.tank2 = char
         return OrderedSet(chars)
 
     def get_client(self, client: str) -> Client:
@@ -347,39 +452,19 @@ class Dataset:
         mode_class: T.Type[Mode] = Mode,
     ) -> Mode:
         dct = self.modes[mode]
-
-        def get_active_login_chars(type: str) -> OrderedSet[Character]:
-            chars = OrderedSet()
-            for i in range(1, 1 + 3):
-                value = dct[f"{type}_chars_include{i}"]
-                if value:
-                    chars.update(self.get_build_group(value))
-                value = dct[f"{type}_chars_exclude{i}"]
-                if value:
-                    chars.difference_update(self.get_build_group(value))
-            return chars
-
-        target_leader = dct[ModeTabColumnEnum.target_leader.value]
-        mapping = self.target_leaders[target_leader]
-        target_leader_key_mapper = {
+        chars = self.get_build_group(build_group=dct["chars"])
+        setup = dct[ModeTabColumnEnum.target_key_mapping.value]
+        mapping = self.target_key_mappings[setup]
+        target_key_mapping = {
             Window.new(index).label: KeyMaker(key=keyboard)
             for index, keyboard in mapping.items()
         }
-
         mode = mode_class(
             name=dct[ModeTabColumnEnum.mode.value],
             client=self.get_client(dct["client"]),
-            active_chars=get_active_login_chars("active"),
-            login_chars=get_active_login_chars("login"),
-            target_leader_key_mapper=target_leader_key_mapper,
-            leader1=self.get_character(dct["leader1"]) if dct["leader1"] else None,
-            leader2=self.get_character(dct["leader2"]) if dct["leader2"] else None,
-            tank1=self.get_character(dct["tank1"]) if dct["tank1"] else None,
-            tank2=self.get_character(dct["tank2"]) if dct["tank2"] else None,
-            dr_pala1=self.get_character(dct["dr_pala1"]) if dct["dr_pala1"] else None,
-            dr_pala2=self.get_character(dct["dr_pala2"]) if dct["dr_pala2"] else None,
+            chars=chars,
+            target_key_mapping=target_key_mapping,
         )
-
         return mode
 
     def to_module(

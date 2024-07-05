@@ -18,12 +18,13 @@ from ...wow.account import Account
 from ...wow.window import Window
 
 from .character import Character
-from .character import CharacterHelper
+
+# from .character import CharacterHelper
 from .talent import Talent as TL
 from .talent import TalentCategory as TC
 from .client import Client
 
-T_TARGET_LEAD_KEY_MAPPER = T.Dict[str, hkn.KeyMaker]
+T_TARGET_KEY_MAPPING = T.Dict[str, hkn.KeyMaker]
 
 
 @attrs.define
@@ -35,24 +36,30 @@ class Mode(AttrsClass):
     :param name: 给这个模式一个人类可读的名字.
     :param client: 客户端的相关设置.
     :param active_chars: 指定要使用哪些角色进行游戏. 跟人物移动, 战斗相关的按键将会对这些角色生效.
-    :param login_chars: 指定要登录哪些角色. 跟人物移动,战斗相关的按键将 **不会** 对这些角色生效.
-        只有跟登录账号相关的按键有效. 这些账号通常是用来登录了站在那里, 倒东西, 或者做其他事情.
-        最终要被登录的角色是 active_chars 和 login_chars 的并集. 如果 login_chars
-        和 active_chars 的设置有冲突, 则以 active_chars 为准.
-    :param target_leader_key_mapper: 一个字典, key 是队长角色的 label,
+        See :class:`~multibox.game.wow.character.Character` for more details.
+    :param login_chars: 指定要登录哪些角色. 跟人物移动, 战斗相关的按键将 **不会** 对这些角色生效.
+        只有跟登录账号相关的按键有效. 这些账号通常是用来蹲拍卖行, 倒东西, 聊天.
+        最终要被登录的角色是 active_chars 和 login_chars 的合集. 如果一个 ``Character``
+        对象同时出现在 ``active_chars`` 和 ``login_chars``, 那么 ``login_chars`` 中的
+        ``Character`` 对象将会被忽略.
+        See :class:`~multibox.game.wow.character.Character` for more details.
+    :param target_key_mapping: 一个字典, key 是队长角色的 label,
         value 是对应的 KeyMaker 对象 (也就是 hotkeynet 的快捷键). 默认情况下非司机角色
         点击选择 leader 的宏时都是选择 1 号司机, 但是对于司机本人, 特别是多个司机的情况下,
         不同的情况下你的司机选择的目标可能会不同. 例如有的时候是 1, 2 号司机各自行动, 有的时候
         是 2 号司机跟随 1 号司机. 这个字典就是用来定义这种特殊情况的.
     :param script: 你的多开脚本对象.
     :param script_path: 最终的多开脚本文件路径.
+
+    注, ``active_chars`` 和 ``login_chars`` 角色集合必须满足两个条件,
+    character name 没有重复, window 没有重复, 且是按照 window 排序好的.
+    :meth:`multibox.game.wow.wlk.dataset.Dataset.from_excel`
     """
 
     name: T.Optional[str] = attrs.field(default=None)
     client: T.Optional[Client] = attrs.field(default=None)
-    active_chars: OrderedSet[Character] = attrs.field(factory=list)
-    login_chars: OrderedSet[Character] = attrs.field(factory=list)
-    target_leader_key_mapper: T_TARGET_LEAD_KEY_MAPPER = attrs.field(factory=dict)
+    chars: OrderedSet[Character] = attrs.field(factory=OrderedSet)
+    target_key_mapping: T_TARGET_KEY_MAPPING = attrs.field(factory=dict)
     script: hkn.Script = attrs.field(factory=hkn.Script)
     script_path: T.Optional[Path] = attrs.field(default=None)
     leader1: T.Optional[Character] = attrs.field(default=None)
@@ -63,71 +70,18 @@ class Mode(AttrsClass):
     dr_pala2: T.Optional[Character] = attrs.field(default=None)
 
     def __attrs_post_init__(self):
-        # 对所有的 active characters 按照窗口顺序排序.
-        self.active_chars = OrderedSet(
-            CharacterHelper.sort_chars_by_window_label(self.active_chars).values()
-        )
+        # 定位队伍中的关键人物
+        self.leader1 = Character.find_xyz(self.chars, "is_leader_1")
+        self.leader2 = Character.find_xyz(self.chars, "is_leader_2")
+        self.tank1 = Character.find_xyz(self.chars, "is_tank_1")
+        self.tank2 = Character.find_xyz(self.chars, "is_tank_2")
+        self.dr_pala1 = Character.find_xyz(self.chars, "is_dr_pala_1")
+        self.dr_pala2 = Character.find_xyz(self.chars, "is_dr_pala_2")
 
-        # 根据 Mode 中设定的谁是 leader, 谁是 tank, 对所有的 active character 的属性进行设置.
-        def set_role(
-            attr_name: str,
-            meth_name: str,
-        ):
-            """
-            所有的 character 作为 :attr:`Mode.active_chars` 属性传进来时候, 它们的
-            :class:`multibox.game.wow.wlk.character.Character.is_leader_1` 等属性
-            都还没有被设置 (还是 None). 我们在定义 :class:`Mode` 的时候 定义的
-            :attr:`Mode.leader1` 等属性如果是一个 Character, 就将根据这个 Mode 的设定
-            把 active_chars 中对应的 character 的对应属性设为 True (通过调用 set_xyz 方法).
-            """
-            char1 = getattr(self, attr_name)
-            if char1 is not None:
-                for char in self.active_chars:
-                    if char.id == char1.id:
-                        getattr(char, meth_name)()
-
-        set_role("leader1", "set_is_leader_1")
-        set_role("leader2", "set_is_leader_2")
-        set_role("tank1", "set_tank_1")
-        set_role("tank2", "set_tank_2")
-        set_role("dr_pala1", "set_dr_pala_1")
-        set_role("dr_pala2", "set_dr_pala_2")
-
-        CharacterHelper.set_team_leader_and_tank(self.active_chars)
-
-        # 对所有的 login characters 按照窗口顺序排序.
-        self.login_chars = OrderedSet(
-            CharacterHelper.sort_chars_by_window_label(self.login_chars).values()
-        )
-
-        # 将所有的仅 login 的角色设为 inactive
-        for char in self.login_chars:
-            char.set_inactive()
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
         # 先调用 ``with Script()`` 的语法然后才能定义 Command, Hotkey, 这样很麻烦.
         # 所以我们手动将它设为 context 的顶层, 这样就可以直接定义 Command, Hotkey 了.
         hkn.context.push(self.script)
-
-    # --------------------------------------------------------------------------
-    # Validation
-    # --------------------------------------------------------------------------
-    def _ensure_no_duplicate_window(self, chars: T.List[Character]):
-        if len(chars) != len({char.window.label for char in chars}):  # pragma: no cover
-            counter = Counter([char.window.label for char in chars])
-            for label, count in counter.items():
-                if count > 1:
-                    print("Duplicate window label:", label)
-            raise ValueError(
-                f"Character list {chars} cannot has duplicate window label!"
-            )
-
-    @active_chars.validator
-    def validate_active_chars(self, attribute, value):
-        self._ensure_no_duplicate_window(value)
-
-    @login_chars.validator
-    def validate_login_chars(self, attribute, value):
-        self._ensure_no_duplicate_window(value)
 
     @property
     def login_window_and_account_pairs(self) -> T.List[T.Tuple[Window, Account]]:
@@ -138,32 +92,19 @@ class Mode(AttrsClass):
         这里有个特殊情况, 如果 active_chars 中有个 char 占用了 1 号窗口, login_chars 也有
         个 char 占用了 1 号窗口, 那么 active_chars 中的角色将会占用 1 号窗口 (优先级高)
         """
-        window_and_account_pairs: T.List[T.Tuple[Window, Account]] = list()
-        label_set: T.Set[str] = set()
-        for char in self.active_chars:
-            if char.window.label not in label_set:
-                window_and_account_pairs.append((char.window, char.account))
-                label_set.add(char.window.label)
-        for char in self.login_chars:
-            if char.window.label not in label_set:
-                window_and_account_pairs.append((char.window, char.account))
-                label_set.add(char.window.label)
-        window_and_account_pairs = list(
-            sorted(window_and_account_pairs, key=lambda x: x[0].index)
-        )
+        window_and_account_pairs: T.List[T.Tuple[Window, Account]] = [
+            (char.window, char.account)
+            for char in self.chars
+        ]
         return window_and_account_pairs
 
     @property
-    def target_leader_1(self) -> hkn.KeyMaker:
-        return self.target_leader_key_mapper[
-            CharacterHelper.find_leader_1(self.active_chars).label
-        ]
+    def target_leader_1_key(self) -> hkn.KeyMaker:
+        return self.target_key_mapping[self.leader1.window.label]
 
     @property
     def target_leader_2(self) -> hkn.KeyMaker:
-        return self.target_leader_key_mapper[
-            CharacterHelper.find_leader_2(self.active_chars).label
-        ]
+        return self.target_key_mapping[self.leader2.window.label]
 
     @property
     def lbs_all(self) -> OrderedSet[str]:
@@ -172,7 +113,7 @@ class Mode(AttrsClass):
 
         在多开热键定义中, 常用于那些对所有角色生效的按键. 比如 1234, 前进后退等.
         """
-        return OrderedSet([char.window.label for char in self.active_chars])
+        return OrderedSet([char.window.label for char in self.chars if char.is_active])
 
     def lbs_by_tl(self, tl: TL) -> OrderedSet[str]:
         """

@@ -698,7 +698,7 @@ class HotkeyGroup03Act1To12Mixin:
                         id=char.account.username,
                         to=[char.window.label],
                     ):
-                        self.target_leader_key_mapper[char.leader_1_window.label]()
+                        self.target_key_mapping[char.leader_1_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     def build_hk_12_focus_mode_2(self: "Mode"):
@@ -721,7 +721,7 @@ class HotkeyGroup03Act1To12Mixin:
                         name=char.account.username,
                         to=[char.window.label],
                     ):
-                        self.target_leader_key_mapper[char.leader_2_window.label]()
+                        self.target_key_mapping[char.leader_2_window.label]()
                         act.General.SET_FOCUS_KEY_NUMPAD_6()
 
     # # --- alt 1,2,3,4,5

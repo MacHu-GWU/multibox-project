@@ -6,79 +6,100 @@
 .. seealso::
 
     - :class:`Character`
-    - :class:`CharacterHelper`
 """
 
 import typing as T
-from collections import OrderedDict
 from functools import cached_property
 
 import attrs
 from attrs_mate import AttrsClass
+from multibox.utils.api import BaseSemiMutableModel
 
 from .account import Account
 from .window import Window
 
 
 @attrs.define(eq=False, slots=False)
-class Character(AttrsClass):
+class Character(BaseSemiMutableModel, AttrsClass):
     """
-    代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
-    在天赋 1 下就算是一个 Character, 在天赋 2 下算是另一个 Character.
+    代表着一个正在进行的 Character (游戏角色). 这个概念和平时我们提到的游戏中的一个 Character
+    普通. 这里的 Character 是指在玩该角色的时候使用了具体的一套天赋, 在这个玩法中这个角色
+    扮演的是多开里的 Leader 还是 Follower 的角色等. 例如, 哪怕是同一套天赋下, 但是在不同的玩法中
+    一个扮演的是领队, 一个扮演的是跟随者, 这也算是两个不同的 Character. 再举例, 哪怕是
+    同一套天赋下, 都是跟随者, 但是一个它跟随的 leader 是 1 号司机, 另一个是 2 号司机, 这也算是
+    两个不同的 Character.
+
+    这个类里没有包含任何与职业, 天赋有关的设定. 因为该模块是所有 WoW 版本通用的, 不同版本
+    的职业, 天赋是不同的. 这些特定版本才有的信息会在特定版本的 API 里定义.
+
+    .. seealso::
+
+        - :mod:`multibox.game.wow.wlk`
+        - :mod:`multibox.game.wow.mop`
+
+    **Active Character**
+
+    Active Character 是在多开中的一个重要概念. 例如你在一场游戏中定义了 5 个人物, 但是
+    跑地图打怪用到的是 1, 2, 3 号 3 个人物. 而 4, 5 号人物只是用来登录小号, 倒东西,
+    挂拍卖行, 聊天, 查看工会频道消息等, 并不参与跑地图打怪.
+    这时 1, 2, 3 就是 Active Character, 而其他人不是. 在此情况下多开脚本的行为是这样的:
+
+    1. 启动游戏时启动所有窗口.
+    2. 批量输入账号密码登录时, 只登录 3 个人物.
+    3. 按 1234 操作的时候只操作 3 个人物.
+    4. 使用单个窗口登录时, 可以选择全部的 5 个人物进行登录.
+    5. 可以用切换单个窗口快捷键切换到 5 个人物之一的窗口.
+    6. 用 Round robin 切换窗口时, 只在 3 个人物之间切换.
+
+    这样适合于专注于玩几个人物, 但保留快速登录其他人物的能力. 比如登录小号聊天, 倒东西等.
+
+    下面的属性是 Character 的核心属性, 不会变化.
 
     :param account: 与该游戏角色所绑定的账号密码信息.
     :param name: 游戏角色名.
-    :param window: 游戏窗口.
+
+    下面的属性在不同的玩法中可能会变化.
+
+    :param window: 该角色所在的游戏窗口.
     :param nth_char: 在人物选择界面位于第几个人物, 从 1 开始计数.
-    :param active: 设置这个人物是否是属于 HotkeyNet 的快捷键所操作的人物.
-        例如你在一场游戏中定义了 5 个人物, 但是只启用了 1, 2, 3 号 3 个人物. 4, 5 号
-        设置为 active = False. 在此情况下多开脚本的行为是这样的:
-
-        1. 启动游戏时启动所有窗口
-        2. 批量输入账号密码登录时, 只登录 3 个人物
-        3. 按 1234 操作的时候只操作 3 个人物
-        4. 使用单个窗口登录时, 可以选择全部的 5 个人物进行登录
-        5. 可以用切换单个窗口快捷键切换到 5 个人物之一的窗口
-        6. 用 Round robin 切换窗口时, 只在 3 个人物之间切换
-
-        这样适合于专注于玩几个人物, 但保留快速登录其他人物的能力. 比如登录小号聊天, 倒东西等.
-        如果你将一个角色设置为 inactive, 那么这个角色只能被登录, 但无法用 Hotkeynet 操作打怪.
-    :param is_leader_1: 该角色是否为 1 号司机
-    :param is_leader_2: 该角色是否为 2 号司机
-    :param leader_1_window: 该角色的 1 号司机的游戏窗口
-    :param leader_2_window: 该角色的 2 号司机的游戏窗口
-
-    这里没有包含任何与职业, 天赋有关的设定. 因为该模块是所有 WoW 版本通用的. 跟职业, 天赋
-    有关的设定在具体版本的子模块中被定义.
+    :param is_active: 这个人物是否是 Active Character.
+    :param is_leader_1: 该角色本身是否为 1 号司机.
+    :param is_leader_2: 该角色本身是否为 2 号司机.
+    :param leader_1: 在该角色的的视角下, 它所跟随的 1 号司机的 :class:`Character` 对象.
+        有了这个对象, 我们在做一些需要先选中 1 号司机的操作时, 例如设定司机为焦点, 就可以
+        通过这个对象来获取 1 号司机的信息.
+    :param leader_2: 在该角色的的视角下, 它所跟随的 1 号司机的 :class:`Character` 对象.
 
     **设计思路**
 
-    一次游戏中我们会需要知道哪些角色是坦克, 哪些角色是治疗. 或者说那个角色是扮演主坦,
-    哪个角色是副坦. 我们有两种方法可以定义这件事. 一种是在顶层的 Setup 中设计一个属性:
-    tank1, 其值是一个 Character 对象. 还有一种方式是在 Character 对象中设计一个属性,
-    is_tank1, 其值是一个 boolean 对象.
+    一次多开游戏我们定义为一个 Mode (一个游戏模式), 这个 Mode 会有一个 Active Character
+    的集合. 在多开脚本中我们会需要知道哪些角色是坦克, 哪些角色是治疗, 或者说那个角色是扮演主坦,
+    哪个角色是副坦, 从而可以智能的定义我们的多开逻辑. 在代码实现的角度看, 我们有两种方法.
+
+    1. 在顶层的 Mode 中设计一些属性, 告诉我们哪个角色扮演主坦, 哪个角色扮演副坦.
+    2. 在 Character 对象中设计一个属性, is_tank1, is_tank2, 其值是一个 boolean 对象.
 
     个人认为第二种方式更好. 因为玩魔兽玩的就是角色, 从角色的视角出发更符合人类直觉. 而且
     扁平化的枚举所有用到的人物, 以及它们扮演的不同角色, 这样的代码更容易读和编辑.
 
     **注意事项**
 
-    leader_1_window 和 leader_2_window 是要跟 HotkeyNet 脚本, 以及宏命令配合使用的.
-    通常 leader 就是其他队员的焦点目标, 游戏中肯定是要有一个宏命令来先选中这个焦点目标,
-    然后才能将其设置为焦点的. 由于宏命令和动作条, 我们不可能创建无数个宏命令. 所以我们会在
-    act 中定义我们设定好的, 有限的几个宏命令. 你设定的 leader 的窗口必须要属于那几个宏命令
-    之一才能工作.
+    :attr:`Character.leader_1` 和 :attr:`Character.leader_2` 是要跟 HotkeyNet 脚本,
+    以及宏命令配合使用的. 这个属性能让多开脚本知道当前的 leader 是谁, 但是从 follower 的角度,
+    如果要跟 leader 互动, 还是要借助宏命令. 我们需要知道为了跟某个 leader 互动, 应该按哪个
+    快捷键 (上面绑定了宏命令). 而这个 leader 到宏命令按键的映射关系则是在 Mode (游戏模式)
+    中定义的.
     """
 
     account: Account = AttrsClass.ib_generic(Account, nullable=True, default=None)
     name: str = AttrsClass.ib_str(nullable=True, default=None)
     window: Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
     nth_char: int = AttrsClass.ib_int(nullable=True, default=1)
-    active: bool = AttrsClass.ib_bool(nullable=True, default=True)
+    is_active: bool = AttrsClass.ib_bool(nullable=True, default=True)
     is_leader_1: bool = AttrsClass.ib_bool(nullable=True, default=False)
     is_leader_2: bool = AttrsClass.ib_bool(nullable=True, default=False)
-    leader_1_window: Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
-    leader_2_window: Window = AttrsClass.ib_generic(Window, nullable=True, default=None)
+    leader_1: T.Optional["Character"] = attrs.field(default=None)
+    leader_2: T.Optional["Character"] = attrs.field(default=None)
 
     @cached_property
     def hash_key(self) -> str:
@@ -91,175 +112,22 @@ class Character(AttrsClass):
     def sort_key(self) -> str:
         return self.name.lower()
 
-
-    def set_window(self, window: Window) -> "Character":
-        self.window = window
-        return self
-
-    def set_active(self) -> "Character":
-        self.active = True
-        return self
-
-    def set_inactive(self) -> "Character":
-        self.active = False
-        return self
-
-    def set_is_leader_1(self) -> "Character":
-        self.is_leader_1 = True
-        return self
-
-    def set_not_leader_1(self) -> "Character":
-        self.is_leader_1 = False
-        return self
-
-    def set_is_leader_2(self) -> "Character":
-        self.is_leader_2 = True
-        return self
-
-    def set_not_leader_2(self) -> "Character":
-        self.is_leader_1 = False
-        return self
-
-    def set_leader_1_window(self, window: Window) -> "Character":
-        self.leader_1_window: Window = window
-        return self
-
-    def set_leader_2_window(self, window: Window) -> "Character":
-        self.leader_2_window: Window = window
-        return self
-
-    @property
-    def id(self) -> str:
-        return f"{self.account.username}-{self.name}"
-
-    def __hash__(self):
-        return hash(self.id)
-
-
-class CharacterHelper:
-    """
-    一些对 :class:`Character` 对象的操作的辅助方法.
-    """
     @classmethod
-    def deduplicate(
+    def find_xyz(
         cls,
-        chars: T.Iterable["Character"],
-    ) -> T.OrderedDict[str, "Character"]:
+        chars: T.Iterable["T_CHARACTER"],
+        field: str,
+    ) -> T.Optional["T_CHARACTER"]:
         """
-        根据角色的 ID (account + character name) 对角色进行去重.
-        """
-        return OrderedDict((char.id, char) for char in chars)
-
-    @classmethod
-    def _find_key_char_window(
-        cls,
-        chars: T.Iterable["Character"],
-        attribute: str,
-    ) -> T.Optional[Window]:
-        """
-        一个用于内部实现的方法, 从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的窗口.
-
-        例如找到谁是一堆角色中的 1 号司机.
-
-        如果一个队伍里有多个人被设为 1 号司机, 那么就设为自然顺序遇到的第一个 1 号司机.
-        其他人则会被取消设为一号司机 (该逻辑还没有实现).
-        """
-        window: T.Optional[Window] = None
-        for char in chars:
-            if getattr(char, attribute):
-                return char.window
-        return window
-
-    @classmethod
-    def find_leader_1(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
-        """
-        找到一堆角色中的 1 号司机的窗口.
-        """
-        return cls._find_key_char_window(chars, attribute="is_leader_1")
-
-    @classmethod
-    def find_leader_2(cls, chars: T.Iterable["Character"]) -> T.Optional[Window]:
-        """
-        找到一堆角色中的 2 号司机的窗口.
-        """
-        return cls._find_key_char_window(chars, attribute="is_leader_2")
-
-    @classmethod
-    def _set_key_char_window(
-        cls,
-        chars: T.Iterable["Character"],
-        attr: str,
-        window: Window,
-    ):
-        """
-        一个用于内部实现的方法, 用于将一堆角色的某个跟窗口相关的属性统一设定为指定的窗口.
-
-        例如可以将所有角色的 1 号司机设为指定窗口, 除了 1 号司机本人. 这里要注意的是 1 号司机
-        本人不会将自己设为一号司机. 司机本人不需要吧自己设为焦点, 而且司机可能随时要临时绑定焦点.
+        一个用于内部实现的方法, 从一堆 Character 当中找到那个扮演某个特定队伍角色的人所在的
+        Character. 例如找到谁是一堆角色中的 1 号司机. 如果一个队伍里有多个人被设为 1 号司机,
+        那么就将自然顺序遇到的第一个 Character 定为 1 号司机. 如果没有找到则返回 None.
+        大多数情况不会遇到有多个人满足条件的情况, 因为在创建这个集合的时候我们就已经经过了去重.
         """
         for char in chars:
-            if char.window.label != window.label:
-                setattr(char, attr, window)
-
-    @classmethod
-    def set_leader_1_window(
-        cls,
-        chars: T.Iterable["Character"],
-        window: Window,
-    ):
-        """
-        将所有角色的 1 号司机窗口设为指定窗口.
-        """
-        cls._set_key_char_window(chars, "leader_1_window", window)
-
-    @classmethod
-    def set_leader_2_window(
-        cls,
-        chars: T.Iterable["Character"],
-        window: Window,
-    ):
-        """
-        将所有角色的 1 号司机窗口设为指定窗口.
-        """
-        cls._set_key_char_window(chars, "leader_2_window", window)
-
-    @classmethod
-    def set_active(cls, chars: T.Iterable["Character"]):
-        """
-        将多个角色设为 active.
-        """
-        for char in chars:
-            char.active = True
-        return chars
-
-    @classmethod
-    def set_inactive(cls, chars: T.Iterable["Character"]):
-        """
-        将多个角色设为 inactive.
-        """
-        for char in chars:
-            char.active = False
-        return chars
-
-    @classmethod
-    def sort_chars_by_window_label(
-        cls,
-        chars: T.Iterable["Character"],
-    ) -> T.OrderedDict[str, "Character"]:
-        """
-        将多个角色按照所在的窗口 label (编号) 排序.
-        """
-        return cls.deduplicate(sorted(chars, key=lambda char: char.window.label))
-
-    @classmethod
-    def sort_chars_by_window_title(
-        cls,
-        chars: T.Iterable["Character"],
-    ) -> T.OrderedDict[str, "Character"]:
-        """
-        将多个角色按照所在的窗口 title (标题) 排序.
-        """
-        return cls.deduplicate(sorted(chars, key=lambda char: char.window.label))
+            if getattr(char, field):
+                return char
+        return None
 
 
-
+T_CHARACTER = T.TypeVar("T_CHARACTER", bound=Character)
