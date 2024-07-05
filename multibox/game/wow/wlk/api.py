@@ -15,5 +15,7 @@ from .talent import Talent
 from .talent import TalentCategory
 from .client import Client
 from .mode import Mode
+from .dataset import Dataset
+from .dataset import get_property_methods
 TL = Talent
 TC = TalentCategory

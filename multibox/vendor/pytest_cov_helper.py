@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import typing as T
 import os
 import sys
 import contextlib
@@ -49,6 +50,7 @@ def run_cov_test(
     module: str,
     root_dir: str,
     htmlcov_dir: str,
+    cov_config: T.Optional[str] = None,
     preview: bool = False,
     is_folder: bool = False,
 ):
@@ -133,8 +135,13 @@ def run_cov_test(
         "term-missing",
         "--cov-report",
         f"html:{htmlcov_dir}",
-        script,
     ]
+    if cov_config is not None:
+        args.extend([
+            "--cov-config",
+            cov_config,
+        ])
+    args.append(script)
     with temp_cwd(Path(root_dir)):
         subprocess.run(args)
     if preview:  # pragma: no cover

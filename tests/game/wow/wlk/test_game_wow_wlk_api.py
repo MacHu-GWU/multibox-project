@@ -14,6 +14,8 @@ def test():
     _ = api.TalentCategory
     _ = api.Client
     _ = api.Mode
+    _ = api.Dataset
+    _ = api.get_property_methods
     _ = api.TL
     _ = api.TC
 

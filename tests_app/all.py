@@ -8,5 +8,6 @@ if __name__ == "__main__":
         __file__,
         "multibox.app",
         preview=False,
+        cov_config=".coveragerc-app",
         is_folder=True,
     )
