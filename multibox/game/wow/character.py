@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+- :class:`Character`
+- :class:`CharacterHelper`
+"""
+
 import typing as T
 from collections import OrderedDict
 
