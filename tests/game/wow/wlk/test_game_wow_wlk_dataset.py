@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from pathlib_mate import Path
-from multibox.game.wow.wlk.dataset import Dataset
+from multibox.game.wow.wlk.talent import TC
+from multibox.game.wow.wlk.dataset import Dataset, get_property_methods
+from multibox.paths import dir_project_root
 
 
 def test():
-    dir_here = Path.dir_here(__file__)
-    dir_module = dir_here.joinpath("dataset")
+    dir_test_app = dir_project_root.joinpath(
+        "multibox",
+        "tests",
+        "game",
+        "wow",
+        "wlk",
+        "test_app",
+    )
 
     # The test excel is from
-    path_excel = Dataset.locate_excel(prefix="test_dataset", dir=dir_module)
+    path_excel = Dataset.locate_excel(prefix="test_dataset", dir=dir_test_app)
     ds = Dataset.from_excel(path_excel)
 
     acc = ds.get_account("Fat01")
@@ -37,7 +44,39 @@ def test():
     # 所以不用担心.
     # id(ds.get_account("rab01")) == id(ds.get_account("rab01"))
 
-    ds.to_module(dir_module=dir_module, overwrite=True, test=True)
+    ds.to_module(dir_module=dir_test_app, overwrite=True, test=True, verbose=False)
+
+    from multibox.tests.game.wow.wlk.test_app.dataset import mode_fact
+
+    for method_name in get_property_methods(mode_fact):
+        mode = getattr(mode_fact, method_name)
+        _ = mode.active_chars
+        _ = mode.login_window_and_account_pairs
+        _ = mode.lbs_all
+        _ = mode.lbs_by_tl
+        _ = mode.lbs_by_tc
+        _ = mode.lb_tank1
+        _ = mode.lb_tank2
+        _ = mode.lb_dr_pala1
+        _ = mode.lb_dr_pala2
+        _ = mode.lbs_leader1
+        _ = mode.lbs_leader2
+        _ = mode.lbs_leader
+        _ = mode.lbs_non_leader
+        _ = mode.lbs_tank
+        _ = mode.lbs_non_tank
+        _ = mode.lbs_healer
+        _ = mode.lbs_druid_resto
+        _ = mode.lbs_shaman_resto
+        _ = mode.lbs_priest_holy
+        _ = mode.lbs_priest_disco
+        _ = mode.lbs_paladin_holy
+        _ = mode.build_send_label_by_tc(tc=TC.all, funcs=[lambda: None])
+        _ = mode.build_send_label_by_tc(tc=TC.pvp, funcs=[lambda: None])
+
+    mode = mode_fact.alliance_r_abcdefghij_solo_raid
+    _ = mode.target_tank_1_key_maker
+    _ = mode.target_tank_2_key_maker
 
 
 if __name__ == "__main__":

@@ -1,14 +1,19 @@
 # Coverage.py is a tool for measuring code coverage of Python programs.
 # for more info: https://coverage.readthedocs.io/en/latest/config.html
 [run]
-omit =
-    multibox/tests/*
-    multibox/docs/*
-    multibox/game/wow/wlk/preset/*
-    multibox/_version.py
-    multibox/compat.py
 
 [report]
+# 在其他项目中 omit 这一段我一般都是放在 [run] 下面的, 不知道为什么这个项目就必须要放在 [report] 下面
+# 才能生效, 有点奇怪, 我也不知道怎么回事, 各种办法都试过了.
+omit =
+    multibox/docs/*
+    multibox/tests/*
+    multibox/vendor/*
+    multibox/app/*
+    multibox/game/wow/wlk/preset/*
+    multibox/_version.py
+    multibox/paths.py
+
 # Regexes for lines to exclude from consideration
 exclude_lines =
     # Have to re-enable the standard pragma

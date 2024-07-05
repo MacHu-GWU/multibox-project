@@ -133,14 +133,14 @@ def int_to_bool(
     把表格中的某些列的整数转换成布尔值. 因为我们在 Google Sheet 中输入的时候,
     用 1 表示 True, 0 或者 BLANK 表示 False. 但在数据层面它们其实是 boolean 类型.
     """
-    if isinstance(col, str):
+    if isinstance(col, str):  # pragma: no cover
         cols = [col]
     else:
         cols = col
     return df.with_columns([pl.col(col).cast(pl.Boolean) for col in cols])
 
 
-def find_not_unique(df: pl.DataFrame, col: str) -> pl.DataFrame:
+def find_not_unique(df: pl.DataFrame, col: str) -> pl.DataFrame:  # pragma: no cover
     df_not_unique = df[col].value_counts().filter(pl.col("count") > 1)
     return df_not_unique
 
@@ -333,7 +333,9 @@ class Dataset:
         build_groups = {}
 
         def validate_uniqueness_in_sub_df(
-            sub_df: pl.DataFrame, col: str, build_group: str
+            sub_df: pl.DataFrame,
+            col: str,
+            build_group: str,
         ):
             if sub_df[col].n_unique() != sub_df.shape[0]:  # pragma: no cover
                 df_not_unique = find_not_unique(sub_df, col)
@@ -342,8 +344,12 @@ class Dataset:
                     f"Found duplicated {col!r} in build group '{build_group}'"
                 )
 
-        def validate_at_most_one(sub_df: pl.DataFrame, col: str, build_group: str):
-            if sub_df[col].is_not_null().sum() > 1:
+        def validate_at_most_one(
+            sub_df: pl.DataFrame,
+            col: str,
+            build_group: str,
+        ):
+            if sub_df[col].is_not_null().sum() > 1:  # pragma: no cover
                 raise ValueError(
                     f"Found multiple {col!r} in build group '{build_group}'"
                 )
@@ -580,3 +586,25 @@ class Dataset:
             raise FileNotFoundError(
                 f"Cannot find any excel file start with '{prefix}' in {dir}"
             )
+
+
+def get_property_methods(factory) -> T.List[str]:
+    """
+    Find all the property methods in a factory class.
+
+    .. code-block:: python
+
+        class AccountFactory:
+            @property
+            def acc1(self):
+                return Account(...)
+
+            @property
+            def acc2(self):
+                return Account(...)
+
+        acc_fact = AccountFactory()
+
+        get_property_methods(acc_fact) # will return ["acc1", "acc2"]
+    """
+    return [key for key in factory.__class__.__dict__ if not key.startswith("_")]

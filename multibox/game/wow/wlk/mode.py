@@ -5,7 +5,7 @@ Todo: doc string here
 """
 
 import typing as T
-from collections import Counter
+from functools import cached_property
 
 import attrs
 from attrs_mate import AttrsClass
@@ -18,17 +18,18 @@ from ...wow.account import Account
 from ...wow.window import Window
 
 from .character import Character
-
-# from .character import CharacterHelper
 from .talent import Talent as TL
 from .talent import TalentCategory as TC
 from .client import Client
 
+from multibox.utils.models import BaseSemiMutableModel
+
+
 T_TARGET_KEY_MAPPING = T.Dict[str, hkn.KeyMaker]
 
 
-@attrs.define
-class Mode(AttrsClass):
+@attrs.define(eq=False, slots=False)
+class Mode(BaseSemiMutableModel, AttrsClass):
     """
     Mode 是你最终选择要玩的游戏模式. 它相当于是一堆工厂类工厂函数的集合, 提供了一个 namespace
     来组织这些工厂函数. 一个 Mode 包括了:
@@ -68,6 +69,14 @@ class Mode(AttrsClass):
     tank2: T.Optional[Character] = attrs.field(default=None)
     dr_pala1: T.Optional[Character] = attrs.field(default=None)
     dr_pala2: T.Optional[Character] = attrs.field(default=None)
+
+    @cached_property
+    def hash_key(self) -> str:  # pragma: no cover
+        return self.name
+
+    @cached_property
+    def sort_key(self) -> str:  # pragma: no cover
+        return self.name
 
     def __attrs_post_init__(self):
         # 定位队伍中的关键人物
@@ -303,7 +312,7 @@ class Mode(AttrsClass):
         if lbs:
             with hkn.SendLabel(
                 id=tc.name,
-                to=lbs,
+                to=list(lbs),
             ) as send_label:
                 for func in funcs:
                     func()
@@ -313,7 +322,7 @@ class Mode(AttrsClass):
     # --------------------------------------------------------------------------
     # 把 Mode 对象转换成 hotkey 脚本
     # --------------------------------------------------------------------------
-    def render(self, verbose: bool = False) -> str:
+    def render(self, verbose: bool = False) -> str:  # pragma: no cover
         """
         Render the hotkeynet script as string.
         """
