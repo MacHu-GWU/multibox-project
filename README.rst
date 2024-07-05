@@ -1,6 +1,6 @@
 
-.. .. image:: https://readthedocs.org/projects/multibox/badge/?version=latest
-    :target: https://multibox.readthedocs.io/index.html
+.. image:: https://readthedocs.org/projects/multibox/badge/?version=latest
+    :target: https://multibox.readthedocs.io/zh-cn/latest/index.html
     :alt: Documentation Status
 
 .. image:: https://github.com/MacHu-GWU/multibox-project/actions/workflows/main.yml/badge.svg
@@ -24,13 +24,13 @@
 ------
 
 .. .. image:: https://img.shields.io/badge/Link-Document-blue.svg
-    :target: https://multibox.readthedocs.io/index.html
+    :target: https://multibox.readthedocs.io/zh-cn/latest/index.html
 
 .. .. image:: https://img.shields.io/badge/Link-API-blue.svg
-    :target: https://multibox.readthedocs.io/py-modindex.html
+    :target: https://multibox.readthedocs.io/zh-cn/latest/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
-    :target: https://multibox.readthedocs.io/py-modindex.html
+    :target: https://multibox.readthedocs.io/zh-cn/latest/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Install-blue.svg
     :target: `install`_
@@ -50,4 +50,7 @@
 
 Welcome to ``multibox`` Documentation
 ==============================================================================
+.. image:: https://multibox.readthedocs.io/zh-cn/latest/_static/multibox-logo.png
+    :target: https://multibox.readthedocs.io/zh-cn/latest/index.html
+
 本项目是我用来玩网游多开的脚本生成器和管理器. 本项目基于 `hotkeynet <https://github.com/MacHu-GWU/hotkeynet-project>`_ 项目开发.

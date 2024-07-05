@@ -38,9 +38,12 @@ Leader
 
 Icon
 ------------------------------------------------------------------------------
-在多开时我们会用到一些游戏中的 ICON, 使得多开的自动化按钮更加直观. 这里我们把一些常用的 ICON 图片放在了 `multibox/game/wow/icons/ <https://github.com/MacHu-GWU/multibox-project/tree/dev/refactor-work-on-character/multibox/game/wow/icons>` 目录下, 并提供了一个枚举模块 `multibox/game/wow/icons.py <https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/multibox/game/wow/icons.py>`_ 以便之后引用.
+在多开时我们会用到一些游戏中的 ICON, 使得多开的自动化按钮更加直观. 这里我们把一些常用的 ICON 图片放在了 `multibox/game/wow/icons/ <https://github.com/MacHu-GWU/multibox-project/tree/dev/refactor-work-on-character/multibox/game/wow/icons>`_ 目录下, 并提供了一个枚举模块 `multibox/game/wow/icons.py <https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/multibox/game/wow/icons.py>`_ 以便之后引用.
 
-我们希望
+此外, 还有一个脚本 `compress_icon.py <https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/docs/source/04-World-of-Warcraft-WOW/00-General-Tips/compress_icon.py>`_ 也非常有用, 它能批量在不怎么牺牲图片质量的情况下, 大大减少 ICON 图片的体积.
 
+.. dropdown:: compress_icon.py
 
-https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/docs/source/04-World-of-Warcraft-WOW/00-General-Tips/compress_icon.py
+    .. literalinclude:: ./compress_icon.py
+       :language: python
+       :linenos:

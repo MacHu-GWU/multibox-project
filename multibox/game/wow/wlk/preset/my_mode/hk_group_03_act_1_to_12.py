@@ -177,6 +177,9 @@ class HotkeyGroup03Act1To12Mixin:
         )
 
     def build_hk_1_heal_tank(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Key1",
             key=KN.SCROLOCK_ON(KN.KEY_1),

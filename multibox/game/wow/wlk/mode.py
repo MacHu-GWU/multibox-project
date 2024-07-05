@@ -175,24 +175,6 @@ class Mode(BaseSemiMutableModel, AttrsClass):
             ]
         )
 
-    # @property
-    # def lb_leader1(self) -> T.Optional[str]:
-    #     """
-    #     获得 1 号 Leader 的 label, 可能有一个人或者没有 (如果只是登录不玩游戏的化就没有 leader).
-    #     """
-    #     if self.leader1 is not None:
-    #         return self.leader1.window.label
-    #     return None
-    #
-    # @property
-    # def lb_leader2(self) -> T.Optional[str]:
-    #     """
-    #     获得 2 号 Leader 的 label, 可能有一个人或者没有.
-    #     """
-    #     if self.leader2 is not None:
-    #         return self.leader2.window.label
-    #     return None
-
     @property
     def lb_tank1(self) -> T.Optional[str]:
         """
