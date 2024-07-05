@@ -13,6 +13,5 @@ sub packages and modules
     game <game/__init__>
     utils <utils/__init__>
     api <api>
-    compat <compat>
     runtime <runtime>
     
