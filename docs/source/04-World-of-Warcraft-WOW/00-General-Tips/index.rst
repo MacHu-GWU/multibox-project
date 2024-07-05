@@ -34,3 +34,13 @@ Leader
 - ``leader_2``: 从自己的视角出发, leader 2 是谁?
 
 这里要特别特别注意, (``is_leader_1`` + ``leader_1``) 和 (``is_leader_2`` + ``leader_2``) 是两套完全独立, 不同的模式. 玩家可以用多开脚本在两套模式中切换以应付复杂的战斗. 举例说明. 跟前面类似, 我们的团队有 10 个角色, 其中 1 号和 6 号分别是两个 leader tank. 2-4 和 7-10 是两个小队的成员. 在模式 1 下, 1 号和 6 号都是 leader1, 只不过在这个模式下, 1 号是 leader1_1, 6 号是 leader1_2. 这跟``is_leader_2``, ``leader_2`` 毫无关系. 一定不要把模式 1 下的 6 号所扮演的 leader1_2 和 ``leader2`` 搞混淆了, 因为 ``leader2`` 只是在模式 2 下才有意义.
+
+
+Icon
+------------------------------------------------------------------------------
+在多开时我们会用到一些游戏中的 ICON, 使得多开的自动化按钮更加直观. 这里我们把一些常用的 ICON 图片放在了 `multibox/game/wow/icons/ <https://github.com/MacHu-GWU/multibox-project/tree/dev/refactor-work-on-character/multibox/game/wow/icons>` 目录下, 并提供了一个枚举模块 `multibox/game/wow/icons.py <https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/multibox/game/wow/icons.py>`_ 以便之后引用.
+
+我们希望
+
+
+https://github.com/MacHu-GWU/multibox-project/blob/dev/refactor-work-on-character/docs/source/04-World-of-Warcraft-WOW/00-General-Tips/compress_icon.py
