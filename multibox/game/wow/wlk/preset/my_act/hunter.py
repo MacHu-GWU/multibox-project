@@ -92,7 +92,8 @@ class Survival:
 
     # 陷阱
     Immolation_Trap = None  # 献祭陷阱
-    Snake_Trap = None  # 毒蛇陷阱
+    Snake_Trap = CAN.ALT_F2  # 毒蛇陷阱
+    Explosive_Trap = CAN.ALT_F1  # 爆炸陷阱
 
     # 控制类技能
     Scatter_Shot = None  # 驱散射击, 控制技能, 生存系天赋技能

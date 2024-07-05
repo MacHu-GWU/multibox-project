@@ -543,6 +543,10 @@ class CharacterGroupFactory: # pragma: no cover
         return ds.get_build_group("r_1_to_10_solo_dungeon_team1")
 
     @property
+    def r_1_to_10_solo_icc_boss1(self) -> OrderedSet[Character]:
+        return ds.get_build_group("r_1_to_10_solo_icc_boss1")
+
+    @property
     def r_1_to_10_solo_dungeon_team2(self) -> OrderedSet[Character]:
         return ds.get_build_group("r_1_to_10_solo_dungeon_team2")
 
@@ -613,6 +617,10 @@ class ModeFactory: # pragma: no cover
     @property
     def acore_alliance_r_abcdefghij_solo_raid(self) -> Mode:
         return ds.get_mode("acore_alliance_r_abcdefghij_solo_raid", Mode)
+
+    @property
+    def acore_alliance_r_abcdefghij_solo_icc_boss1(self) -> Mode:
+        return ds.get_mode("acore_alliance_r_abcdefghij_solo_icc_boss1", Mode)
 
     @property
     def acore_horde_s_abcde_solo_dungeon(self) -> Mode:
@@ -803,6 +811,7 @@ if __name__ == "__main__": # pragma: no cover
     print(char_group_fact.r_1_to_5)
     print(char_group_fact.r_1_to_10)
     print(char_group_fact.r_1_to_10_solo_dungeon_team1)
+    print(char_group_fact.r_1_to_10_solo_icc_boss1)
     print(char_group_fact.r_1_to_10_solo_dungeon_team2)
     print(char_group_fact.s_1_to_5)
     print(char_group_fact.warmane_quarterly_login_team1)
@@ -818,6 +827,7 @@ if __name__ == "__main__": # pragma: no cover
     print(client_fact.enUS_1176_664)
     print(mode_fact.acore_alliance_r_abcde_solo_dungeon)
     print(mode_fact.acore_alliance_r_abcdefghij_solo_raid)
+    print(mode_fact.acore_alliance_r_abcdefghij_solo_icc_boss1)
     print(mode_fact.acore_horde_s_abcde_solo_dungeon)
     print(mode_fact.warmane_quarterly_login_team1)
     print(mode_fact.warmane_quarterly_login_team2)
