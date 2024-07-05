@@ -1,7 +1,7 @@
-game
-====
+utils
+=====
 
-.. automodule:: multibox.game
+.. automodule:: multibox.utils
     :members:
 
 sub packages and modules
@@ -10,7 +10,6 @@ sub packages and modules
 .. toctree::
     :maxdepth: 1
 
-    wow <wow/__init__>
     api <api>
-    window <window>
+    models <models>
     

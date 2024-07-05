@@ -1,7 +1,7 @@
-act
-===
+my_act
+======
 
-.. automodule:: multibox.game.wow.wlk.act
+.. automodule:: multibox.game.wow.wlk.preset.my_act
     :members:
 
 sub packages and modules
@@ -18,7 +18,6 @@ sub packages and modules
     mage <mage>
     paladin <paladin>
     priest <priest>
-    rogue <rogue>
     shaman <shaman>
     warlock <warlock>
     warrior <warrior>

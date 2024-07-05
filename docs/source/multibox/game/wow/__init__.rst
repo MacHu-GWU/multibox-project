@@ -14,6 +14,8 @@ sub packages and modules
     account <account>
     api <api>
     character <character>
+    client <client>
+    icons <icons>
     talent <talent>
     window <window>
     

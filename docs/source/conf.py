@@ -242,6 +242,7 @@ docfly.ApiReferenceDoc(
     conf_file=__file__,
     package_name=package_name,
     ignored_package=[
+        "%s.app" % package_name,
         "%s.docs" % package_name,
         "%s.tests" % package_name,
         "%s.vendor" % package_name,
