@@ -449,7 +449,9 @@ class Dataset:
             char.window.index: char for char in chars
         }
         for build_dct in dct["build_list"]:
-            char = window_to_char_mapping[build_dct[BuildGroupTabColumnEnum.window.value]]
+            char = window_to_char_mapping[
+                build_dct[BuildGroupTabColumnEnum.window.value]
+            ]
 
             leader_1_win = build_dct[BuildGroupTabColumnEnum.leader_1_win.value]
             if leader_1_win:
@@ -518,6 +520,7 @@ class Dataset:
         dataset_var_name: str = "ds",
         overwrite: bool = False,
         test: bool = False,
+        verbose: bool = False,
     ):
         path_character_py = dir_module / "dataset.py"
         path_tpl = Path.dir_here(__file__) / "dataset.py.jinja2"
@@ -529,14 +532,26 @@ class Dataset:
             dataset_var_name=dataset_var_name,
         )
         if path_character_py.exists():
-            if overwrite is False:
+            if overwrite is False:  # pragma: no cover
                 raise FileExistsError(f"{path_character_py} already exists.")
         path_character_py.write_text(content)
         if test:
-            print("Test the generated script ...")
+            if verbose:  # pragma: no cover
+                print("Test the generated script ...")
             with path_character_py.parent.temp_cwd():
-                subprocess.run([sys.executable, f"{path_character_py}"], check=True)
-            print("✅Test passed.")
+                if verbose:  # pragma: no cover
+                    subprocess.run(
+                        [sys.executable, f"{path_character_py}"],
+                        check=True,
+                    )
+                else:
+                    subprocess.run(
+                        [sys.executable, f"{path_character_py}"],
+                        capture_output=True,
+                        check=True,
+                    )
+            if verbose:  # pragma: no cover
+                print("✅Test passed.")
 
     @classmethod
     def locate_excel(

@@ -4,6 +4,7 @@
 omit =
     multibox/tests/*
     multibox/docs/*
+    multibox/game/wow/wlk/preset/*
     multibox/_version.py
     multibox/compat.py
 
