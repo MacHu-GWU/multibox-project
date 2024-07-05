@@ -67,7 +67,9 @@ class BuildGroupTabColumnEnum(str, enum.Enum):
     window = "window"
     is_active = "is_active"
     is_leader_1 = "is_leader_1"
+    leader_1_win = "leader_1_win"
     is_leader_2 = "is_leader_2"
+    leader_2_win = "leader_2_win"
     is_tank_1 = "is_tank_1"
     is_tank_2 = "is_tank_2"
     is_dr_pala_1 = "is_dr_pala_1"
@@ -80,7 +82,9 @@ build_group_schema = {
     BuildGroupTabColumnEnum.window.value: pl.Int8,
     BuildGroupTabColumnEnum.is_active.value: pl.Int8,
     BuildGroupTabColumnEnum.is_leader_1.value: pl.Int8,
+    BuildGroupTabColumnEnum.leader_1_win.value: pl.Int8,
     BuildGroupTabColumnEnum.is_leader_2.value: pl.Int8,
+    BuildGroupTabColumnEnum.leader_2_win.value: pl.Int8,
     BuildGroupTabColumnEnum.is_tank_1.value: pl.Int8,
     BuildGroupTabColumnEnum.is_tank_2.value: pl.Int8,
     BuildGroupTabColumnEnum.is_dr_pala_1.value: pl.Int8,
@@ -119,6 +123,21 @@ def strip_whitespace(
     else:
         cols = col
     return df.with_columns([pl.col(col).str.strip_chars() for col in cols])
+
+
+def int_to_bool(
+    df: pl.DataFrame,
+    col: T.Union[str, T.List[str]],
+) -> pl.DataFrame:
+    """
+    把表格中的某些列的整数转换成布尔值. 因为我们在 Google Sheet 中输入的时候,
+    用 1 表示 True, 0 或者 BLANK 表示 False. 但在数据层面它们其实是 boolean 类型.
+    """
+    if isinstance(col, str):
+        cols = [col]
+    else:
+        cols = col
+    return df.with_columns([pl.col(col).cast(pl.Boolean) for col in cols])
 
 
 def find_not_unique(df: pl.DataFrame, col: str) -> pl.DataFrame:
@@ -210,6 +229,18 @@ class Dataset:
             col=[
                 BuildGroupTabColumnEnum.build_group.value,
                 BuildGroupTabColumnEnum.build.value,
+            ],
+        )
+        df_build_group = int_to_bool(
+            df=df_build_group,
+            col=[
+                BuildGroupTabColumnEnum.is_active.value,
+                BuildGroupTabColumnEnum.is_leader_1.value,
+                BuildGroupTabColumnEnum.is_leader_2.value,
+                BuildGroupTabColumnEnum.is_tank_1.value,
+                BuildGroupTabColumnEnum.is_tank_2.value,
+                BuildGroupTabColumnEnum.is_dr_pala_1.value,
+                BuildGroupTabColumnEnum.is_dr_pala_2.value,
             ],
         )
         df_client = strip_whitespace(
@@ -332,8 +363,6 @@ class Dataset:
                 build_group=build_group,
             )
             for col in [
-                BuildGroupTabColumnEnum.is_leader_1.value,
-                BuildGroupTabColumnEnum.is_leader_2.value,
                 BuildGroupTabColumnEnum.is_tank_1.value,
                 BuildGroupTabColumnEnum.is_tank_2.value,
                 BuildGroupTabColumnEnum.is_dr_pala_1.value,
@@ -404,40 +433,44 @@ class Dataset:
             )
             new_char = attrs.evolve(
                 old_char,
+                # fmt: off
                 window=Window.new(build_dct[BuildGroupTabColumnEnum.window.value]),
                 is_active=bool(build_dct[BuildGroupTabColumnEnum.is_active.value]),
                 is_leader_1=bool(build_dct[BuildGroupTabColumnEnum.is_leader_1.value]),
                 is_leader_2=bool(build_dct[BuildGroupTabColumnEnum.is_leader_2.value]),
                 is_tank_1=bool(build_dct[BuildGroupTabColumnEnum.is_tank_1.value]),
                 is_tank_2=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2.value]),
-                is_dr_pala_1=bool(
-                    build_dct[BuildGroupTabColumnEnum.is_dr_pala_1.value]
-                ),
-                is_dr_pala_2=bool(
-                    build_dct[BuildGroupTabColumnEnum.is_dr_pala_2.value]
-                ),
+                is_dr_pala_1=bool(build_dct[BuildGroupTabColumnEnum.is_dr_pala_1.value]),
+                is_dr_pala_2=bool(build_dct[BuildGroupTabColumnEnum.is_dr_pala_2.value]),
+                # fmt: on
             )
             chars.append(new_char)
-        # 如果有一个人是 leader1, 那么让其他人知道谁是 leader1
-        # 并对 leader2, tank1, tank2 做同样的事
-        # 这里不要过度优化, 就这样枚举一遍比较清楚
-        for char in chars:
-            if char.is_leader_1:
-                for other_char in chars:
-                    if other_char.hash_key != char.hash_key:
-                        other_char.leader_1 = char
-            if char.is_leader_2:
-                for other_char in chars:
-                    if other_char.hash_key != char.hash_key:
-                        other_char.leader_2 = char
-            if char.is_tank_1:
+        window_to_char_mapping: T.Dict[int, Character] = {
+            char.window.index: char for char in chars
+        }
+        for build_dct in dct["build_list"]:
+            char = window_to_char_mapping[build_dct[BuildGroupTabColumnEnum.window.value]]
+
+            leader_1_win = build_dct[BuildGroupTabColumnEnum.leader_1_win.value]
+            if leader_1_win:
+                char.leader_1 = window_to_char_mapping[leader_1_win]
+
+            leader_2_win = build_dct[BuildGroupTabColumnEnum.leader_2_win.value]
+            if leader_2_win:
+                char.leader_2 = window_to_char_mapping[leader_2_win]
+
+            is_tank_1 = build_dct[BuildGroupTabColumnEnum.is_tank_1.value]
+            if is_tank_1:
                 for other_char in chars:
                     if other_char.hash_key != char.hash_key:
                         other_char.tank1 = char
-            if char.is_tank_2:
+
+            is_tank_2 = build_dct[BuildGroupTabColumnEnum.is_tank_2.value]
+            if is_tank_2:
                 for other_char in chars:
                     if other_char.hash_key != char.hash_key:
                         other_char.tank2 = char
+
         return OrderedSet(chars)
 
     def get_client(self, client: str) -> Client:

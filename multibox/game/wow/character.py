@@ -37,21 +37,10 @@ class Character(BaseSemiMutableModel, AttrsClass):
         - :mod:`multibox.game.wow.wlk`
         - :mod:`multibox.game.wow.mop`
 
-    **Active Character**
+    这里有一些重要概念, 建议先看一下这些概念的定义:
 
-    Active Character 是在多开中的一个重要概念. 例如你在一场游戏中定义了 5 个人物, 但是
-    跑地图打怪用到的是 1, 2, 3 号 3 个人物. 而 4, 5 号人物只是用来登录小号, 倒东西,
-    挂拍卖行, 聊天, 查看工会频道消息等, 并不参与跑地图打怪.
-    这时 1, 2, 3 就是 Active Character, 而其他人不是. 在此情况下多开脚本的行为是这样的:
-
-    1. 启动游戏时启动所有窗口.
-    2. 批量输入账号密码登录时, 只登录 3 个人物.
-    3. 按 1234 操作的时候只操作 3 个人物.
-    4. 使用单个窗口登录时, 可以选择全部的 5 个人物进行登录.
-    5. 可以用切换单个窗口快捷键切换到 5 个人物之一的窗口.
-    6. 用 Round robin 切换窗口时, 只在 3 个人物之间切换.
-
-    这样适合于专注于玩几个人物, 但保留快速登录其他人物的能力. 比如登录小号聊天, 倒东西等.
+    - :ref:`wow-active-character`
+    - :ref:`wow-leader`
 
     下面的属性是 Character 的核心属性, 不会变化.
 
