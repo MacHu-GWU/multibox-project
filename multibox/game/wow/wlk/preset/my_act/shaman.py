@@ -164,6 +164,7 @@ class ShamanRestoration(Shaman):
         #showtooltip
         /castsequence [nochanneling] reset=target 大地之盾,,次级治疗波,,次级治疗波,,次级治疗波
     """
+
     MB_HEAL_RAID = CAN.KEY_2
     """
     恢复萨的治疗循环. 无脑随机选择团队目标, 在激流6 秒CD的周期内完成一个循环. 平时该宏如下::
@@ -184,10 +185,18 @@ class ShamanRestoration(Shaman):
         #/targetraid
         /castsequence reset=6 激流,治疗链,水之护盾,治疗波,次级治疗波,水之护盾
     """
+
     MB_FAST_HEAL = CAN.KEY_3
     """
-    单体快速治疗. 一般放一个 "治疗波" 技能就可以了, 不需要宏
+    单体快速治疗. 一般放一个 "治疗波" 技能就可以了, 不需要宏.
     """
+
+    MB_Periodical_Refresh_Earth_Shield_on_Tank_Macro = CAN.KEY_4
+    """
+    按概率给坦克刷新大地之盾. 一般需要一个 castsequence 宏, 除了房大地之盾技能还要放很多空的逗号
+    用于模拟概率.
+    """
+
     MB_AOE_HEAL = CAN.KEY_5
     """
     群体治疗, 一般放一个 "治疗链" 技能就可以了.

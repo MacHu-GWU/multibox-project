@@ -10,7 +10,7 @@ from .hk_cmd import HotkeyCommandMixin
 from .hk_group_01_window_and_login import HotkeyGroup01WindowAndLoginMixin
 from .hk_group_02_movement import HotkeyGroup02MovementMixin
 from .hk_group_03_act_1_to_12 import HotkeyGroup03Act1To12Mixin
-from .hk_group_04_pet_control import HotkeyGroup04PetControlMixin
+from .hk_group_04_pet_control.main import HotkeyGroup04PetControlMixin
 from .hk_group_05_numpad_1_to_12 import HotkeyGroup05Numpad1To12Mixin
 from .hk_group_06_party_and_system import HotkeyGroup06PartyAndSystemMixin
 from .hk_group_07_utility_spell import HotkeyGroup07UtilitySpellMixin
@@ -23,7 +23,7 @@ from .hk_group_12_special import HotkeyGroup12SpecialMixin
 from .hk_control_panel import HotkeyControlPanelMixin
 
 
-@attrs.define
+@attrs.define(eq=False, slots=False)
 class Mode(
     _Mode,
     # --- Label and Command
@@ -45,6 +45,11 @@ class Mode(
     # --- Control Panel
     HotkeyControlPanelMixin,
 ):
+    is_tank1_has_healer: bool = attrs.field(default=False)
+    is_tank2_has_healer: bool = attrs.field(default=False)
+    is_tank1_has_beacon: bool = attrs.field(default=False)
+    is_tank2_has_beacon: bool = attrs.field(default=False)
+
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
 

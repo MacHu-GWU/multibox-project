@@ -5,6 +5,7 @@
 """
 
 import typing as T
+from itertools import cycle
 
 from ordered_set import OrderedSet
 from hotkeynet import api as hk
@@ -295,56 +296,81 @@ class HotkeyGroup03Act1To12Mixin:
 
             # 先获得所有可能在这个组里的治疗职业的 Label, 然后根据人数, 天赋给它们分配任务
             # 先分配任务的最高的最后 append, 放在队尾, 方便 pop
-            lbs_healer = OrderedSet()
-            lbs_healer.update(self.lbs_priest_disco)
-            lbs_healer.update(self.lbs_priest_holy)
-            lbs_healer.update(self.lbs_shaman_resto)
-            lbs_healer.update(self.lbs_druid_resto)
+            lbs_non_paladin_healer = OrderedSet()
+            lbs_non_paladin_healer.update(self.lbs_priest_disco)
+            lbs_non_paladin_healer.update(self.lbs_priest_holy)
+            lbs_non_paladin_healer.update(self.lbs_shaman_resto)
+            lbs_non_paladin_healer.update(self.lbs_druid_resto)
 
             lbs_paladin_holy = self.lbs_paladin_holy
 
             # 确保有人奶 1 号坦克.
             if self.lb_tank1:
-                if len(lbs_healer):
-                    lb = lbs_healer.pop()
+                if len(lbs_non_paladin_healer):
+                    self.is_tank1_has_healer = True
+                    lb = lbs_non_paladin_healer.pop()
                     with hk.SendLabel(
-                        id="FastHealLeader1",
+                        id="FastHealTank1",
                         to=[lb],
                     ):
                         self.target_tank_1_key_maker()
                         CAN.KEY_3()
-
-                if len(lbs_paladin_holy):
-                    lb = lbs_paladin_holy.pop()
-                    with hk.SendLabel(
-                        id="HolyPaladinBeaconOnLeader1",
-                        to=[lb],
-                    ):
-                        self.target_tank_1_key_maker()
-                        CAN.KEY_3()
+                else:
+                    # 如果没有人奶 1 号坦克, 团队中又还有空闲的奶骑,
+                    # 那么第一个空闲的奶骑负责给 1 号坦克道标
+                    if len(lbs_paladin_holy):
+                        self.is_tank1_has_beacon = True
+                        lb = lbs_paladin_holy.pop()
+                        with hk.SendLabel(
+                            id="HolyPaladinBeaconOnTank1",
+                            to=[lb],
+                        ):
+                            self.target_tank_1_key_maker()
+                            CAN.KEY_3()
 
             # 如果有 2 号坦克, 就尝试派人去奶
             if self.lb_tank2:
-                if len(lbs_healer):
-                    lb = lbs_healer.pop()
+                if len(lbs_non_paladin_healer):
+                    self.is_tank2_has_healer = True
+                    lb = lbs_non_paladin_healer.pop()
                     with hk.SendLabel(
-                        id="FastHealLeader2",
+                        id="FastHealTank2",
                         to=[lb],
                     ):
                         self.target_tank_2_key_maker()
                         CAN.KEY_3()
+                else:
+                    # 如果没有人奶 2 号坦克, 团队中又还有空闲的奶骑,
+                    # 那么第一个空闲的奶骑负责给 2 号坦克道标
+                    if len(lbs_paladin_holy):
+                        self.is_tank2_has_beacon = True
+                        lb = lbs_paladin_holy.pop()
+                        with hk.SendLabel(
+                            id="HolyPaladinBeaconOnTank2",
+                            to=[lb],
+                        ):
+                            self.target_tank_1_key_maker()
+                            CAN.KEY_3()
 
-                if len(lbs_paladin_holy):
-                    lb = lbs_paladin_holy.pop()
-                    with hk.SendLabel(
-                        id="HolyPaladinBeaconOnLeader2",
-                        to=[lb],
-                    ):
-                        self.target_tank_2_key_maker()
-                        CAN.KEY_3()
+            # 此时如果团队中有坦克, 或者有奶骑, 那么那么坦克身上的道标肯定是已经分配好了,
+            # 之后如果还有奶骑 (概率不大, 团队中大概率不会有超过 2 个奶骑), 那么就依次分配给 tank
+            tank_pairs: T.List[T.Tuple[str, hk.KeyMaker]] = list()
+            if self.lb_tank1:
+                tank_pairs.append((self.lb_tank1, self.target_tank_1_key_maker))
+            if self.lb_tank2:
+                tank_pairs.append((self.lb_tank2, self.target_tank_2_key_maker))
+            tank_pairs_cycle = cycle(tank_pairs)
+            for ind, lb in enumerate(lbs_paladin_holy, start=1):
+                lb, key_maker = next(tank_pairs_cycle)
+                with hk.SendLabel(
+                    id=f"ExtractHolyPaladin{ind}BeaconOnTank{lb}",
+                    to=[lb],
+                ):
+                    key_maker()
+                    CAN.KEY_3()
 
             # 神牧, 随机给团上恢复
-            lbs_priest_holy = lbs_healer.intersection(self.lbs_priest_holy)
+            lbs_priest_holy = lbs_non_paladin_healer.intersection(self.lbs_priest_holy)
             if len(lbs_priest_holy):
                 lb = lbs_priest_holy.pop()
                 with hk.SendLabel(
@@ -354,32 +380,21 @@ class HotkeyGroup03Act1To12Mixin:
                     act.PriestHoly.MB_HEAL_RAID()
 
             # 戒律牧, 随机给团上盾
-            lbs_priest_disco = lbs_healer.intersection(self.lbs_priest_disco)
+            lbs_priest_disco = lbs_non_paladin_healer.intersection(self.lbs_priest_disco)
             if len(lbs_priest_disco):
                 lb = lbs_priest_disco.pop()
-                lbs_healer.remove(lb)
+                lbs_non_paladin_healer.remove(lb)
                 with hk.SendLabel(
                     id="DiscoPriestHealRaid",
                     to=[lb],
                 ):
                     act.PriestDiscipline.MB_HEAL_RAID()
 
-            # 奶骑, 随机奶团, 因为道标的存在, 它肯定也是在奶坦克的
-            lbs_paladin_holy = lbs_healer.intersection(self.lbs_paladin_holy)
-            if len(lbs_paladin_holy):
-                lbs_healer.difference_update(lbs_paladin_holy)
-                with hk.SendLabel(
-                    id="HolyPaladinHealRaid",
-                    to=lbs_paladin_holy,
-                ):
-                    act.Target.TARGET_RAID()
-                    act.PaladinHoly.One_Minute_Heal_Rotation_Macro_copy_1()
-
             # 如果还有其他治疗没活干, 那么它们也帮着治疗焦点
-            if len(lbs_healer):
+            if len(lbs_non_paladin_healer):
                 with hk.SendLabel(
                     id="RestOfHealerHealFocus",
-                    to=lbs_healer,
+                    to=lbs_non_paladin_healer,
                 ):
                     act.Target.TARGET_FOCUS()
                     CAN.KEY_3()
@@ -393,73 +408,52 @@ class HotkeyGroup03Act1To12Mixin:
             self._build_default_dps_action(key=KN.KEY_4)
 
             # 奶骑给焦点的目标补圣光审判
-            lbs_paladin_healer = self.lbs_by_tc(TC.paladin_healer)
-            if len(lbs_paladin_healer) == 0:
-                pass
-            # 如果只有 1 个奶骑, 则给焦点的目标补圣光审判
-            elif len(lbs_paladin_healer) == 1:
-                with hk.SendLabel(
-                    id=TC.paladin_healer.name,
-                    to=self.lbs_by_tc(TC.paladin_healer),
-                ):
-                    act.Target.TARGET_FOCUS_TARGET()
-                    CAN.KEY_4()
-            # 如果有 2 或 2 个以上的奶骑, 两个奶骑分别给两个 leader 的目标补圣光审判
-            elif len(lbs_paladin_healer) >= 2:
+            lbs_paladin_holy = self.lbs_paladin_holy
+
+            if len(lbs_paladin_holy):
+                lb = lbs_paladin_holy.pop()
                 if self.lb_tank1:
                     with hk.SendLabel(
-                        id="HolyPaladin1",
-                        to=[lbs_paladin_healer[0]],
+                        id="HolyPaladinLightJudgementTank1Target",
+                        to=[lb],
                     ):
                         self.target_tank_1_key_maker()
                         act.Target.ASSIST_TARGET()
-                        CAN.KEY_4()
+                        act.PaladinHoly.Periodical_Judgement_of_Light_on_Focus_Target_Macro()
+
+            if len(lbs_paladin_holy):
+                lb = lbs_paladin_holy.pop()
                 if self.lb_tank2:
                     with hk.SendLabel(
-                        id="HolyPaladin2",
-                        to=[lbs_paladin_healer[1]],
+                        id="HolyPaladinLightJudgementTank2Target",
+                        to=[lb],
                     ):
                         self.target_tank_2_key_maker()
                         act.Target.ASSIST_TARGET()
-                        CAN.KEY_4()
-                if len(lbs_paladin_healer) > 2:
-                    with hk.SendLabel(
-                        id="HolyPaladin3andAbove",
-                        to=lbs_paladin_healer[2:],
-                    ):
-                        act.Target.TARGET_FOCUS_TARGET()
-                        CAN.KEY_4()
+                        act.PaladinHoly.Periodical_Judgement_of_Light_on_Focus_Target_Macro()
 
             # 奶萨 用位于 4 号键位上的按概率周期性给坦克上大地之盾的宏
-            lbs_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
-            if len(lbs_shaman_resto) == 0:
-                pass
-            # 如果只有 1 个奶萨, 则给焦点补大地之盾
-            elif len(lbs_shaman_resto) == 1:
-                with hk.SendLabel(
-                    id=TC.shaman_resto.name,
-                    to=[lbs_shaman_resto[0]],
-                ):
-                    act.Target.TARGET_FOCUS()
-                    CAN.KEY_4()
+            lbs_shaman_resto = self.lbs_shaman_resto
 
-            # 如果有 2 或 2 个以上的奶萨, 两个奶萨分别给两个坦克补大地之盾
-            # 其他多余的奶萨什么也不做
-            elif len(lbs_shaman_resto) == 2:
+            if len(lbs_shaman_resto):
+                lb = lbs_shaman_resto.pop()
                 if self.lb_tank1:
                     with hk.SendLabel(
-                        id="RestoShaman1",
-                        to=[lbs_shaman_resto[0]],
+                        id="RestoShamanPutEarthShieldOnTank1",
+                        to=[lb],
                     ):
                         self.target_tank_1_key_maker()
-                        CAN.KEY_4()
+                        act.ShamanRestoration.MB_Periodical_Refresh_Earth_Shield_on_Tank_Macro()
+
+            if len(lbs_shaman_resto):
+                lb = lbs_shaman_resto.pop()
                 if self.lb_tank2:
                     with hk.SendLabel(
-                        id="RestoShaman2",
-                        to=[lbs_shaman_resto[1]],
+                        id="RestoShamanPutEarthShieldOnTank2",
+                        to=[lb],
                     ):
                         self.target_tank_2_key_maker()
-                        CAN.KEY_4()
+                        act.ShamanRestoration.MB_Periodical_Refresh_Earth_Shield_on_Tank_Macro()
 
             # 德鲁伊, 用位于 4 号键位上的一键治疗宏
             self._build_send_label_by_talent(
@@ -607,6 +601,20 @@ class HotkeyGroup03Act1To12Mixin:
     def build_hk_0_short_term_buff(self: "Mode"):
         """
         补刷持续时间短的 Buff.
+
+        - 战士: 补命令怒吼
+        - DK: 凛冬号角
+        - 萨满: 补水盾
+        - 牧师: 补心灵之火
+        - 术士: 补邪恶护甲
+        - 法师: 补熔火护甲
+
+        奶骑补圣光道标的逻辑稍微有些复杂. 当只有 1 个坦克时, 毫无疑问的给该号坦克加.
+        但当如果有 2 个坦克时, 得要看 :meth:`build_hk_1_heal_tank` 1 号案件中的情况而定了.
+        我们得先看看有没有非奶骑职业已经在专职给 1, 2 号坦克刷血. 如果没人给 1 号坦克刷血,
+        就给 1 号坦克上道标. 而如果 1 号坦克已经有人照顾了, 但 2 号坦克没有, 则给 2 号坦克
+        上道标. 如果 1 号, 2 号坦克都有人照顾, 则看团队中奶骑的数量, 优先给 1 号坦克上道标,
+        还有多的奶骑再给 2 号坦克上道标.
         """
         with hk.Hotkey(
             id="Key0",
@@ -619,7 +627,6 @@ class HotkeyGroup03Act1To12Mixin:
             ):
                 act.DK.Horn_of_Winter()
 
-            # 奶骑 上道标, 这里稍微有点复杂
             lbs_paladin_healer = self.lbs_by_tc(TC.paladin_healer)
             if len(lbs_paladin_healer) == 0:
                 pass

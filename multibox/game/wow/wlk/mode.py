@@ -279,6 +279,15 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     def lbs_paladin_holy(self) -> OrderedSet[str]:
         return self.lbs_by_tc(TC.paladin_holy)
 
+    @property
+    def lbs_paladin_holy_and_non_paladin_holy(
+        self,
+    ) -> T.Tuple[OrderedSet[str], OrderedSet[str]]:
+        lbs_healer = self.lbs_healer
+        lbs_paladin_holy = self.lbs_paladin_holy
+        lbs_non_paladin_holy = lbs_healer.difference(lbs_paladin_holy)
+        return lbs_paladin_holy, lbs_non_paladin_holy
+
     def build_send_label_by_tc(
         self,
         tc: TC,
