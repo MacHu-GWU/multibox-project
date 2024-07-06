@@ -125,17 +125,18 @@ class Holy:
 
 class Healbot:
     HB_Holy_Light = CAN.MOUSE_LButton
-    HB_Sacred_Shield = CAN.ALT_LEFT_CLICK
-    HB_Cleanse = CAN.CTRL_LEFT_CLICK
     HB_Beacon_of_Light = CAN.SHIFT_LEFT_CLICK
+    HB_Cleanse = CAN.CTRL_LEFT_CLICK
+    HB_Sacred_Shield = CAN.ALT_LEFT_CLICK
 
     HB_Flash_of_Light = CAN.MOUSE_RButton
     HB_Holy_Shock = CAN.SHIFT_RIGHT_CLICK
     HB_Hand_of_Freedom = CAN.ALT_RIGHT_CLICK
 
-    HB_Hand_of_Protection = CAN.ALT_MIDDLE_CLICK
-    HB_Hand_of_Salvation = CAN.CTRL_MIDDLE_CLICK
+    HB_MB_Beacon_of_Light = CAN.MIDDLE_CLICK
     HB_Hand_of_Sacrifice = CAN.SHIFT_MIDDLE_CLICK
+    HB_Hand_of_Salvation = CAN.CTRL_MIDDLE_CLICK
+    HB_Hand_of_Protection = CAN.ALT_MIDDLE_CLICK
 
     HB_Righteous_Defense = None
     HB_Divine_Intervention = None
@@ -177,9 +178,18 @@ class PaladinHoly(Paladin):
     - 中键 是临时性的技能, 例如骑士给保护祝福, 德鲁伊给激活等
     """
     Beacon_of_Light = CAN.KEY_0
+    Holy_Shock = CAN.Z
+    Focus_Judgement = CAN.R
+    """
+    如果焦点是敌人, 则对焦点打审判. 如果焦点是友方, 则对焦点目标打审判.
+    通常用于设置坦克或者Boss为焦点的情况下使用, 避免选择目标的麻烦.
+
+    #showtooltip
+    /cast [target=focustarget,harm][target=focus,harm][] Judgement of Light;
+    """
 
     # --- 神圣天赋下专属键位 ---
-    One_Minute_Heal_Rotation_Macro_copy_1 = CAN.KEY_1
+    MB_One_Minute_Heal_Rotation_Macro_copy_1 = CAN.KEY_1
     """
     以 1 分钟为一个循环 (根据你的急速) 的治疗宏
     以 /castsequence reset=30 为起始, 以 X 圣闪 Y 圣光 的比例组成一个 5 - 6 秒的循环, 
@@ -191,9 +201,9 @@ class PaladinHoly(Paladin):
     /castsequence reset=30 Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Divine Plea,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,
     """
 
-    One_Minute_Heal_Rotation_Macro_copy_2 = CAN.KEY_2  # 和上面的技能效果一样, 不过放在了另一个键位, 我们有特殊原因.
+    MB_One_Minute_Heal_Rotation_Macro_copy_2 = CAN.KEY_2  # 和上面的技能效果一样, 不过放在了另一个键位, 我们有特殊原因.
 
-    Periodical_Beacon_of_Light_on_Focus_Macro = CAN.KEY_3
+    MB_Periodical_Beacon_of_Light_on_Focus_Macro = CAN.KEY_3
     """
     每 1.5 分钟一次的给焦点刷新圣光道标宏. 里面的 ``,`` 的数量决定了刷新道标的概率. 注意,
     这个宏里不能有 ``/stopcasting``, 不然你一按到这个键就打断当前治疗施法可不行. 也就是说
@@ -206,7 +216,7 @@ class PaladinHoly(Paladin):
     /castsequence Beacon of Light,,,,,,,,,,,,,,,,,,
     """
 
-    Periodical_Judgement_of_Light_on_Focus_Target_Macro = CAN.KEY_4
+    MB_Periodical_Judgement_of_Light_on_Focus_Target_Macro = CAN.KEY_4
     """
     每 15 秒一次的对焦点的目标打审判宏以触发奶骑的急速 Buff. 偶尔给自己补圣洁护盾.
     这个也是一个用概率来实现周期性施法的宏. 例如我们平均 15 秒按一次这个技能, 大部分的时候
@@ -218,16 +228,4 @@ class PaladinHoly(Paladin):
     /castsequence Judgement of Light,Judgement of Light,Sacred Shield
     """
 
-    Holy_Shock = CAN.Z
-    Focus_Judgement = CAN.R
-    """
-    如果焦点是敌人, 则对焦点打审判. 如果焦点是友方, 则对焦点目标打审判.
-    通常用于设置坦克或者Boss为焦点的情况下使用, 避免选择目标的麻烦.
-
-    #showtooltip
-    /cast [target=focustarget,harm][target=focus,harm][] Judgement of Light;
-    """
-
-    HB_Beacon_of_Light = CAN.MIDDLE_CLICK
-    HB_Holy_Shock = CAN.SHIFT_RIGHT_CLICK
 # fmt: on

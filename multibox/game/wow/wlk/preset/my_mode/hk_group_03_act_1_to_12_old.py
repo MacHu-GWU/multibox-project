@@ -249,7 +249,7 @@ class HotkeyGroup03Act1To12MixinOld:
                     to=lbs_paladin_holy,
                 ):
                     act.Target.TARGET_RAID()
-                    act.PaladinHoly.One_Minute_Heal_Rotation_Macro_copy_1()
+                    act.PaladinHoly.MB_One_Minute_Heal_Rotation_Macro_copy_1()
 
             # 如果还有其他治疗没活干, 那么它们也帮着治疗焦点
             if len(lbs_healer):
@@ -419,7 +419,7 @@ class HotkeyGroup03Act1To12MixinOld:
                     ):
                         self.target_tank_1_key_maker()
                         act.Target.ASSIST_TARGET()
-                        act.PaladinHoly.Periodical_Judgement_of_Light_on_Focus_Target_Macro()
+                        act.PaladinHoly.MB_Periodical_Judgement_of_Light_on_Focus_Target_Macro()
 
             if len(lbs_paladin_holy):
                 lb = lbs_paladin_holy.pop()
@@ -430,7 +430,7 @@ class HotkeyGroup03Act1To12MixinOld:
                     ):
                         self.target_tank_2_key_maker()
                         act.Target.ASSIST_TARGET()
-                        act.PaladinHoly.Periodical_Judgement_of_Light_on_Focus_Target_Macro()
+                        act.PaladinHoly.MB_Periodical_Judgement_of_Light_on_Focus_Target_Macro()
 
             # 奶萨 用位于 4 号键位上的按概率周期性给坦克上大地之盾的宏
             lbs_shaman_resto = self.lbs_shaman_resto

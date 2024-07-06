@@ -128,15 +128,15 @@ class Feral:
 
 
 class Healbot:
-    HB_Rejuvenation = CAN.MOUSE_LButton  # 回春术
+    HB_Rejuvenation = CAN.LEFT_CLICK  # 回春术
     HB_Wild_Growth = CAN.SHIFT_LEFT_CLICK  # 野性生长, 群体治疗, 恢复系天赋技能
     HB_Remove_Curse = CAN.CTRL_LEFT_CLICK  # 驱散诅咒
     HB_Regrowth = CAN.ALT_LEFT_CLICK  # 愈合
 
-    HB_Innervate = CAN.MOUSE_MButton  # 激活, 为目标回复大量法力
+    HB_Innervate = CAN.MIDDLE_CLICK  # 激活, 为目标回复大量法力
     HB_Lifebloom = None  # 生命之花, hot, 周期结束后会返回部分蓝耗
 
-    HB_Nourish = CAN.MOUSE_RButton  # 滋养
+    HB_Nourish = CAN.RIGHT_CLICK  # 滋养
     HB_Healing_Touch = CAN.SHIFT_RIGHT_CLICK  # 治疗之触
     HB_Abolish_Poison = CAN.CTRL_RIGHT_CLICK  # 驱毒术
     HB_Swiftmend = CAN.ALT_RIGHT_CLICK  # 迅捷治愈, 恢复系天赋技能
@@ -171,6 +171,7 @@ class DruidRestoration(Druid):
         #showtooltip
         /castsequence [nochanneling] reset=target 回春术,愈合,生命绽放,生命绽放,生命绽放,,,,
     """
+
     MB_HEAL_RAID = CAN.KEY_2
     """
     随机选择团队成员丢回春和野性成长 (AOE 治疗 HOT).
@@ -180,10 +181,22 @@ class DruidRestoration(Druid):
         /cast [stance:0/1/2/3/4] 生命之树
         /castsequence reset=15 回春术,回春术,回春术,回春术,回春术,野性成长
     """
+
     MB_FAST_HEAL = CAN.KEY_3
     """
     单体快速治疗. 一般放一个 "滋养" 技能就可以了, 不需要宏
     """
+
+    MB_HEAL_RAID_KEY_4 = CAN.KEY_4
+    """
+    随机选择团队成员丢回春和野性成长 (AOE 治疗 HOT).
+
+    宏命令的例子如下::
+
+        /cast [stance:0/1/2/3/4] 生命之树
+        /castsequence reset=15 回春术,回春术,回春术,回春术,回春术,野性成长
+    """
+
     MB_AOE_HEAL = CAN.KEY_5
     """
     群体治疗, 一般放一个 "野性成长" 技能就可以了.

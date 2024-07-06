@@ -114,13 +114,15 @@ class Restoration:
 
 class Healbot:
     HB_Healing_Wave = CAN.LEFT_CLICK  # 治疗波
-    HB_Lesser_Healing_Wave = CAN.ALT_LEFT_CLICK  # 次级治疗波
-    HB_Chain_Heal_for_mbox = CAN.MIDDLE_CLICK  # 治疗链
     HB_Chain_Heal_for_human = CAN.SHIFT_LEFT_CLICK  # 治疗链
-    HB_Cleanse_Spirit = CAN.CTRL_LEFT_CLICK  # 净化灵魂, 驱散 中毒, 疾病, 诅咒, 恢复系天赋技能
     HB_Cure_Toxins = CAN.CTRL_LEFT_CLICK  # 驱毒术, 驱散 中毒, 疾病
-    HB_Earth_Shield = CAN.ALT_RIGHT_CLICK  # 大地之盾, 当被保护的人受到伤害时治疗他, 恢复系天赋技能
+    HB_Lesser_Healing_Wave = CAN.ALT_LEFT_CLICK  # 次级治疗波
+
+    HB_Chain_Heal_for_mbox = CAN.MIDDLE_CLICK  # 治疗链
+
     HB_Riptide = CAN.RIGHT_CLICK  # 激流, 恢复系天赋技能
+    HB_Cleanse_Spirit = CAN.CTRL_LEFT_CLICK  # 净化灵魂, 驱散 中毒, 疾病, 诅咒, 恢复系天赋技能
+    HB_Earth_Shield = CAN.ALT_RIGHT_CLICK  # 大地之盾, 当被保护的人受到伤害时治疗他, 恢复系天赋技能
 
 
 class Shaman(ElementalCombat, Enhancement, Restoration, Healbot):

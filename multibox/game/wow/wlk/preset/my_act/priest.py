@@ -121,14 +121,34 @@ class PriestDiscipline(Priest):
 
         /castsequence reset=15 愈合祷言,,苦修,,愈合祷言,,
     """
+
     MB_HEAL_RAID = CAN.KEY_2
     """
     随机选择团队成员套盾.
+    
+    宏命令的例子如下::
+    
+        #showtooltops
+        /targetraid
+        /cast 真言术: 盾
     """
+
     MB_FAST_HEAL = CAN.KEY_3
     """
     单体快速治疗. 一般放一个 "快速治疗" 技能就可以了, 不需要宏
     """
+
+    MB_HEAL_RAID_KEY_4 = CAN.KEY_4
+    """
+    随机选择团队成员套盾.
+
+    宏命令的例子如下::
+
+        #showtooltops
+        /targetraid
+        /cast 真言术: 盾
+    """
+
     MB_AOE_HEAL = CAN.KEY_5
     """
     群体治疗, 一般放一个 "治疗祷言" 技能就可以了.
@@ -151,14 +171,34 @@ class PriestHoly(Priest):
     
         /castsequence reset=15 恢复,真言术盾,愈合祷言,快速治疗,快速治疗,快速治疗
     """
+
     MB_HEAL_RAID = CAN.KEY_2
     """
     随机选择团队成员套盾.
+
+    宏命令的例子如下::
+
+        #showtooltops
+        /targetraid
+        /cast 真言术: 盾
     """
+
     MB_FAST_HEAL = CAN.KEY_3
     """
     单体快速治疗. 一般放一个 "快速治疗" 技能就可以了, 不需要宏
     """
+
+    MB_HEAL_RAID_KEY_4 = CAN.KEY_4
+    """
+    随机选择团队成员套盾.
+
+    宏命令的例子如下::
+
+        #showtooltops
+        /targetraid
+        /cast 真言术: 盾
+    """
+
     MB_AOE_HEAL = CAN.KEY_5
     """
     群体治疗.
