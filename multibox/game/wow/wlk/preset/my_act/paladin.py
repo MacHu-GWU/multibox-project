@@ -190,6 +190,7 @@ class PaladinHoly(Paladin):
 
     /castsequence reset=30 Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Divine Plea,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,Flash of Light,Flash of Light,Flash of Light,Holy Light,
     """
+
     One_Minute_Heal_Rotation_Macro_copy_2 = CAN.KEY_2  # 和上面的技能效果一样, 不过放在了另一个键位, 我们有特殊原因.
 
     Periodical_Beacon_of_Light_on_Focus_Macro = CAN.KEY_3

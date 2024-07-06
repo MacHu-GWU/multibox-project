@@ -9,7 +9,8 @@ from .hk_cmd import HotkeyCommandMixin
 
 from .hk_group_01_window_and_login import HotkeyGroup01WindowAndLoginMixin
 from .hk_group_02_movement import HotkeyGroup02MovementMixin
-from .hk_group_03_act_1_to_12 import HotkeyGroup03Act1To12Mixin
+from .hk_group_03_act_1_to_12_old import HotkeyGroup03Act1To12MixinOld
+from .hk_group_03_act_1_to_12.main import HotkeyGroup03Act1To12Mixin
 from .hk_group_04_pet_control.main import HotkeyGroup04PetControlMixin
 from .hk_group_05_numpad_1_to_12 import HotkeyGroup05Numpad1To12Mixin
 from .hk_group_06_party_and_system import HotkeyGroup06PartyAndSystemMixin
@@ -33,6 +34,7 @@ class Mode(
     HotkeyGroup01WindowAndLoginMixin,
     HotkeyGroup02MovementMixin,
     HotkeyGroup03Act1To12Mixin,
+    HotkeyGroup03Act1To12MixinOld,
     HotkeyGroup04PetControlMixin,
     HotkeyGroup05Numpad1To12Mixin,
     HotkeyGroup06PartyAndSystemMixin,
@@ -59,6 +61,7 @@ class Mode(
         self.build_hk_group_01_window_and_login_mixin()
         self.build_hk_group_02_movement_mixin()
         self.build_hk_group_03_act_1_to_12_mixin()
+        self.build_hk_group_03_act_1_to_12_mixin_old()
         self.build_hk_group_04_pet_control_mixin()
         self.build_hk_group_05_numpad_1_to_12_mixin()
         self.build_hk_group_06_party_and_system_mixin()

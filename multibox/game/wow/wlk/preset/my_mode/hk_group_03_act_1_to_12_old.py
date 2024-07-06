@@ -19,7 +19,7 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-class HotkeyGroup03Act1To12Mixin:
+class HotkeyGroup03Act1To12MixinOld:
     def _get_send_label_by_id(
         self: "Mode",
         id_: str,
@@ -757,7 +757,7 @@ class HotkeyGroup03Act1To12Mixin:
                 act.Target.TARGET_FOCUS_TARGET()
                 act.Shaman.Chain_Heal()
 
-    def build_hk_group_03_act_1_to_12_mixin(self):
+    def build_hk_group_03_act_1_to_12_mixin_old(self):
         self.build_hk_1_heal_tank()
         self.build_hk_2_heal_nothing()
         self.build_hk_3_heal_tank()

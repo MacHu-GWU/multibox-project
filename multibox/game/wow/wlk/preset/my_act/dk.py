@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 from hotkeynet.api import CAN
 
 # fmt: off

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 from hotkeynet.api import CAN
 
 # fmt: off
@@ -150,6 +154,9 @@ class DruidBalance(Druid):
 
 
 class DruidRestoration(Druid):
+    """
+    对于治疗
+    """
     Wild_Growth = CAN.KEY_5  # 野性生长, 群体治疗, 恢复系天赋技能
     Swiftmend = None  # 迅捷治愈, 恢复系天赋技能
     Tree_of_LifeShapeshift = CAN.SHIFT_E  # 治疗之树形态
