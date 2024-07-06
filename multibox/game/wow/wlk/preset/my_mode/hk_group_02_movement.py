@@ -209,18 +209,18 @@ class HotkeyGroup02MovementMixin:
                 id="Spread Matrix 1",
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
             ) as self.hk_spread_matrix_1:
-                self._move_left(lbs_non_tank.intersection([6, 15, 14]))
-                self._move_right(lbs_non_tank.intersection([3, 11, 18]))
-                self._move_left_down(lbs_non_tank.intersection([4, 8, 16, 13]))
-                self._move_right_down(lbs_non_tank.intersection([5, 9, 12, 17]))
-                self._move_down(lbs_non_tank.intersection([2]))
+                self._move_left(lbs_non_tank.intersection(Window.to_labels([6, 15, 14])))
+                self._move_right(lbs_non_tank.intersection(Window.to_labels([3, 11, 18])))
+                self._move_left_down(lbs_non_tank.intersection(Window.to_labels([4, 8, 16, 13])))
+                self._move_right_down(lbs_non_tank.intersection(Window.to_labels([5, 9, 12, 17])))
+                self._move_down(lbs_non_tank.intersection(Window.to_labels([2])))
 
             with hk.MovementHotkey(
                 id="Spread Matrix 2",
                 key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
             ) as self.hk_spread_matrix_2:
-                self._move_left(lbs_non_tank.intersection([4, 11, 12]))
-                self._move_right(lbs_non_tank.intersection([5, 15, 16]))
+                self._move_left(lbs_non_tank.intersection(Window.to_labels([4, 11, 12])))
+                self._move_right(lbs_non_tank.intersection(Window.to_labels([5, 15, 16])))
 
     def build_hk_spread_circle(self: "Mode"):
         """
@@ -249,14 +249,14 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.OEM5_PIPE_OR_BACK_SLASH),
         ) as self.hk_spread_circle1:
             lbs_non_tank = self.lbs_non_tank
-            self._move_up(lbs_non_tank.intersection([3, 14, 15]))
-            self._move_down(lbs_non_tank.intersection([6, 11, 18]))
-            self._move_left(lbs_non_tank.intersection([8, 12, 16]))
-            self._move_right(lbs_non_tank.intersection([9, 13, 17]))
-            self._move_left_up(lbs_non_tank.intersection([7, 19]))
-            self._move_left_down(lbs_non_tank.intersection([4, 20]))
-            self._move_right_up(lbs_non_tank.intersection([5, 21]))
-            self._move_right_down(lbs_non_tank.intersection([2, 22]))
+            self._move_up(lbs_non_tank.intersection(Window.to_labels([3, 14, 15])))
+            self._move_down(lbs_non_tank.intersection(Window.to_labels([6, 11, 18])))
+            self._move_left(lbs_non_tank.intersection(Window.to_labels([8, 12, 16])))
+            self._move_right(lbs_non_tank.intersection(Window.to_labels([9, 13, 17])))
+            self._move_left_up(lbs_non_tank.intersection(Window.to_labels([7, 19])))
+            self._move_left_down(lbs_non_tank.intersection(Window.to_labels([4, 20])))
+            self._move_right_up(lbs_non_tank.intersection(Window.to_labels([5, 21])))
+            self._move_right_down(lbs_non_tank.intersection(Window.to_labels([2, 22])))
 
     def build_hk_group_02_movement_mixin(self: "Mode"):
         self.build_hk_all_move_up_down_turn_left_right()
