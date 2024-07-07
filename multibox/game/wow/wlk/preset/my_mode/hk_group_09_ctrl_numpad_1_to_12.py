@@ -24,7 +24,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_1:
             with hk.SendLabel(
                 id=TC.hunter.name,
-                to=self.lbs_by_tc(TC.hunter),
+                to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.Hunter.Silencing_Shot()
@@ -36,7 +36,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_2:
             with hk.SendLabel(
                 id=TC.mage.name,
-                to=self.lbs_by_tc(TC.mage),
+                to=self.get_lbs_by_tc(TC.mage),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.Mage.Counterspell()
@@ -48,7 +48,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_3:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
@@ -56,7 +56,7 @@ class HotkeyGroup09CtrlNumpad1To12:
 
             with hk.SendLabel(
                 id=TC.priest.name,
-                to=self.lbs_by_tc(TC.priest),
+                to=self.get_lbs_by_tc(TC.priest),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
@@ -69,7 +69,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_4:
             with hk.SendLabel(
                 id=TC.priest_shadow.name,
-                to=self.lbs_by_tc(TC.priest_shadow),
+                to=self.get_lbs_by_tc(TC.priest_shadow),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.PriestShadow.Psychic_Horror()
@@ -81,7 +81,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_5:
             with hk.SendLabel(
                 id=TC.druid_balance.name,
-                to=self.lbs_by_tc(TC.druid_balance),
+                to=self.get_lbs_by_tc(TC.druid_balance),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.DruidBalance.Typhoon()
@@ -93,7 +93,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_6:
             with hk.SendLabel(
                 id="all_elemental_shaman",
-                to=self.lbs_by_tc(TC.shaman_elemental),
+                to=self.get_lbs_by_tc(TC.shaman_elemental),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.ShamanElementalCombat.Thunderstorm()
@@ -105,7 +105,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_7:
             with hk.SendLabel(
                 id=TC.priest.name,
-                to=self.lbs_by_tc(TC.priest),
+                to=self.get_lbs_by_tc(TC.priest),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Priest.Divine_Hymn()
@@ -117,7 +117,7 @@ class HotkeyGroup09CtrlNumpad1To12:
         ) as self.hk_ctrl_numpad_10:
             with hk.SendLabel(
                 id=TC.priest.name,
-                to=self.lbs_by_tc(TC.priest),
+                to=self.get_lbs_by_tc(TC.priest),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Priest.Hymn_of_Hope()

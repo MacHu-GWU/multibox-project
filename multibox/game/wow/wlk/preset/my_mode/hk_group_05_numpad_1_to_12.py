@@ -41,7 +41,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_5_shaman_put_totem:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.Shaman.Call_of_the_Ancestors()
 
@@ -57,7 +57,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_6_shaman_recall_totem:
             with hk.SendLabel(
                 name=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.Shaman.Totemic_Recall()
 

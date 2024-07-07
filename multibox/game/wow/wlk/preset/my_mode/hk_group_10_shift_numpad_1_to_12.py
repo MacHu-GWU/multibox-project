@@ -24,7 +24,7 @@ class HotkeyGroup10ShiftNumpad1To12:
         ) as self.hk_shift_numpad_1:
             with hk.SendLabel(
                 name=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Call_of_the_Ancestors()
@@ -36,7 +36,7 @@ class HotkeyGroup10ShiftNumpad1To12:
         ) as self.hk_shift_numpad_2:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Totemic_Recall()

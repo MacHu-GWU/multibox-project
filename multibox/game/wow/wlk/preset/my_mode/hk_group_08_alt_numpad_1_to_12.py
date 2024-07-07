@@ -25,7 +25,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_1_hunter_misdirect:
             with hk.SendLabel(
                 id=TC.hunter.name,
-                to=self.lbs_by_tc(TC.hunter),
+                to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Hunter.Misdirection_Focus_Macro()
 
@@ -36,7 +36,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_2_aspect_of_pact_or_hawk:
             with hk.SendLabel(
                 id=TC.hunter.name,
-                to=self.lbs_by_tc(TC.hunter),
+                to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Hunter.Aspect_of_Pact_or_dragon_hawk()
 
@@ -47,7 +47,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_3_aspect_of_viper_or_hawk:
             with hk.SendLabel(
                 name=TC.hunter.name,
-                to=self.lbs_by_tc(TC.hunter),
+                to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Hunter.Aspect_of_viper_or_dragon_hawk()
 
@@ -58,7 +58,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_4_all_boomkin_star_fall:
             with hk.SendLabel(
                 id=TC.druid_balance.name,
-                to=self.lbs_by_tc(TC.druid_balance),
+                to=self.get_lbs_by_tc(TC.druid_balance),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.DruidBalance.Starfall()
@@ -70,7 +70,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_5_all_dps_burst:
             with hk.SendLabel(
                 id=TC.dps.name,
-                to=self.lbs_by_tc(TC.dps),
+                to=self.get_lbs_by_tc(TC.dps),
             ):
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
@@ -82,22 +82,22 @@ class HotkeyGroup08AltNumpad1To12:
             with hk.SendLabel(
                 id="all_non_shaman_dps",
                 to=difference_list(
-                    self.lbs_by_tc(TC.dps),
-                    self.lbs_by_tc(TC.shaman),
+                    self.get_lbs_by_tc(TC.dps),
+                    self.get_lbs_by_tc(TC.shaman),
                 ),
             ):
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
             with hk.SendLabel(
                 id=TC.shaman_elemental.name,
-                to=self.lbs_by_tc(TC.shaman_elemental),
+                to=self.get_lbs_by_tc(TC.shaman_elemental),
             ):
                 act.Shaman.Bloodlust_or_Heroism()
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
             with hk.SendLabel(
                 id=TC.shaman_resto.name,
-                to=self.lbs_by_tc(TC.shaman_resto),
+                to=self.get_lbs_by_tc(TC.shaman_resto),
             ):
                 act.Shaman.Bloodlust_or_Heroism()
 
@@ -108,7 +108,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_7_raid_damage_reduction:
             with hk.SendLabel(
                 id=TC.paladin_protect.name,
-                to=self.lbs_by_tc(TC.paladin_protect),
+                to=self.get_lbs_by_tc(TC.paladin_protect),
             ):
                 # 要点两下, 启动神圣牺牲后自己取消
                 act.PaladinProtection.Divine_Sacrifice()
@@ -120,7 +120,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_8_raid_damage_reduction:
             with hk.SendLabel(
                 id=TC.paladin_holy.name,
-                to=self.lbs_by_tc(TC.paladin_holy),
+                to=self.get_lbs_by_tc(TC.paladin_holy),
             ):
                 # 要点两下, 启动神圣牺牲后自己取消
                 act.PaladinProtection.Divine_Sacrifice()
@@ -132,7 +132,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_9_raid_damage_reduction:
             with hk.SendLabel(
                 id=TC.paladin_holy.name,
-                to=self.lbs_by_tc(TC.paladin_holy),
+                to=self.get_lbs_by_tc(TC.paladin_holy),
             ):
                 act.PaladinHoly.Aura_Mastery()
 
@@ -143,7 +143,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_10_cleansing_totem:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Cleansing_Totem()
@@ -155,7 +155,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_11_tremor_totem:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Tremor_Totem()
@@ -167,7 +167,7 @@ class HotkeyGroup08AltNumpad1To12:
         ) as self.hk_alt_numpad_12_earth_binding_totem:
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Earthbind_Totem()

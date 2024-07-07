@@ -53,8 +53,8 @@ def test():
         _ = mode.active_chars
         _ = mode.login_window_and_account_pairs
         _ = mode.lbs_all
-        _ = mode.lbs_by_tl
-        _ = mode.lbs_by_tc
+        _ = mode.get_lbs_by_tl
+        _ = mode.get_lbs_by_tc
         _ = mode.lb_tank1
         _ = mode.lb_tank2
         _ = mode.lb_dr_pala1

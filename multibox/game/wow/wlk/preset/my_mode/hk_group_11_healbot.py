@@ -24,8 +24,8 @@ class HotkeyGroup11Healbot:
         点击 Healbot 的时候, 所有 DPS 继续攻击焦点的目标. 唯独 增强萨满 和 元素萨满 例外.
         虽然它们是 DPS 职业, 但是依然要跟其他治疗一样, 对团队框架目标使用治疗链.
         """
-        lbs_dps = self.lbs_by_tc(TC.dps)
-        lbs_shaman_non_resto = self.lbs_by_tc(TC.shaman_non_resto)
+        lbs_dps = self.get_lbs_by_tc(TC.dps)
+        lbs_shaman_non_resto = self.get_lbs_by_tc(TC.shaman_non_resto)
         to = utils.difference_list(lbs_dps, lbs_shaman_non_resto)
         with hk.SendLabel(
             id="non_shaman_dps",
@@ -226,7 +226,7 @@ class HotkeyGroup11Healbot:
             id="Healbot Innervate",
             key=KN.SCROLOCK_ON(KN.CTRL_SHIFT_(KN.MOUSE_LButton)),
         ) as self.hk_healbot_innervate:
-            lbs_druid = self.lbs_by_tc(TC.druid)
+            lbs_druid = self.get_lbs_by_tc(TC.druid)
             if len(lbs_druid):
                 with hk.SendLabel(
                     id="Healbot Druid 1 cast innervate",

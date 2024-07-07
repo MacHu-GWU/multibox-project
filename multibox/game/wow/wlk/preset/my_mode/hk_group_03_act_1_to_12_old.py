@@ -87,7 +87,7 @@ class HotkeyGroup03Act1To12MixinOld:
         for talent in TC.tank.talents:
             with hk.SendLabel(
                 id=talent.name,
-                to=self.lbs_by_tl(talent),
+                to=self.get_lbs_by_tl(talent),
             ) as send_label:
                 hk.Key.make(key)
                 send_label_list.append(send_label)
@@ -96,7 +96,7 @@ class HotkeyGroup03Act1To12MixinOld:
         for talent in TC.dps.talents:
             with hk.SendLabel(
                 id=talent.name,
-                to=self.lbs_by_tl(talent),
+                to=self.get_lbs_by_tl(talent),
             ) as send_label:
                 act.Target.TARGET_FOCUS_TARGET()
                 hk.Key.make(key)
@@ -106,7 +106,7 @@ class HotkeyGroup03Act1To12MixinOld:
         for talent in TC.healer.talents:
             with hk.SendLabel(
                 id=talent.name,
-                to=self.lbs_by_tl(talent),
+                to=self.get_lbs_by_tl(talent),
             ) as send_label:
                 if healer_target_nothing:
                     hk.Key.make(key)
@@ -154,7 +154,7 @@ class HotkeyGroup03Act1To12MixinOld:
         for talent in talent_list:
             with hk.SendLabel(
                 id=talent.name,
-                to=self.lbs_by_tl(talent),
+                to=self.get_lbs_by_tl(talent),
             ) as send_label:
                 for target in target_list:
                     target()
@@ -463,14 +463,14 @@ class HotkeyGroup03Act1To12MixinOld:
             )
 
             # 戒律牧 用位于 4 号键位上的按概率周期性给坦克上愈合祷言或苦修的宏
-            label_list = self.lbs_by_tc(TC.priest_disco)
+            label_list = self.get_lbs_by_tc(TC.priest_disco)
             if len(label_list) == 0:
                 pass
             # 如果只有 1 个戒律牧, 则给焦点补愈合祷言
             elif len(label_list) == 1:
                 with hk.SendLabel(
                     id=TC.shaman_resto.name,
-                    to=self.lbs_by_tc(TC.priest_disco),
+                    to=self.get_lbs_by_tc(TC.priest_disco),
                 ):
                     act.Target.TARGET_FOCUS()
                     CAN.KEY_4()
@@ -623,18 +623,18 @@ class HotkeyGroup03Act1To12MixinOld:
             # DK 吹号角
             with hk.SendLabel(
                 id=TC.dk.name,
-                to=self.lbs_by_tc(TC.dk),
+                to=self.get_lbs_by_tc(TC.dk),
             ):
                 act.DK.Horn_of_Winter()
 
-            lbs_paladin_healer = self.lbs_by_tc(TC.paladin_healer)
+            lbs_paladin_healer = self.get_lbs_by_tc(TC.paladin_healer)
             if len(lbs_paladin_healer) == 0:
                 pass
             # 如果只有 1 个奶骑, 则给焦点加圣光道标
             elif len(lbs_paladin_healer) == 1:
                 with hk.SendLabel(
                     id=TC.paladin_healer.name,
-                    to=self.lbs_by_tc(TC.paladin_healer),
+                    to=self.get_lbs_by_tc(TC.paladin_healer),
                 ):
                     act.Target.TARGET_FOCUS()
                     act.PaladinHoly.Beacon_of_Light()
@@ -668,21 +668,21 @@ class HotkeyGroup03Act1To12MixinOld:
             # 恢复萨上水盾
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(TC.shaman),
+                to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.ShamanRestoration.Water_Shield()
 
             # 术士上邪甲
             with hk.SendLabel(
                 id=TC.warlock.name,
-                to=self.lbs_by_tc(TC.warlock),
+                to=self.get_lbs_by_tc(TC.warlock),
             ):
                 act.Warlock.Fel_Armor()
 
             # 牧师上心灵之火
             with hk.SendLabel(
                 id=TC.priest.name,
-                to=self.lbs_by_tc(TC.priest),
+                to=self.get_lbs_by_tc(TC.priest),
             ):
                 act.Priest.Inner_Fire()
 
@@ -745,14 +745,14 @@ class HotkeyGroup03Act1To12MixinOld:
         ) as self.hk_alt_5:
             with hk.SendLabel(
                 id=TC.priest_holy.name,
-                to=self.lbs_by_tc(tc=TC.priest_holy),
+                to=self.get_lbs_by_tc(tc=TC.priest_holy),
             ):
                 act.Target.TARGET_SELF()
                 act.Priest.Circle_of_Healing()
 
             with hk.SendLabel(
                 id=TC.shaman.name,
-                to=self.lbs_by_tc(tc=TC.shaman),
+                to=self.get_lbs_by_tc(tc=TC.shaman),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.Shaman.Chain_Heal()

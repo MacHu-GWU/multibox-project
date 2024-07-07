@@ -56,6 +56,20 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     注, ``active_chars`` 和 ``login_chars`` 角色集合必须满足两个条件,
     character name 没有重复, window 没有重复, 且是按照 window 排序好的.
     :meth:`multibox.game.wow.wlk.dataset.Dataset.from_excel`
+
+    **Label Helper Methods**
+
+    在多开的 HotkeyNet 定义中, 经常会出现根据天赋筛选出一部分角色的 window label
+    然后让这些角色按下某技能按键的代码.
+
+    下面凡是以 ``get_lbs_xyz`` 开头的方法都是一个工厂函数, 用于生成这种按照天赋筛选出的
+    角色的 window label 集合. 调用时需要用 ``get_lbs_xyz()``. 因为这个集合是 mutable 的,
+    每次调用这个方法都会生成一个新的集合, 以保证就算你对这个集合进行了修改, 也不会影响到其他集合,
+    防止出现奇怪的 bug. 但这样做的的代价是牺牲一部分性能开销.
+
+    下面凡是以 ``lbs_xyz`` 开头的都是一个 ``@cached_property``, 调用时不需要打括号.
+    ``get_lbs_xyz`` 方法的返回值的一个内存中的缓存. 如果你确定 100% 你不会修改这个集合,
+    那么你可以用这个方法以获得更好的性能.
     """
 
     name: T.Optional[str] = attrs.field(default=None)
@@ -117,14 +131,6 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         ]
         return window_and_account_pairs
 
-    # @property
-    # def target_leader_1_key_maker(self) -> hkn.KeyMaker:
-    #     return self.target_key_mapping[self.leader1.window.label]
-    #
-    # @property
-    # def target_leader_2_key_maker(self) -> hkn.KeyMaker:
-    #     return self.target_key_mapping[self.leader2.window.label]
-
     @property
     def target_tank_1_key_maker(self) -> hk.KeyMaker:
         return self.target_key_mapping[self.lb_tank1]
@@ -133,8 +139,11 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     def target_tank_2_key_maker(self) -> hk.KeyMaker:
         return self.target_key_mapping[self.lb_tank2]
 
-    @property
-    def lbs_all(self) -> OrderedSet[str]:
+    # --------------------------------------------------------------------------
+    # 在多开的 HotkeyNet 定义中, 经常会出现根据天赋筛选出一部分角色的 window label
+    # 然后让这些角色按下某技能按键的代码. 下面凡是以 ``get_bs
+    # --------------------------------------------------------------------------
+    def get_lbs_all(self) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色所对应的游戏窗口的 label.
 
@@ -142,7 +151,14 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         """
         return OrderedSet([char.window.label for char in self.chars if char.is_active])
 
-    def lbs_by_tl(self, tl: TL) -> OrderedSet[str]:
+    @cached_property
+    def lbs_all(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_all`.
+        """
+        return self.get_lbs_all()
+
+    def get_lbs_by_tl(self, tl: TL) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色中, 匹配某个 **具体天赋** 的角色所对应的游戏窗口的 label.
         例如防护骑士.
@@ -159,7 +175,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
             ]
         )
 
-    def lbs_by_tc(self, tc: TC) -> OrderedSet[str]:
+    def get_lbs_by_tc(self, tc: TC) -> OrderedSet[str]:
         """
         返回所有要进行游戏的人物角色中, 匹配某个 **天赋分组** 的角色所对应的游戏窗口的 label.
         例如全部的近战物理 DPS.
@@ -258,27 +274,27 @@ class Mode(BaseSemiMutableModel, AttrsClass):
 
     @property
     def lbs_healer(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.healer)
+        return self.get_lbs_by_tc(TC.healer)
 
     @property
     def lbs_druid_resto(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.druid_resto)
+        return self.get_lbs_by_tc(TC.druid_resto)
 
     @property
     def lbs_shaman_resto(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.shaman_resto)
+        return self.get_lbs_by_tc(TC.shaman_resto)
 
     @property
     def lbs_priest_holy(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.priest_holy)
+        return self.get_lbs_by_tc(TC.priest_holy)
 
     @property
     def lbs_priest_disco(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.priest_disco)
+        return self.get_lbs_by_tc(TC.priest_disco)
 
     @property
     def lbs_paladin_holy(self) -> OrderedSet[str]:
-        return self.lbs_by_tc(TC.paladin_holy)
+        return self.get_lbs_by_tc(TC.paladin_holy)
 
     @property
     def lbs_paladin_holy_and_non_paladin_holy_healer(
@@ -355,7 +371,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         :param funcs: 一系列的函数, 用于构建在 send label 的 block 中的内容.
             比如连续按下多个按键.
         """
-        lbs = self.lbs_by_tc(tc)
+        lbs = self.get_lbs_by_tc(tc)
         if lbs:
             with hk.SendLabel(
                 id=tc.name,

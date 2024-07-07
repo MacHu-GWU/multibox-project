@@ -251,7 +251,7 @@ class HotkeyGroup07UtilitySpellMixin:
             id="Alt Shift F - 鸟德轮流放星落",
             key=KN.SCROLOCK_ON(KN.ALT_SHIFT_(KN.F)),
         ) as self.hk_alt_shift_f_take_turn_star_fall:
-            for label in self.lbs_by_tc(TC.druid_balance):
+            for label in self.get_lbs_by_tc(TC.druid_balance):
                 with hk.Toggle():
                     with hk.SendLabel(
                         to=[
@@ -271,35 +271,35 @@ class HotkeyGroup07UtilitySpellMixin:
         ) as self.hk_alt_x_aoe_target_location:
             with hk.SendLabel(
                 id=TC.dk.name,
-                to=self.lbs_by_tc(TC.dk),
+                to=self.get_lbs_by_tc(TC.dk),
             ):
                 # act.General.ESC()
                 act.DK.Death_and_Decay()
 
             with hk.SendLabel(
                 id=TC.hunter.name,
-                to=self.lbs_by_tc(TC.hunter),
+                to=self.get_lbs_by_tc(TC.hunter),
             ):
                 # act.General.ESC()
                 act.Hunter.Volley()
 
             with hk.SendLabel(
                 id=TC.druid_balance.name,
-                to=self.lbs_by_tc(TC.druid_balance),
+                to=self.get_lbs_by_tc(TC.druid_balance),
             ):
                 # act.General.ESC()
                 act.DruidBalance.Hurricane()
 
             with hk.SendLabel(
                 id=TC.warlock.name,
-                to=self.lbs_by_tc(TC.warlock),
+                to=self.get_lbs_by_tc(TC.warlock),
             ):
                 # act.General.ESC()
                 act.Warlock.Rain_of_Fire()
 
             with hk.SendLabel(
                 id=TC.mage.name,
-                to=self.lbs_by_tc(TC.mage),
+                to=self.get_lbs_by_tc(TC.mage),
             ):
                 # act.General.ESC()
                 act.Mage.Blizzard()
@@ -409,18 +409,18 @@ class HotkeyGroup07UtilitySpellMixin:
             # 近战打断, CD 都是 10 秒
             # lbs_warrior = self.lbs_by_tc(TC.warrior)
             # lbs_rogue = self.lbs_by_tc(TC.rogue)
-            lbs_dk = self.lbs_by_tc(TC.dk)
+            lbs_dk = self.get_lbs_by_tc(TC.dk)
 
             # 远程打断
             # 萨满打断技能 CD 很短, 只有 6 秒
-            lbs_shaman_non_resto = self.lbs_by_tc(TC.shaman_non_resto)
+            lbs_shaman_non_resto = self.get_lbs_by_tc(TC.shaman_non_resto)
             # 萨满打断技能 CD 很短, 只有 6 秒
-            lbs_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
+            lbs_shaman_resto = self.get_lbs_by_tc(TC.shaman_resto)
             lbs_shaman = lbs_shaman_non_resto.union(lbs_shaman_resto)
             # 法师反制 CD 24 秒
-            lbs_mage = self.lbs_by_tc(TC.mage)
+            lbs_mage = self.get_lbs_by_tc(TC.mage)
             # 猎人 沉默射击 CD 24 秒
-            lbs_marksman_hunter = self.lbs_by_tc(TC.hunter_marksman)
+            lbs_marksman_hunter = self.get_lbs_by_tc(TC.hunter_marksman)
             # shadow_priest_lbs = self.lbs_by_tc(TC.priest_shadow) # 不是每一个牧师都会点出沉默
 
             n_melee = len(lbs_dk)
@@ -523,7 +523,7 @@ class HotkeyGroup07UtilitySpellMixin:
         ) as self.hk_t_dispel_raid:
             with hk.SendLabel(
                 id=TC.dispeler.name,
-                to=self.lbs_by_tc(TC.dispeler),
+                to=self.get_lbs_by_tc(TC.dispeler),
             ):
                 act.Target.TARGET_RAID()
                 hk.Key.trigger()
@@ -533,7 +533,7 @@ class HotkeyGroup07UtilitySpellMixin:
             id="Alt Shift G - 鸟德轮流放台风",
             key=KN.SCROLOCK_ON(KN.ALT_SHIFT_(KN.G)),
         ) as self.hk_alt_shift_g_take_turn_typhoon:
-            for label in self.lbs_by_tc(TC.druid_balance):
+            for label in self.get_lbs_by_tc(TC.druid_balance):
                 with hk.Toggle():
                     with hk.SendLabel(to=[label]):
                         act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()

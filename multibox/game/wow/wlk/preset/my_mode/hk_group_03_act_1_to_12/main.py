@@ -61,7 +61,7 @@ class HotkeyGroup03Act1To12Mixin(
         """
         send_label_mapping = dict()
         for talent in talents:
-            lbs = self.lbs_by_tl(talent)
+            lbs = self.get_lbs_by_tl(talent)
             if len(lbs):
                 # 这个 id 是为了给开发者一些自定义的空间, 以便在后续的代码中可以根据这个 id
                 # 找到对应的 SendLabel 对象然后对其进行修改.

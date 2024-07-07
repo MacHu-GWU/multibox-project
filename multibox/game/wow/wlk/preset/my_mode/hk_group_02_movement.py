@@ -83,7 +83,7 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.CTRL_(f"{KN.UP}, {KN.DOWN}, {KN.LEFT}, {KN.RIGHT}")),
         ) as self.hk_non_tank_move_up_down_turn_left_right:
             with hk.SendLabel(
-                to=self.lbs_by_tc(TC.non_tank),
+                to=self.get_lbs_by_tc(TC.non_tank),
             ):
                 act.General.TRIGGER()
 
@@ -96,7 +96,7 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.CTRL_(KN.A)),
         ) as self.hk_non_tank_move_left:
             with hk.SendLabel(
-                to=self.lbs_by_tc(TC.non_tank),
+                to=self.get_lbs_by_tc(TC.non_tank),
             ):
                 act.Movement.MOVE_LEFT()
 
@@ -105,7 +105,7 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.CTRL_(KN.D)),
         ) as self.hk_non_tank_move_right:
             with hk.SendLabel(
-                to=self.lbs_by_tc(TC.non_tank),
+                to=self.get_lbs_by_tc(TC.non_tank),
             ):
                 act.Movement.MOVE_RIGHT()
 
@@ -142,7 +142,7 @@ class HotkeyGroup02MovementMixin:
                 DPS2    DPS3
         """
         lbs_all = self.lbs_all
-        lbs_healer = self.lbs_by_tc(TC.healer)
+        lbs_healer = self.get_lbs_by_tc(TC.healer)
         lbs_leader = self.lbs_leader
         lbs_all.difference_update(lbs_leader)
         lbs_healer.difference_update(lbs_leader)

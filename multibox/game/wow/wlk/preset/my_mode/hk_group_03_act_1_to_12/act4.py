@@ -88,14 +88,14 @@ class Act4Mixin:
             )
 
             # 戒律牧 用位于 4 号键位上的按概率周期性给坦克上愈合祷言或苦修的宏
-            label_list = self.lbs_by_tc(TC.priest_disco)
+            label_list = self.get_lbs_by_tc(TC.priest_disco)
             if len(label_list) == 0:
                 pass
             # 如果只有 1 个戒律牧, 则给焦点补愈合祷言
             elif len(label_list) == 1:
                 with hk.SendLabel(
                     id=TC.shaman_resto.name,
-                    to=self.lbs_by_tc(TC.priest_disco),
+                    to=self.get_lbs_by_tc(TC.priest_disco),
                 ):
                     act.Target.TARGET_FOCUS()
                     CAN.KEY_4()
