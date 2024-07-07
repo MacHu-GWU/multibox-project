@@ -78,13 +78,69 @@ class Mode(
         lbs_tank_healer = self.lbs_tank_healer
         lbs_paladin_holy = self.lbs_paladin_holy
         lbs_non_paladin_tank_healer = lbs_tank_healer.difference(lbs_paladin_holy)
+        lbs_other_healer = lbs_non_paladin_tank_healer  # make var name shorter
 
-        # # 确保有人奶 1 号坦克.
-        # if self.lb_tank1:
+        # print("="*80)
+        # 给 1 号坦克分配治疗.
+        if self.lb_tank1:
+            if len(lbs_other_healer):
+                self.is_tank1_has_healer = True
+                lb = lbs_other_healer.pop()
+                self.tank1_direct_healer = self.get_char_by_label(lb)
 
+            if len(lbs_paladin_holy):
+                self.is_tank1_has_beacon = True
+                lb = lbs_paladin_holy.pop()
+                self.tank1_beacon_paladin = self.get_char_by_label(lb)
+
+        # 给 2 号坦克分配治疗.
+        if self.lb_tank2:
+            if len(lbs_other_healer):
+                self.is_tank2_has_healer = True
+                lb = lbs_other_healer.pop()
+                self.tank2_direct_healer = self.get_char_by_label(lb)
+
+            if len(lbs_paladin_holy):
+                self.is_tank2_has_beacon = True
+                lb = lbs_paladin_holy.pop()
+                self.tank2_beacon_paladin = self.get_char_by_label(lb)
+
+        # 给团队分配治疗.
+        # 分配一个戒律牧给全团上盾
+        lbs_priest_disco = lbs_other_healer.intersection(self.lbs_priest_disco)
+        if len(lbs_priest_disco):
+            lb = lbs_priest_disco.pop()
+            lbs_other_healer.remove(lb)
+            self.raid_healer.add(self.get_char_by_label(lb))
+        # 分配一个神牧给全团丢恢复
+        lbs_priest_holy = lbs_other_healer.intersection(self.lbs_priest_holy)
+        if len(lbs_priest_holy):
+            lb = lbs_priest_holy.pop()
+            lbs_other_healer.remove(lb)
+            self.raid_healer.add(self.get_char_by_label(lb))
+        # 分配一个奶德给全团丢回春
+        lbs_druid_resto = lbs_other_healer.intersection(self.lbs_druid_resto)
+        if len(lbs_druid_resto):
+            lb = lbs_druid_resto.pop()
+            lbs_other_healer.remove(lb)
+            self.raid_healer.add(self.get_char_by_label(lb))
+        # 分配一个奶萨给全团丢链子
+        lbs_shaman_resto = lbs_other_healer.intersection(self.lbs_shaman_resto)
+        if len(lbs_shaman_resto):
+            lb = lbs_shaman_resto.pop()
+            lbs_other_healer.remove(lb)
+            self.raid_healer.add(self.get_char_by_label(lb))
+
+        # 如果还有治疗没活干, 那么它们就是 extra tank healer
+        for lb in lbs_paladin_holy:
+            self.extra_tank_healer.add(self.get_char_by_label(lb))
+        for lb in lbs_other_healer:
+            self.extra_tank_healer.add(self.get_char_by_label(lb))
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
+
+        self.allocate_healer()
 
         self.build_label_mixin()
         self.build_command_mixin()

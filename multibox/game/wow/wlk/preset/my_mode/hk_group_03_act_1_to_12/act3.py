@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 import typing as T
 
 import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
-import multibox.game.wow.wlk.api as wlk
 import multibox.game.wow.wlk.preset.my_act.api as act
 
 
@@ -13,7 +16,13 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class Act3Mixin:
+    """
+    todo: docstring
+    """
     def build_default_act3(self: "Mode"):
+        """
+        See :ref:`wow-wlk-act-1-to-10-tank-dps-healer`
+        """
         with hk.Hotkey(
             id="Key3",
             key=KN.SCROLOCK_ON(KN.KEY_3),

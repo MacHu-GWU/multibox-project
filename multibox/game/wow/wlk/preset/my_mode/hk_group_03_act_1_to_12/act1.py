@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 import typing as T
-from itertools import cycle
 
 import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
-import multibox.game.wow.wlk.api as wlk
 import multibox.game.wow.wlk.preset.my_act.api as act
 
 
@@ -14,7 +16,13 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class Act1Mixin:
+    """
+    todo: docstring
+    """
     def build_default_act1(self: "Mode"):
+        """
+        See :ref:`wow-wlk-act-1-to-10-tank-dps-healer`
+        """
         with hk.Hotkey(
             id="Key1",
             key=KN.SCROLOCK_ON(KN.KEY_1),
@@ -23,11 +31,14 @@ class Act1Mixin:
             self.build_dps_default_action(key=KN.KEY_1)
 
             lbs_tank_healer = self.lbs_tank_healer
+            lbs_paladin_holy = self.lbs_paladin_holy
+            lbs_non_paladin_tank_healer = lbs_tank_healer.difference(lbs_paladin_holy)
+            lbs_other_healer = lbs_non_paladin_tank_healer  # make var name shorter
 
             # 确保有人奶 1 号坦克.
             if self.lb_tank1:
-                if len(lbs_tank_healer):
-                    lb = lbs_tank_healer.pop()
+                if len(lbs_other_healer):
+                    lb = lbs_other_healer.pop()
                     with hk.SendLabel(
                         id="SlowHealTank1",
                         to=[lb],
@@ -37,8 +48,8 @@ class Act1Mixin:
 
             # 如果有 2 号坦克, 就尝试派人去奶
             if self.lb_tank2:
-                if len(lbs_tank_healer):
-                    lb = lbs_tank_healer.pop()
+                if len(lbs_other_healer):
+                    lb = lbs_other_healer.pop()
                     with hk.SendLabel(
                         id="SlowHealTank2",
                         to=[lb],
@@ -46,21 +57,8 @@ class Act1Mixin:
                         self.target_tank_2_key_maker()
                         CAN.KEY_1()
 
-            # 如果还有空闲的神牧, 则随机给团上恢复
-            lbs_priest_holy = lbs_tank_healer.intersection(self.lbs_priest_holy)
-            if len(lbs_priest_holy):
-                lb = lbs_priest_holy.pop()
-                with hk.SendLabel(
-                    id="HolyPriestHealRaid",
-                    to=[lb],
-                ):
-                    # 注: 这里是第一次出现这种模式, 以后也会有很多地方用到这种模式,
-                    # 所以我在这里说明一下为什么这么实现
-                    # 这里的业务逻辑其实是人类按 1 (在其他地方就是按其他键), 所有窗口
-                    # 也跟着按 1. todo, 把这段话放在 act2 去说
-                    act.PriestHoly.MB_HEAL_RAID()
-
             # 如果还有空闲的戒律牧, 则随机给团上盾
+            # 如果团队中没有奶德奶萨, 则在前面的逻辑里, 戒律牧会被分配去奶 tank 了
             lbs_priest_disco = lbs_tank_healer.intersection(self.lbs_priest_disco)
             if len(lbs_priest_disco):
                 lb = lbs_priest_disco.pop()
@@ -70,6 +68,17 @@ class Act1Mixin:
                     to=[lb],
                 ):
                     act.PriestDiscipline.MB_HEAL_RAID()
+
+            # 如果还有空闲的神牧, 则随机给团上恢复
+            # 如果团队中没有奶德奶萨, 则在前面的逻辑里, 神牧会被分配去奶 tank 了
+            lbs_priest_holy = lbs_other_healer.intersection(self.lbs_priest_holy)
+            if len(lbs_priest_holy):
+                lb = lbs_priest_holy.pop()
+                with hk.SendLabel(
+                    id="HolyPriestHealRaid",
+                    to=[lb],
+                ):
+                    act.PriestHoly.MB_HEAL_RAID()
 
             # 奶骑, 随机奶团, 因为道标一般已经打给坦克了, 所以奶团的同时肯定也是在奶坦克的
             lbs_paladin_holy = lbs_tank_healer.intersection(self.lbs_paladin_holy)

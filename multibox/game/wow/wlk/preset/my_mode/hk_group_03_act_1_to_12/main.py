@@ -17,6 +17,9 @@ from .act1 import Act1Mixin
 from .act2 import Act2Mixin
 from .act3 import Act3Mixin
 from .act4 import Act4Mixin
+from .act5 import Act5Mixin
+from .act6 import Act6Mixin
+from .act7 import Act7Mixin
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
@@ -34,6 +37,9 @@ class HotkeyGroup03Act1To12Mixin(
     Act2Mixin,
     Act3Mixin,
     Act4Mixin,
+    Act5Mixin,
+    Act6Mixin,
+    Act7Mixin,
 ):
     """
     这个类定义了多开时按下 1-12 按键时的行为.
@@ -133,4 +139,6 @@ class HotkeyGroup03Act1To12Mixin(
         self.build_act2()
         self.build_act3()
         self.build_act4()
-        # self.build_act5()
+        self.build_act5()
+        self.build_act6()
+        self.build_act7()

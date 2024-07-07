@@ -414,6 +414,9 @@ class Dataset:
         )
 
     def get_account(self, account: str) -> Account:
+        """
+        todo: docstring
+        """
         dct = copy.copy(self.accounts[account])
         return Account(
             username=dct[AccountTabColumnEnum.account.value],
@@ -421,6 +424,9 @@ class Dataset:
         )
 
     def get_character(self, build: str) -> Character:
+        """
+        todo: docstring
+        """
         dct = self.builds[build]
         return Character(
             account=self.get_account(dct[AccountTabColumnEnum.account.value]),
@@ -430,6 +436,9 @@ class Dataset:
         )
 
     def get_build_group(self, build_group: str) -> OrderedSet[Character]:
+        """
+        todo: docstring
+        """
         dct = self.build_groups[build_group]
         # 从 build 表中拿核心数据, 从 build_group 中拿根具体玩法有关的数据
         chars = list()
@@ -482,6 +491,9 @@ class Dataset:
         return OrderedSet(chars)
 
     def get_client(self, client: str) -> Client:
+        """
+        todo: docstring
+        """
         dct = self.clients[client]
         dct = dict(dct)
         dct.pop(ClientTabColumnEnum.client.value)
@@ -492,6 +504,9 @@ class Dataset:
         mode: str,
         mode_class: T.Type[Mode] = Mode,
     ) -> Mode:
+        """
+        todo: docstring
+        """
         dct = self.modes[mode]
         chars = self.get_build_group(build_group=dct["chars"])
         setup = dct[ModeTabColumnEnum.target_key_mapping.value]
@@ -528,6 +543,9 @@ class Dataset:
         test: bool = False,
         verbose: bool = False,
     ):
+        """
+        todo: docstring
+        """
         path_character_py = dir_module / "dataset.py"
         path_tpl = Path.dir_here(__file__) / "dataset.py.jinja2"
         tpl = jinja2.Template(path_tpl.read_text())

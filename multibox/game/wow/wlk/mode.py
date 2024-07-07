@@ -37,14 +37,10 @@ class Mode(BaseSemiMutableModel, AttrsClass):
 
     :param name: 给这个模式一个人类可读的名字.
     :param client: 客户端的相关设置.
-    :param active_chars: 指定要使用哪些角色进行游戏. 跟人物移动, 战斗相关的按键将会对这些角色生效.
-        See :class:`~multibox.game.wow.character.Character` for more details.
-    :param login_chars: 指定要登录哪些角色. 跟人物移动, 战斗相关的按键将 **不会** 对这些角色生效.
-        只有跟登录账号相关的按键有效. 这些账号通常是用来蹲拍卖行, 倒东西, 聊天.
-        最终要被登录的角色是 active_chars 和 login_chars 的合集. 如果一个 ``Character``
-        对象同时出现在 ``active_chars`` 和 ``login_chars``, 那么 ``login_chars`` 中的
-        ``Character`` 对象将会被忽略.
-        See :class:`~multibox.game.wow.character.Character` for more details.
+    :param chars: 指定要使用哪些角色. :meth:`multibox.game.wow.wlk.dataset.Dataset.get_mode`
+        方法能保证它们已经是根据 window label 排序好了的.
+        这里面有的角色是 active char, 有的角色是 login char.
+        请阅读 :ref:`wow-active-character` 了解什么是 active char.
     :param target_key_mapping: 一个字典, key 是队长角色的 label,
         value 是对应的 KeyMaker 对象 (也就是 hotkeynet 的快捷键). 默认情况下非司机角色
         点击选择 leader 的宏时都是选择 1 号司机, 但是对于司机本人, 特别是多个司机的情况下,
@@ -116,6 +112,26 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         筛选出 active 的角色.
         """
         return OrderedSet([char for char in self.chars if char.is_active])
+
+    @cached_property
+    def label_to_char_mapping(self) -> T.Dict[str, Character]:
+        """
+        生成一个 window label 到 Character 对象的映射. 方便之后根据 window label
+        来查找 Character 对象.
+        """
+        return {char.window.label: char for char in self.chars}
+
+    def get_char_by_label(self, lb: str) -> Character:
+        """
+        根据 window label 查找 Character 对象.
+        """
+        return self.label_to_char_mapping[lb]
+
+    def get_many_chars_by_labels(self, lbs: T.Iterable[str]) -> OrderedSet[Character]:
+        """
+        根据 window label 的集合查找 Character 对象的集合.
+        """
+        return OrderedSet([self.get_char_by_label(lb) for lb in lbs])
 
     @property
     def login_window_and_account_pairs(self) -> T.List[T.Tuple[Window, Account]]:
@@ -272,32 +288,67 @@ class Mode(BaseSemiMutableModel, AttrsClass):
             ]
         )
 
-    @property
-    def lbs_healer(self) -> OrderedSet[str]:
+    def get_lbs_healer(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.healer)
 
-    @property
-    def lbs_druid_resto(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_healer(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_healer`.
+        """
+        return self.get_lbs_healer()
+
+    def get_lbs_druid_resto(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.druid_resto)
 
-    @property
-    def lbs_shaman_resto(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_druid_resto(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_druid_resto`.
+        """
+        return self.get_lbs_druid_resto()
+
+    def get_lbs_shaman_resto(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.shaman_resto)
 
-    @property
-    def lbs_priest_holy(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_shaman_resto(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_shaman_resto`.
+        """
+        return self.get_lbs_shaman_resto()
+
+    def get_lbs_priest_holy(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.priest_holy)
 
-    @property
-    def lbs_priest_disco(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_priest_holy(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_priest_holy`.
+        """
+        return self.get_lbs_priest_holy()
+
+    def get_lbs_priest_disco(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.priest_disco)
 
-    @property
-    def lbs_paladin_holy(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_priest_disco(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_priest_disco`.
+        """
+        return self.get_lbs_priest_disco()
+
+    def get_lbs_paladin_holy(self) -> OrderedSet[str]:
         return self.get_lbs_by_tc(TC.paladin_holy)
 
-    @property
-    def lbs_paladin_holy_and_non_paladin_holy_healer(
+    @cached_property
+    def lbs_paladin_holy(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_paladin_holy`.
+        """
+        return self.get_lbs_paladin_holy()
+
+    def get_lbs_paladin_holy_and_non_paladin_holy_healer(
         self,
     ) -> T.Tuple[OrderedSet[str], OrderedSet[str]]:
         """
@@ -309,8 +360,16 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         lbs_non_paladin_holy_healer = lbs_healer.difference(lbs_paladin_holy)
         return lbs_paladin_holy, lbs_non_paladin_holy_healer
 
-    @property
-    def lbs_tank_healer(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_paladin_holy_and_non_paladin_holy_healer(
+        self,
+    ) -> T.Tuple[OrderedSet[str], OrderedSet[str]]:
+        """
+        See :meth:`get_lbs_paladin_holy_and_non_paladin_holy_healer`.
+        """
+        return self.get_lbs_paladin_holy_and_non_paladin_holy_healer()
+
+    def get_lbs_tank_healer(self) -> OrderedSet[str]:
         """
         返回所有的治疗的 label, 但是把更应该优先治疗 tank 的治疗职业放在集合末尾.
         这个集合常见于动态地给 tank 分配治疗. 这个集合里如果有人, 就优先把优先级最高的治疗
@@ -324,8 +383,14 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         lbs_healer.update(self.lbs_druid_resto)
         return lbs_healer
 
-    @property
-    def lbs_raid_healer(self) -> OrderedSet[str]:
+    @cached_property
+    def lbs_tank_healer(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_tank_healer`.
+        """
+        return self.get_lbs_tank_healer()
+
+    def get_lbs_raid_healer(self) -> OrderedSet[str]:
         """
         返回所有的治疗的 label, 但是把更应该优先治疗 raid 的治疗职业放在集合末尾.
         这个集合常见于动态地给团队分配治疗. 这个集合里如果有人, 就优先把优先级最高的治疗
@@ -339,6 +404,13 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         lbs_healer.update(self.lbs_priest_disco)
         return lbs_healer
 
+    @cached_property
+    def lbs_raid_healer(self) -> OrderedSet[str]:
+        """
+        See :meth:`get_lbs_raid_healer`.
+        """
+        return self.get_lbs_raid_healer()
+
     def get_tank_pairs_cycle(self) -> T.Iterator[T.Tuple[str, hk.KeyMaker]]:
         """
         在给治疗分配任务时, 会遇到多出来的治疗平均分配给 tank 的情况. 这个方法返回一个
@@ -347,9 +419,10 @@ class Mode(BaseSemiMutableModel, AttrsClass):
 
         Usage example::
 
+            >>> mode = Mode(...)
             >>> tank_pairs_cycle = mode.get_tank_pairs_cycle()
-            >>> lb, key_maker = next(tank_pairs_cycle)
-            >>> with hk.SendLabel(id="select_tank", to=[lb]):
+            >>> lb_tank, key_maker = next(tank_pairs_cycle)
+            >>> with hk.SendLabel(id="select_tank", to=[...]):
             ...    key_maker()
             ...    # put spell here
         """
