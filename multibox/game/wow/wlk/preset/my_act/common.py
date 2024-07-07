@@ -5,7 +5,7 @@
 """
 
 from hotkeynet.api import KN, CAN, KeyMaker
-from multibox.game.wow.api import Window
+
 
 # fmt: off
 class Movement:

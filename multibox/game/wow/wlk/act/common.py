@@ -4,7 +4,6 @@
 跟职业无关的常用快捷键绑定.
 """
 
-from ...window import Window
 
 # fmt: off
 class Movement:

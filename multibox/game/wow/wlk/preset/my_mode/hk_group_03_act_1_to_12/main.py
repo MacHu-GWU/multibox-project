@@ -2,8 +2,12 @@
 
 import typing as T
 
+from ordered_set import OrderedSet
 import hotkeynet.api as hk
+from hotkeynet.api import KN, CAN
 import multibox.game.wow.wlk.api as wlk
+import multibox.game.wow.wlk.preset.my_act.api as act
+from multibox.game.wow.wlk.preset.my_mode.utils import TargetEnum
 
 from .act1 import Act1Mixin
 
@@ -11,107 +15,98 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
 
 
+def make_default_action_send_label_id(
+    key: str,
+    talent: wlk.Talent,
+) -> str:
+    return f"key-{key}-default-action-for-talent-{talent.name}"
+
+
 class HotkeyGroup03Act1To12Mixin(Act1Mixin):
-    # def build_actions_default(
-    #     self: "Mode",
-    #     key: str,
-    #     healer_target_nothing: bool = False,
-    #     healer_target_focus: bool = False,
-    #     healer_target_focus_target: bool = False,
-    #     healer_target_self: bool = False,
-    #     healer_target_party: bool = False,
-    #     healer_target_raid: bool = False,
-    # ) -> T.List[hk.SendLabel]:
-    #     """
-    #     通常情况下, 我们打怪的逻辑是: 坦克拉怪, DPS 输出, 治疗奶. 而我们有那么多键位. 为了
-    #     避免为那么多键位写一大堆重复代码, 我们定义了一个工厂函数, 用于生成默认的设置.
-    #     简单来说默认设置就是:
-    #
-    #     1. 坦克对当前选择的怪施放技能
-    #     2. DPS 对焦点的目标释放技能
-    #     3. 治疗 对某个目标释放技能, 这里的 "某个" 取决于哪个模式. 请参考下面的参数定义:
-    #
-    #     :param healer_target_nothing: 在施放治疗技能前不选择目标
-    #     :param healer_target_focus: 治疗前 (下同), 先选定焦点, 通常是坦克司机
-    #     :param healer_target_focus_target: 先选择焦点的目标, 通常是坦克选择队友然后治疗该队友
-    #     :param healer_target_self: 先选择自己
-    #     :param healer_target_party: 先用宏随机选定小队成员
-    #     :param healer_target_raid: 先用宏随机选择团队成员
-    #
-    #     以上 5 个模式中必须选择其中的一个.
-    #
-    #     **注**
-    #
-    #     这里我们需要为所有的 Active Characters 的每一个特定的天赋创建一个 SendLabel 对象.
-    #     这和我们之前为一类 TalentCategory 创建一个 SendLabel, 然后在 SendLabel.to
-    #     里面指定多个 label 的模式不同. 虽然后者从代码的角度讲更加紧凑, 但是却丧失了之后为
-    #     每个特定的天赋在特殊场景下指定不同的行为的能力. 所以我们才用的这种不符合直觉的写法.
-    #     """
-    #     if (
-    #         sum(
-    #             [
-    #                 healer_target_nothing,
-    #                 healer_target_focus,
-    #                 healer_target_focus_target,
-    #                 healer_target_self,
-    #                 healer_target_party,
-    #                 healer_target_raid,
-    #             ]
-    #         )
-    #         != 1
-    #     ):
-    #         raise ValueError()
-    #
-    #     send_label_list = list()
-    #
-    #     # Tank
-    #     for talent in wlk.TC.tank.talents:
-    #         with hk.SendLabel(
-    #             id=talent.name,
-    #             to=self.lbs_by_tl(talent),
-    #         ) as send_label:
-    #             hk.Key.make(key)
-    #             send_label_list.append(send_label)
-    #
-    #     # DPS
-    #     for talent in TC.dps.talents:
-    #         with hk.SendLabel(
-    #             id=talent.name,
-    #             to=self.lbs_by_tl(talent),
-    #         ) as send_label:
-    #             act.Target.TARGET_FOCUS_TARGET()
-    #             hk.Key.make(key)
-    #             send_label_list.append(send_label)
-    #
-    #     # Healer
-    #     for talent in TC.healer.talents:
-    #         with hk.SendLabel(
-    #             id=talent.name,
-    #             to=self.lbs_by_tl(talent),
-    #         ) as send_label:
-    #             if healer_target_nothing:
-    #                 hk.Key.make(key)
-    #             elif healer_target_focus:
-    #                 act.Target.TARGET_FOCUS()
-    #                 hk.Key.make(key)
-    #             elif healer_target_focus_target:
-    #                 act.Target.TARGET_FOCUS_TARGET()
-    #                 hk.Key.make(key)
-    #             elif healer_target_self:
-    #                 act.Target.TARGET_SELF()
-    #                 hk.Key.make(key)
-    #             elif healer_target_party:
-    #                 act.Target.TARGET_PARTY()
-    #                 hk.Key.make(key)
-    #             elif healer_target_raid:
-    #                 act.Target.TARGET_RAID()
-    #                 hk.Key.make(key)
-    #             else:  # pragma: no cover
-    #                 raise NotImplementedError
-    #
-    #             send_label_list.append(send_label)
-    #
-    #     return send_label_list
+    def build_default_action_by_talents(
+        self: "Mode",
+        key: str,
+        talents: OrderedSet[wlk.Talent],
+        target: T.Optional[TargetEnum] = None,
+    ) -> T.Dict[str, hk.SendLabel]:
+        """
+        这是一个用来减少重复代码的工厂函数. 用于生成非常普通的同步按键行为. 例如你按 1,
+        那么所有的窗口就也按 1. 由于这也是大多数按键的行为, 在很多地方都会用到这个逻辑,
+        所以我们专门设计了一个函数.
+
+        :param key: 按键.
+        :param talents: 天赋的集合, 用于筛选出对应的角色的窗口的 label.
+        :param target: 可选项, 用于在按键之前选择目标. 默认是不特意选择目标.
+            see :class:`~multibox.game.wow.wlk.preset.my_mode.utils.TargetEnum`.
+        """
+        send_label_mapping = dict()
+        for talent in talents:
+            lbs = self.lbs_by_tl(talent)
+            if len(lbs):
+                # 这个 id 是为了给开发者一些自定义的空间, 以便在后续的代码中可以根据这个 id
+                # 找到对应的 SendLabel 对象然后对其进行修改.
+                # 比如你用这样的代码 ``send_label = send_label_mapping["your-id"]``
+                # 获得了 send_label 对象之后, 可以用下面的代码对默认行为进行魔改.
+                # with send_label():
+                #     send_label.blocks = [...]
+                # 注意, 这样做会让代码变得更难以理解, 不推荐这么做.
+                send_label_id = make_default_action_send_label_id(
+                    key=key,
+                    talent=talent,
+                )
+                with hk.SendLabel(
+                    id=send_label_id,
+                    to=lbs,
+                ) as send_label:
+                    if target is not None:
+                        target.to_key()
+                    hk.Key.make(key)
+                    send_label_mapping[send_label_id] = send_label
+        return send_label_mapping
+
+    def build_tank_default_action(
+        self: "Mode",
+        key: str,
+        target: T.Optional[TargetEnum] = None,
+    ) -> T.Dict[str, hk.SendLabel]:
+        """
+        大多数跟战斗相关的多开按键对于坦克来说都是无需特别选定目标, 都是多开按什么键,
+        每个 tank 的窗口就还是按什么键 (通常是技能) 攻击即可.
+        """
+        return self.build_default_action_by_talents(
+            key=key,
+            talents=wlk.TC.tank.talents,
+            target=target,
+        )
+
+    def build_dps_default_action(
+        self: "Mode",
+        key: str,
+        target: T.Optional[TargetEnum] = TargetEnum.TARGET_FOCUS_TARGET,
+    ) -> T.Dict[str, hk.SendLabel]:
+        """
+        大多数跟战斗相关的多开按键对于 DPS 来说都是需要选择焦点的目标, 然后多开按什么键,
+        每个 dps 的窗口就还是按什么键 (通常是技能) 攻击即可.
+        """
+        return self.build_default_action_by_talents(
+            key=key,
+            talents=wlk.TC.dps.talents,
+            target=target,
+        )
+
+    def build_healer_default_action(
+        self: "Mode",
+        key: str,
+        target: T.Optional[TargetEnum] = None,
+    ) -> T.Dict[str, hk.SendLabel]:
+        """
+        对于治疗来说具体对哪个目标施放治疗技能取决于特定的技能以及特定的场景. 我们这里不做任何预设.
+        """
+        return self.build_default_action_by_talents(
+            key=key,
+            talents=wlk.TC.healer.talents,
+            target=target,
+        )
 
     def build_hk_group_03_act_1_to_12_mixin(self: "Mode"):
         self.build_act1()

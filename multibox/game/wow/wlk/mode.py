@@ -280,13 +280,47 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         return self.lbs_by_tc(TC.paladin_holy)
 
     @property
-    def lbs_paladin_holy_and_non_paladin_holy(
+    def lbs_paladin_holy_and_non_paladin_holy_healer(
         self,
     ) -> T.Tuple[OrderedSet[str], OrderedSet[str]]:
+        """
+        返回两个集合, 一个是所有的奶骑, 一个是所有的非奶骑治疗. 由于道标技能的存在, 奶骑治疗
+        的逻辑往往跟其他治疗有很大不同.
+        """
         lbs_healer = self.lbs_healer
         lbs_paladin_holy = self.lbs_paladin_holy
-        lbs_non_paladin_holy = lbs_healer.difference(lbs_paladin_holy)
-        return lbs_paladin_holy, lbs_non_paladin_holy
+        lbs_non_paladin_holy_healer = lbs_healer.difference(lbs_paladin_holy)
+        return lbs_paladin_holy, lbs_non_paladin_holy_healer
+
+    @property
+    def lbs_tank_healer(self) -> OrderedSet[str]:
+        """
+        返回所有的治疗的 label, 但是把更应该优先治疗 tank 的治疗职业放在集合末尾.
+        这个集合常见于动态地给 tank 分配治疗. 这个集合里如果有人, 就优先把优先级最高的治疗
+        用 set.pop() 的方式取出来分配给 tank.
+        """
+        lbs_healer = OrderedSet()
+        lbs_healer.update(self.lbs_paladin_holy)
+        lbs_healer.update(self.lbs_priest_disco)
+        lbs_healer.update(self.lbs_priest_holy)
+        lbs_healer.update(self.lbs_shaman_resto)
+        lbs_healer.update(self.lbs_druid_resto)
+        return lbs_healer
+
+    @property
+    def lbs_raid_healer(self) -> OrderedSet[str]:
+        """
+        返回所有的治疗的 label, 但是把更应该优先治疗 raid 的治疗职业放在集合末尾.
+        这个集合常见于动态地给团队分配治疗. 这个集合里如果有人, 就优先把优先级最高的治疗
+        用 set.pop() 的方式取出来刷团血.
+        """
+        lbs_healer = OrderedSet()
+        lbs_healer.update(self.lbs_paladin_holy)
+        lbs_healer.update(self.lbs_shaman_resto)
+        lbs_healer.update(self.lbs_druid_resto)
+        lbs_healer.update(self.lbs_priest_holy)
+        lbs_healer.update(self.lbs_priest_disco)
+        return lbs_healer
 
     def build_send_label_by_tc(
         self,

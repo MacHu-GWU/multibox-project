@@ -3,7 +3,8 @@
 import typing as T
 
 import hotkeynet.api as hk
-from hotkeynet.api import Hotkey, SendLabel, KN, CAN
+from hotkeynet.api import KN, CAN
+import multibox.game.wow.wlk.api as wlk
 import multibox.game.wow.wlk.preset.my_act.api as act
 
 if T.TYPE_CHECKING:  # pragma: no cover

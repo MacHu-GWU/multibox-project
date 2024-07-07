@@ -758,7 +758,7 @@ class HotkeyGroup03Act1To12MixinOld:
                 act.Shaman.Chain_Heal()
 
     def build_hk_group_03_act_1_to_12_mixin_old(self):
-        self.build_hk_1_heal_tank()
+        # self.build_hk_1_heal_tank()
         self.build_hk_2_heal_nothing()
         self.build_hk_3_heal_tank()
         self.build_hk_4_heal_nothing()
