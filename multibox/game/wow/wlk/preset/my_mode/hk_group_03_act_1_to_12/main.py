@@ -10,6 +10,7 @@ import multibox.game.wow.wlk.preset.my_act.api as act
 from multibox.game.wow.wlk.preset.my_mode.utils import TargetEnum
 
 from .act1 import Act1Mixin
+from .act3 import Act3Mixin
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
@@ -22,7 +23,10 @@ def make_default_action_send_label_id(
     return f"key-{key}-default-action-for-talent-{talent.name}"
 
 
-class HotkeyGroup03Act1To12Mixin(Act1Mixin):
+class HotkeyGroup03Act1To12Mixin(
+    Act1Mixin,
+    Act3Mixin,
+):
     def build_default_action_by_talents(
         self: "Mode",
         key: str,
@@ -111,6 +115,6 @@ class HotkeyGroup03Act1To12Mixin(Act1Mixin):
     def build_hk_group_03_act_1_to_12_mixin(self: "Mode"):
         self.build_act1()
         # self.build_act2()
-        # self.build_act3()
+        self.build_act3()
         # self.build_act4()
         # self.build_act5()

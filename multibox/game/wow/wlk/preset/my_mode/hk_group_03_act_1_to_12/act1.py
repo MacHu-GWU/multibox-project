@@ -84,12 +84,7 @@ class Act1Mixin:
 
             # 如果还有其他治疗没活干, 那么它们也帮着治疗 Tank
             if len(lbs_tank_healer):
-                tank_pairs: T.List[T.Tuple[str, hk.KeyMaker]] = list()
-                if self.lb_tank1:
-                    tank_pairs.append((self.lb_tank1, self.target_tank_1_key_maker))
-                if self.lb_tank2:
-                    tank_pairs.append((self.lb_tank2, self.target_tank_2_key_maker))
-                tank_pairs_cycle = cycle(tank_pairs)
+                tank_pairs_cycle = self.get_tank_pairs_cycle()
                 for ind, lb in enumerate(lbs_tank_healer, start=1):
                     lb, key_maker = next(tank_pairs_cycle)
                     with hk.SendLabel(
@@ -98,8 +93,6 @@ class Act1Mixin:
                     ):
                         key_maker()
                         CAN.KEY_1()
-
-            print(self.hk_1.blocks)
 
     def build_act1(self: "Mode"):
         if self.name == "special_mode":

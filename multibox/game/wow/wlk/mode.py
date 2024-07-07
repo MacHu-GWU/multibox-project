@@ -5,6 +5,7 @@ Todo: doc string here
 """
 
 import typing as T
+from itertools import cycle
 from functools import cached_property
 
 import attrs
@@ -12,7 +13,7 @@ from attrs_mate import AttrsClass
 from pathlib_mate import Path
 from ordered_set import OrderedSet
 
-import hotkeynet.api as hkn
+import hotkeynet.api as hk
 
 from ...wow.account import Account
 from ...wow.window import Window
@@ -25,7 +26,7 @@ from .client import Client
 from multibox.utils.models import BaseSemiMutableModel
 
 
-T_TARGET_KEY_MAPPING = T.Dict[str, hkn.KeyMaker]
+T_TARGET_KEY_MAPPING = T.Dict[str, hk.KeyMaker]
 
 
 @attrs.define(eq=False, slots=False)
@@ -61,7 +62,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     client: T.Optional[Client] = attrs.field(default=None)
     chars: OrderedSet[Character] = attrs.field(factory=OrderedSet)
     target_key_mapping: T_TARGET_KEY_MAPPING = attrs.field(factory=dict)
-    script: hkn.Script = attrs.field(factory=hkn.Script)
+    script: hk.Script = attrs.field(factory=hk.Script)
     script_path: T.Optional[Path] = attrs.field(default=None)
     leader1: OrderedSet[Character] = attrs.field(default=None)
     leader2: OrderedSet[Character] = attrs.field(default=None)
@@ -93,7 +94,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
         # 先调用 ``with Script()`` 的语法然后才能定义 Command, Hotkey, 这样很麻烦.
         # 所以我们手动将它设为 context 的顶层, 这样就可以直接定义 Command, Hotkey 了.
-        hkn.context.push(self.script)
+        hk.context.push(self.script)
 
     @property
     def active_chars(self) -> OrderedSet[Character]:
@@ -125,11 +126,11 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     #     return self.target_key_mapping[self.leader2.window.label]
 
     @property
-    def target_tank_1_key_maker(self) -> hkn.KeyMaker:
+    def target_tank_1_key_maker(self) -> hk.KeyMaker:
         return self.target_key_mapping[self.lb_tank1]
 
     @property
-    def target_tank_2_key_maker(self) -> hkn.KeyMaker:
+    def target_tank_2_key_maker(self) -> hk.KeyMaker:
         return self.target_key_mapping[self.lb_tank2]
 
     @property
@@ -322,11 +323,32 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         lbs_healer.update(self.lbs_priest_disco)
         return lbs_healer
 
+    def get_tank_pairs_cycle(self) -> T.Iterator[T.Tuple[str, hk.KeyMaker]]:
+        """
+        在给治疗分配任务时, 会遇到多出来的治疗平均分配给 tank 的情况. 这个方法返回一个
+        在 tank 之间循环的迭代器, 并且返回 tank 的 label 以及对应的 KeyMaker 对象
+        (用于点击选中这个 tank 角色的宏).
+
+        Usage example::
+
+            >>> tank_pairs_cycle = mode.get_tank_pairs_cycle()
+            >>> lb, key_maker = next(tank_pairs_cycle)
+            >>> with hk.SendLabel(id="select_tank", to=[lb]):
+            ...    key_maker()
+            ...    # put spell here
+        """
+        tank_pairs: T.List[T.Tuple[str, hk.KeyMaker]] = list()
+        if self.lb_tank1:
+            tank_pairs.append((self.lb_tank1, self.target_tank_1_key_maker))
+        if self.lb_tank2:
+            tank_pairs.append((self.lb_tank2, self.target_tank_2_key_maker))
+        return cycle(tank_pairs)
+
     def build_send_label_by_tc(
         self,
         tc: TC,
         funcs: T.Iterable[T.Callable],
-    ) -> T.Optional[hkn.SendLabel]:
+    ) -> T.Optional[hk.SendLabel]:
         """
         根据天赋组对角色进行筛选, 并生成 SendLabel 对象. 这个方法是为了简化代码而设计的.
 
@@ -335,7 +357,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         """
         lbs = self.lbs_by_tc(tc)
         if lbs:
-            with hkn.SendLabel(
+            with hk.SendLabel(
                 id=tc.name,
                 to=list(lbs),
             ) as send_label:
