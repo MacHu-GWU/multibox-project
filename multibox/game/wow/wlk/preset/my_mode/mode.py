@@ -19,7 +19,7 @@ from .hk_group_08_alt_numpad_1_to_12 import HotkeyGroup08AltNumpad1To12
 from .hk_group_09_ctrl_numpad_1_to_12 import HotkeyGroup09CtrlNumpad1To12
 from .hk_group_10_shift_numpad_1_to_12 import HotkeyGroup10ShiftNumpad1To12
 from .hk_group_11_healbot import HotkeyGroup11Healbot
-from .hk_group_12_special import HotkeyGroup12SpecialMixin
+from .hk_group_12_special.main import HotkeyGroup12SpecialMixin
 
 from .hk_control_panel import HotkeyControlPanelMixin
 
@@ -70,6 +70,6 @@ class Mode(
         self.build_hk_group_09_ctrl_numpad_1_to_12_mixin()
         self.build_hk_group_10_mixin()
         self.build_hk_group_11_healbot_mixin()
-        self.build_hk_group_12_mixin()
+        self.build_hk_group_12_special_mixin()
 
         self.build_control_panel_mixin()

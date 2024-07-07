@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-
 
-"""
-实现各种特殊 Boss 战时候的特定快捷键 S. 例如鸟德星落, 鸟德吹风, 法师打断, 等等.
-"""
-
 import typing as T
-import itertools
 
-from hotkeynet import api as hk
+import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
-
-from multibox.game.wow.wlk.api import TalentCategory as TC
-from ..my_act import api as act
+from multibox.game.wow.wlk.api import TL, TC
+import multibox.game.wow.wlk.preset.my_act.api as act
 
 if T.TYPE_CHECKING:  # pragma: no cover
-    from .mode import Mode
+    from ..mode import Mode
 
 
-class HotkeyGroup12SpecialMixin:
+class IccBoss1Mixin:
     def build_icc_boss1(self: "Mode"):
+        # 所有 DPS 点杀骸骨尖刺
+        # Shift + V 按钮上必须放点杀 /target 骸骨尖刺 的宏
         with hk.Hotkey(
-            id="Shift + Z",
-            key=KN.SCROLOCK_ON(KN.SHIFT_(KN.Z)),
-        ) as self.hk_shift_z:
+            id="V",
+            key=KN.SCROLOCK_ON(KN.V),
+        ) as self.hk_v:
             lbs_shaman_resto = self.lbs_by_tc(TC.shaman_resto)
             with hk.SendLabel(
                 to=list(lbs_shaman_resto),
@@ -62,9 +58,10 @@ class HotkeyGroup12SpecialMixin:
             ):
                 CAN.KEY_2()
 
+
         with hk.Hotkey(
             id="Shift + X",
-            key=KN.SCROLOCK_ON(KN.SHIFT_(KN.X)),
+            key=KN.SCROLOCK_ON(KN.SHIFT_X),
         ) as self.hk_shift_x:
             lbs_shaman = self.lbs_by_tc(TC.shaman)
             with hk.SendLabel(
@@ -104,25 +101,3 @@ class HotkeyGroup12SpecialMixin:
                 to=list(lbs_tank),
             ):
                 CAN.KEY_2()
-
-        # with hk.Hotkey(
-        #     id="Shift + T",
-        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.T)),
-        # ) as self.hk_shift_t:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-        #
-        # with hk.Hotkey(
-        #     id="Shift + X",
-        #     key=KN.SCROLOCK_ON(KN.SHIFT_(KN.X)),
-        # ) as self.hk_shift_x:
-        #     with hk.SendLabel(
-        #         to=self.lbs_all,
-        #     ):
-        #         hk.Key.trigger()
-
-    def build_hk_group_12_mixin(self: "Mode"):
-        if "icc_boss1" in self.name:
-            self.build_icc_boss1()
