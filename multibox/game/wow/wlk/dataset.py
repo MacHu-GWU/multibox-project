@@ -206,7 +206,7 @@ class Dataset:
         df_account = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.account.value, schema_overrides=account_schema)
         df_character = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.character.value)
         df_build = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build.value)
-        df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value, schema_overrides=build_group_schema)
+        df_build_group = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.build_group.value, schema_overrides=build_group_schema).drop_nulls(subset=[BuildGroupTabColumnEnum.build_group.value])
         df_target_leader = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.target_key_mapping.value)
         df_client = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.client.value)
         df_mode = pl.read_excel(f"{path_excel}", sheet_name=SpreadSheetTabEnum.mode.value)
