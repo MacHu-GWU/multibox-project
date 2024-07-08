@@ -44,23 +44,17 @@ class Act4Mixin:
             self.build_dps_default_action(key=KN.KEY_4)
 
             # 奶骑
-            for lb in self.lbs_paladin_holy:
-                with hk.SendLabel(to=[lb]):
-                    act.Target.TARGET_FOCUS_TARGET()
-                    act.PaladinHoly.MB_Periodical_Judgement_of_Light_on_Focus_Target_Macro()
-
-            # 奶萨, 奶德, 牧师
-            for lb in self.lbs_paladin_holy:
+            for lb in self.get_lbs_paladin_holy():
                 with hk.SendLabel(to=[lb]):
                     act.Target.TARGET_FOCUS_TARGET()
                     act.PaladinHoly.MB_Periodical_Judgement_of_Light_on_Focus_Target_Macro()
 
             # 奶萨, 奶德, 牧师
             for lb in (
-                self.lbs_shaman_resto
-                | self.lbs_druid_resto
-                | self.lbs_priest_disco
-                | self.lbs_priest_holy
+                self.get_lbs_shaman_resto()
+                | self.get_lbs_druid_resto()
+                | self.get_lbs_priest_disco()
+                | self.get_lbs_priest_holy()
             ):
                 char = self.get_char_by_label(lb)
                 if char.is_raid_healer:

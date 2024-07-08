@@ -43,13 +43,13 @@ class Act5Mixin:
                     act.Shaman.Chain_Heal()
 
             # 奶德对自己放野性生长
-            lbs_druid_resto = self.get_lbs_by_tc(TC.druid_resto)
+            lbs_druid_resto = self.get_lbs_druid_resto()
             if len(lbs_druid_resto):
                 with hk.SendLabel(to=lbs_druid_resto):
                     act.Target.TARGET_SELF()
                     act.DruidRestoration.Wild_Growth()
 
-            # 戒律牧放治疗祷言
+            # 戒律牧和神牧放治疗祷言
             lbs_priest_healer = self.get_lbs_by_tc(TC.priest_healer)
             if len(lbs_priest_healer):
                 with hk.SendLabel(to=lbs_priest_healer):
