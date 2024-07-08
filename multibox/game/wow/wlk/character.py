@@ -15,8 +15,9 @@ Window = wow.Window
 @attrs.define(eq=False, slots=False)
 class Character(wow.Character):
     """
-    在 WOTLK 版本下的代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士角色有两套天赋.
-    在天赋 1 下就算是一个 Character, 在天赋 2 下算是另一个 Character.
+    这个类扩展了 :class:`multibox.game.wow.character.Character` 这个对所有版本通用的类.
+    用于表示一个在 WOTLK 版本下的代表着一个正在进行的游戏角色. 有着具体的天赋. 比如一个圣骑士
+    角色有两套天赋. 在天赋 1 下就算是一个 Character, 在天赋 2 下算是另一个 Character.
 
     除了 :class:`~multibox.game.wow.character.Character` 的属性外, 额外增加了以下属性:
 
@@ -27,6 +28,12 @@ class Character(wow.Character):
     :param tank_2: 从自己的视角看 2 号坦克是哪个.
     :param is_dr_pala_1: 自己是否是 1 号减伤圣骑士.
     :param is_dr_pala_2: 自己是否是 2 号减伤圣骑士.
+
+    **Why do I need these attribute?**
+
+    早期时 Character 并没有这些属性,
+
+
     """
 
     # fmt: off
@@ -37,6 +44,15 @@ class Character(wow.Character):
     tank_2: T.Optional["Character"] = attrs.field(default=None)
     is_dr_pala_1: bool = AttrsClass.ib_bool(default=False)
     is_dr_pala_2: bool = AttrsClass.ib_bool(default=False)
+    # 下面的属性是鸟德专用的
+    is_typhoon_druid_1: bool = AttrsClass.ib_bool(default=False)
+    is_typhoon_druid_2: bool = AttrsClass.ib_bool(default=False)
+    # 下面的属性是治疗职业专用的
+    is_tank_1_healer: bool = AttrsClass.ib_bool(default=False)
+    is_tank_2_healer: bool = AttrsClass.ib_bool(default=False)
+    is_raid_healer: bool = AttrsClass.ib_bool(default=False)
+    is_tank_1_beacon_paladin: bool = AttrsClass.ib_bool(default=False)
+    is_tank_2_beacon_paladin: bool = AttrsClass.ib_bool(default=False)
     # fmt: on
 
     @classmethod

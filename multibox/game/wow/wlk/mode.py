@@ -89,37 +89,110 @@ class Mode(BaseSemiMutableModel, AttrsClass):
     def sort_key(self) -> str:  # pragma: no cover
         return self.name
 
+    def _validate_dps(self):
+        pass
+
+    def _validate_healer(self):
+        paladin_healer_talents = TC.paladin_healer.talents
+        healer_talents = TC.healer.talents
+        lb_tank1 = self.lb_tank1
+        lb_tank2 = self.lb_tank2
+        for char in self.active_chars:
+            if char.talent in paladin_healer_talents:
+                if char.is_raid_healer:  # pragma: no cover
+                    raise ValueError(
+                        f"在 {self.name!r} 模式下, 奶骑 {char.name!r} 不可以将 "
+                        f"is_raid_healer 设为 True, 因为奶骑天生给 tank 道标, 随机刷团血, "
+                        f"这个 flag 无需设置."
+                    )
+                err_msg = (
+                    "在 {self.name!r} 模式下, 奶骑 {char.name!r} 不可以同时将 "
+                    "is_tank_{i}_healer 和 is_tank_{i}_beacon_paladin 设为 True, "
+                    "因为设定 is_tank_{i}_healer 表示它定点给 tank 刷血, 这和道标是冲突的."
+                )
+                if (
+                    char.is_tank_1_healer and char.is_tank_1_beacon_paladin
+                ):  # pragma: no cover
+                    raise ValueError(err_msg.format(self=self, char=char, i=1))
+                if (
+                    char.is_tank_2_healer and char.is_tank_2_beacon_paladin
+                ):  # pragma: no cover
+                    raise ValueError(err_msg.format(self=self, char=char, i=2))
+                if (
+                    char.is_tank_1_beacon_paladin and char.is_tank_2_beacon_paladin
+                ):  # pragma: no cover
+                    raise ValueError(
+                        f"在 {self.name!r} 模式下, 奶骑 {char.name!r} 不可以同时将 "
+                        f"is_tank_1_beacon_paladin 和 is_tank_2_beacon_paladin 设为 True!"
+                        f"这是矛盾的."
+                    )
+
+            if char.talent in healer_talents:
+                if char.is_tank_1_healer and char.is_tank_2_healer:  # pragma: no cover
+                    raise ValueError(
+                        f"在 {self.name!r} 模式下, 治疗 {char.name!r} 不可以同时将 "
+                        f"is_tank_1_healer 和 is_tank_2_healer 设为 True! 这是矛盾的."
+                    )
+
+                err_msg = (
+                    "在 {self.name!r} 模式下, 治疗 {char.name!r} 不能是 {i} 号 "
+                    "tank 的治疗或道标奶骑, 因为该模式下没有 tank {i}."
+                    "请检查你的角色设定."
+                )
+                if (lb_tank1 is None) and (
+                    char.is_tank_1_healer or char.is_tank_1_beacon_paladin
+                ):
+                    raise ValueError(err_msg.format(self=self, char=char, i=1))
+                if (lb_tank2 is None) and (
+                    char.is_tank_2_healer or char.is_tank_2_beacon_paladin
+                ):
+                    raise ValueError(err_msg.format(self=self, char=char, i=2))
+
+    def _validate(self):
+        self._validate_dps()
+        self._validate_healer()
+
     def __attrs_post_init__(self):
         # 定位队伍中的关键人物
         # fmt: off
-        active_chars = self.active_chars
-        self.leader1 = OrderedSet([char for char in active_chars if char.is_leader_1])
-        self.leader2 = OrderedSet([char for char in active_chars if char.is_leader_2])
+        self.leader1 = OrderedSet([char for char in self.active_chars if char.is_leader_1])
+        self.leader2 = OrderedSet([char for char in self.active_chars if char.is_leader_2])
         self.tank1 = Character.find_xyz(chars=self.chars, field="is_tank_1", is_active=True)
         self.tank2 = Character.find_xyz(chars=self.chars, field="is_tank_2", is_active=True)
         self.dr_pala1 = Character.find_xyz(chars=self.chars, field="is_dr_pala_1", is_active=True)
         self.dr_pala2 = Character.find_xyz(chars=self.chars, field="is_dr_pala_2", is_active=True)
         # fmt: on
 
+        self._validate()
+
         # 当创建 hotkeynet.api.Script 对象时, context 里是没有东西的, 我们需要用
         # 先调用 ``with Script()`` 的语法然后才能定义 Command, Hotkey, 这样很麻烦.
         # 所以我们手动将它设为 context 的顶层, 这样就可以直接定义 Command, Hotkey 了.
         hk.context.push(self.script)
 
-    @property
-    def active_chars(self) -> OrderedSet[Character]:
+    def get_active_chars(self) -> OrderedSet[Character]:
         """
         筛选出 active 的角色.
         """
         return OrderedSet([char for char in self.chars if char.is_active])
 
     @cached_property
-    def label_to_char_mapping(self) -> T.Dict[str, Character]:
+    def active_chars(self) -> OrderedSet[Character]:
+        """
+        See :meth:`get_active_chars`.
+        """
+        return self.get_active_chars()
+
+    def get_label_to_char_mapping(self) -> T.Dict[str, Character]:
         """
         生成一个 window label 到 Character 对象的映射. 方便之后根据 window label
         来查找 Character 对象.
         """
         return {char.window.label: char for char in self.chars}
+
+    @cached_property
+    def label_to_char_mapping(self) -> T.Dict[str, Character]:
+        return self.get_label_to_char_mapping()
 
     def get_char_by_label(self, lb: str) -> Character:
         """

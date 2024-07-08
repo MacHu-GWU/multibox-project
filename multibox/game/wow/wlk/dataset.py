@@ -74,6 +74,13 @@ class BuildGroupTabColumnEnum(str, enum.Enum):
     is_tank_2 = "is_tank_2"
     is_dr_pala_1 = "is_dr_pala_1"
     is_dr_pala_2 = "is_dr_pala_2"
+    is_typhoon_druid_1 = "is_typhoon_druid_1"
+    is_typhoon_druid_2 = "is_typhoon_druid_2"
+    is_tank_1_healer = "is_tank_1_healer"
+    is_tank_2_healer = "is_tank_2_healer"
+    is_raid_healer = "is_raid_healer"
+    is_tank_1_beacon_paladin = "is_tank_1_beacon_paladin"
+    is_tank_2_beacon_paladin = "is_tank_2_beacon_paladin"
 
 
 build_group_schema = {
@@ -241,6 +248,13 @@ class Dataset:
                 BuildGroupTabColumnEnum.is_tank_2.value,
                 BuildGroupTabColumnEnum.is_dr_pala_1.value,
                 BuildGroupTabColumnEnum.is_dr_pala_2.value,
+                BuildGroupTabColumnEnum.is_typhoon_druid_1.value,
+                BuildGroupTabColumnEnum.is_typhoon_druid_2.value,
+                BuildGroupTabColumnEnum.is_tank_1_healer.value,
+                BuildGroupTabColumnEnum.is_tank_2_healer.value,
+                BuildGroupTabColumnEnum.is_raid_healer.value,
+                BuildGroupTabColumnEnum.is_tank_1_beacon_paladin.value,
+                BuildGroupTabColumnEnum.is_tank_2_beacon_paladin.value,
             ],
         )
         df_client = strip_whitespace(
@@ -457,6 +471,13 @@ class Dataset:
                 is_tank_2=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2.value]),
                 is_dr_pala_1=bool(build_dct[BuildGroupTabColumnEnum.is_dr_pala_1.value]),
                 is_dr_pala_2=bool(build_dct[BuildGroupTabColumnEnum.is_dr_pala_2.value]),
+                is_typhoon_druid_1=bool(build_dct[BuildGroupTabColumnEnum.is_typhoon_druid_1.value]),
+                is_typhoon_druid_2=bool(build_dct[BuildGroupTabColumnEnum.is_typhoon_druid_2.value]),
+                is_tank_1_healer=bool(build_dct[BuildGroupTabColumnEnum.is_tank_1_healer.value]),
+                is_tank_2_healer=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2_healer.value]),
+                is_raid_healer=bool(build_dct[BuildGroupTabColumnEnum.is_raid_healer.value]),
+                is_tank_1_beacon_paladin=bool(build_dct[BuildGroupTabColumnEnum.is_tank_1_beacon_paladin.value]),
+                is_tank_2_beacon_paladin=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2_beacon_paladin.value]),
                 # fmt: on
             )
             chars.append(new_char)
