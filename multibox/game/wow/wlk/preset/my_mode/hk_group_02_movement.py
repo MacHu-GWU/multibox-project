@@ -19,6 +19,9 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class HotkeyGroup02MovementMixin:
+    """
+    todo: docstring.
+    """
 
     def _move_xyz(
         self,
@@ -70,7 +73,7 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(f"{KN.UP}, {KN.DOWN}, {KN.LEFT}, {KN.RIGHT}"),
         ) as self.hk_all_move_up_down_turn_left_right:
             with hk.SendLabel(
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.General.TRIGGER()
 
@@ -115,7 +118,7 @@ class HotkeyGroup02MovementMixin:
             key=KN.SCROLOCK_ON(KN.SHIFT_(KN.SPACE)),
         ) as self.hk_all_jump:
             with hk.SendLabel(
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.Movement.JUMP()
 
@@ -141,7 +144,7 @@ class HotkeyGroup02MovementMixin:
             DPS1            DPS3
                 DPS2    DPS3
         """
-        lbs_all = self.lbs_all
+        lbs_all = self.get_lbs_all()
         lbs_healer = self.get_lbs_by_tc(TC.healer)
         lbs_leader = self.lbs_leader
         lbs_all.difference_update(lbs_leader)
@@ -195,7 +198,7 @@ class HotkeyGroup02MovementMixin:
         法师    奶德     鸟德    奶骑     暗牧
         """
         # 人数少于 5 人时, 做精细化处理
-        if len(self.lbs_all) <= 5:
+        if len(self.get_lbs_all()) <= 5:
             with hk.MovementHotkey(
                 id="Spread Matrix 1",
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
@@ -209,18 +212,30 @@ class HotkeyGroup02MovementMixin:
                 id="Spread Matrix 1",
                 key=KN.SCROLOCK_ON(KN.OEM4_SQUARE_BRACKET_LEFT),
             ) as self.hk_spread_matrix_1:
-                self._move_left(lbs_non_tank.intersection(Window.to_labels([6, 15, 14])))
-                self._move_right(lbs_non_tank.intersection(Window.to_labels([3, 11, 18])))
-                self._move_left_down(lbs_non_tank.intersection(Window.to_labels([4, 8, 16, 13])))
-                self._move_right_down(lbs_non_tank.intersection(Window.to_labels([5, 9, 12, 17])))
+                self._move_left(
+                    lbs_non_tank.intersection(Window.to_labels([6, 15, 14]))
+                )
+                self._move_right(
+                    lbs_non_tank.intersection(Window.to_labels([3, 11, 18]))
+                )
+                self._move_left_down(
+                    lbs_non_tank.intersection(Window.to_labels([4, 8, 16, 13]))
+                )
+                self._move_right_down(
+                    lbs_non_tank.intersection(Window.to_labels([5, 9, 12, 17]))
+                )
                 self._move_down(lbs_non_tank.intersection(Window.to_labels([2])))
 
             with hk.MovementHotkey(
                 id="Spread Matrix 2",
                 key=KN.SCROLOCK_ON(KN.OEM6_SQUARE_BRACKET_RIGHT),
             ) as self.hk_spread_matrix_2:
-                self._move_left(lbs_non_tank.intersection(Window.to_labels([4, 11, 12])))
-                self._move_right(lbs_non_tank.intersection(Window.to_labels([5, 15, 16])))
+                self._move_left(
+                    lbs_non_tank.intersection(Window.to_labels([4, 11, 12]))
+                )
+                self._move_right(
+                    lbs_non_tank.intersection(Window.to_labels([5, 15, 16]))
+                )
 
     def build_hk_spread_circle(self: "Mode"):
         """

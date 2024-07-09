@@ -12,12 +12,21 @@ from hotkeynet.api import KN
 from multibox.game.wow.wlk.api import TalentCategory as TC
 from ..my_act import api as act
 
-if T.TYPE_CHECKING: # pragma: no cover
+if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
 class HotkeyGroup10ShiftNumpad1To12:
+    """
+    注意: Shift + Numpad 和 Ctrl / Alt + Numpad 的工作原理不同. 在传统键盘中,
+    Shift + Numpad 的效果是将 Numpad 的按键映射为 Home, End, PgUp, PgDn, Insert, Delete,
+    等案件 (你看小键盘数字键上面的字母就懂了).
+    """
+
     def build_hk_shift_numpad_1(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Shift Numpad1",
             key=KN.SCROLOCK_ON(KN.NUMPAD_SHIFT_1_END),
@@ -30,6 +39,9 @@ class HotkeyGroup10ShiftNumpad1To12:
                 act.Shaman.Call_of_the_Ancestors()
 
     def build_hk_shift_numpad_2(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Shift Numpad2",
             key=KN.SCROLOCK_ON(KN.NUMPAD_SHIFT_2_DOWN),

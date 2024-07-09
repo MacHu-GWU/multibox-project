@@ -15,6 +15,10 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class HotkeyCommandMixin:
+    """
+    todo: docstring
+    """
+
     def build_cmd_launch_and_rename_game_client(self: "Mode"):
         """
         运行一个游戏客户端, 并重命名游戏窗口.
@@ -31,6 +35,8 @@ class HotkeyCommandMixin:
         ) as self.cmd_launch_and_rename_game_client:
             with hk.SendPC():
                 hk.Run.make(self.client.wow_exe_path)
+                # todo: old name 不一定是 "魔", 如果是英文客户端就可能会命名失败
+                # 这里需要 refactor 一下
                 hk.RenameWin(old="魔", new=hk.CommandArgEnum.Arg1)
 
     def build_cmd_launch_and_rename_all_game_client(self: "Mode"):
@@ -67,15 +73,14 @@ class HotkeyCommandMixin:
         """
         with hk.Command(
             name="BringWindowToForeground",
-            # ) as self.cmd_bring_window_to_foreground:
-        ) as cmd_bring_window_to_foreground:
+        ) as self.cmd_bring_window_to_foreground:
             with hk.SendPC():
                 with hk.TargetWin(window=hk.CommandArgEnum.Arg1):
                     hk.Wait.make(50)
                     hk.SetForegroundWin()  # This command response fast
                     # hk.SetActiveWin()  # This command cause big delay
             # we have to do this to allow type hint to work
-            self.cmd_bring_window_to_foreground = cmd_bring_window_to_foreground
+            # self.cmd_bring_window_to_foreground = cmd_bring_window_to_foreground
 
     def build_cmd_resize_and_relocate_window(self: "Mode"):
         """
@@ -98,7 +103,9 @@ class HotkeyCommandMixin:
     def build_cmd_center_overlap_layout(self: "Mode"):
         """
         让所有窗口都符合 ResizeAndRelocateWindow 中的尺寸和位置设置
-        Apply ResizeAndRelocateWindow to all window
+        Apply ResizeAndRelocateWindow to all window.
+
+        该 command 没有参数.
         """
         with hk.Command(
             name="CenterOverlapLayout",
@@ -114,7 +121,7 @@ class HotkeyCommandMixin:
         """
         在指定游戏客户端窗口内填入账号密码.
 
-        参数定义:
+        该 Command 的参数定义:
 
         - %1%: 窗口名称
         - %2%: 账号
@@ -176,6 +183,8 @@ class HotkeyCommandMixin:
     def build_cmd_batch_login(self: "Mode"):
         """
         根据 Active Character 中定义的角色, 批量登录游戏账号.
+
+        该 Command 没有参数.
         """
         with hk.Command(
             name="BatchLogin",
@@ -193,6 +202,8 @@ class HotkeyCommandMixin:
     def build_cmd_batch_login_and_enter_game(self: "Mode"):
         """
         根据 Active Character 中定义的角色, 批量登录游戏账号, 并且选择角色并进入游戏.
+
+        该 Command 没有参数.
         """
         with hk.Command(
             name="BatchLoginAndEnterGame",

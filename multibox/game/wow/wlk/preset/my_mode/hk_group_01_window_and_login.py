@@ -141,7 +141,7 @@ class HotkeyGroup01WindowAndLoginMixin:
             key=KN.SCROLOCK_ON(KN.CTRL_ALT_(KN.O)),
         ) as self.hk_batch_logout:
             with hk.SendLabel(
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 # 确保菜单界面是关闭的状态
                 hk.Wait.make(100),

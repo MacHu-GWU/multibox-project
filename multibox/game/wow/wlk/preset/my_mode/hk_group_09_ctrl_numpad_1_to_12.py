@@ -17,10 +17,16 @@ if T.TYPE_CHECKING: # pragma: no cover
 
 
 class HotkeyGroup09CtrlNumpad1To12:
+    """
+    todo: docstring.
+    """
     def build_hk_ctrl_numpad_1_silence_shot_focus_target(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad1 - 射击猎人对焦点的目标释放沉默射击",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_1)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_1),
         ) as self.hk_ctrl_numpad_1:
             with hk.SendLabel(
                 id=TC.hunter.name,
@@ -30,9 +36,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Hunter.Silencing_Shot()
 
     def build_hk_ctrl_numpad_2_counter_spell_focus_target(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad2 - 法师对焦点的目标释放法术反制",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_2)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_2),
         ) as self.hk_ctrl_numpad_2:
             with hk.SendLabel(
                 id=TC.mage.name,
@@ -42,9 +51,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Mage.Counterspell()
 
     def build_hk_ctrl_numpad_3_aggressive_dispel(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad3 - 进攻驱散",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_3)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_3),
         ) as self.hk_ctrl_numpad_3:
             with hk.SendLabel(
                 id=TC.shaman.name,
@@ -63,9 +75,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Priest.Dispel_Magic()
 
     def build_hk_ctrl_numpad_4_aoe_fear(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad4",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_4)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_4),
         ) as self.hk_ctrl_numpad_4:
             with hk.SendLabel(
                 id=TC.priest_shadow.name,
@@ -75,9 +90,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.PriestShadow.Psychic_Horror()
 
     def build_hk_ctrl_numpad_5_typhoon(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad5",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_5)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_5),
         ) as self.hk_ctrl_numpad_5:
             with hk.SendLabel(
                 id=TC.druid_balance.name,
@@ -87,9 +105,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.DruidBalance.Typhoon()
 
     def build_hk_ctrl_numpad_6_thunder_storm(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad6",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_6)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_6),
         ) as self.hk_ctrl_numpad_6:
             with hk.SendLabel(
                 id="all_elemental_shaman",
@@ -99,9 +120,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.ShamanElementalCombat.Thunderstorm()
 
     def build_hk_ctrl_numpad_7_hymn_of_life(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad7",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_7)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_7),
         ) as self.hk_ctrl_numpad_7:
             with hk.SendLabel(
                 id=TC.priest.name,
@@ -111,9 +135,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Priest.Divine_Hymn()
 
     def build_hk_ctrl_numpad_10_hymn_of_mana(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad10",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_0)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_0),
         ) as self.hk_ctrl_numpad_10:
             with hk.SendLabel(
                 id=TC.priest.name,
@@ -123,9 +150,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                 act.Priest.Hymn_of_Hope()
 
     def build_hk_ctrl_numpad_11_tank_1_taunt(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad11 - 主坦克嘲讽",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_11_DIVIDE)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_11_DIVIDE),
         ) as self.hk_ctrl_numpad_11:
             if self.lb_tank1:
                 with hk.SendLabel(
@@ -136,9 +166,12 @@ class HotkeyGroup09CtrlNumpad1To12:
                     act.PaladinProtection.Hand_of_Reckoning()
 
     def build_hk_ctrl_numpad_12_tank_2_taunt(self: "Mode"):
+        """
+        todo: docstring
+        """
         with hk.Hotkey(
             id="Ctrl Numpad12 - 副坦克嘲讽",
-            key=KN.SCROLOCK_ON(KN.CTRL_(KN.NUMPAD_12_MULTIPLY)),
+            key=KN.SCROLOCK_ON(KN.CTRL_NUMPAD_12_MULTIPLY),
         ) as self.hk_ctrl_numpad_12:
             if self.lb_tank2:
                 with hk.SendLabel(
@@ -149,6 +182,9 @@ class HotkeyGroup09CtrlNumpad1To12:
                     act.DK.Dark_Command()
 
     def build_hk_group_09_ctrl_numpad_1_to_12_mixin(self: "Mode"):
+        """
+        todo: docstring
+        """
         self.build_hk_ctrl_numpad_1_silence_shot_focus_target()
         self.build_hk_ctrl_numpad_2_counter_spell_focus_target()
         self.build_hk_ctrl_numpad_3_aggressive_dispel()

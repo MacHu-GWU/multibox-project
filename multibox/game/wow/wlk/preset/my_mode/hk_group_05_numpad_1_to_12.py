@@ -17,9 +17,13 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class HotkeyGroup05Numpad1To12Mixin:
+    """
+    todo: docstring.
+    """
+
     def build_hk_numpad_4(self: "Mode"):
         """
-        重置摄像头
+        重置摄像头为从天上往下看的视角. 这个需要配合 Client Configuration 使用.
         """
         with hk.Hotkey(
             id="Reset Camera",
@@ -27,7 +31,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_4_reset_camera:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.Camera.SET_FIRST_CAMERA_VIEW_2()
 
@@ -47,8 +51,6 @@ class HotkeyGroup05Numpad1To12Mixin:
 
     def build_hk_numpad_6(self: "Mode"):
         """
-        **功能**
-
         所有萨满回收所有图腾.
         """
         with hk.Hotkey(
@@ -71,7 +73,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_7_all_move_backward:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.Movement.MOVE_BACKWARD()
 
@@ -88,7 +90,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_8_sync_left_click:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 CAN.LEFT_CLICK()
 
@@ -105,7 +107,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_9_sync_right_click:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 CAN.RIGHT_CLICK()
 
@@ -119,14 +121,12 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_0_all_follow_focus:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.Movement.FOLLOW_FOCUS()
 
     def build_hk_numpad_11(self: "Mode"):
         """
-        **功能**
-
         所有人上坐骑或是飞行形态.
 
         需要将上马宏放在 Numpad11 键位上. 具体的宏请参考 ``act.General.MOUNT_UP``.
@@ -137,7 +137,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_11_mount_up:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.General.MOUNT_UP_MACRO_KEY_NUMPAD_11_DIVIDE()
 
@@ -153,7 +153,7 @@ class HotkeyGroup05Numpad1To12Mixin:
         ) as self.hk_numpad_12_interact_with_focus_target:
             with hk.SendLabel(
                 id="all",
-                to=self.lbs_all,
+                to=self.get_lbs_all(),
             ):
                 act.Target.TARGET_FOCUS_TARGET()
                 act.Target.INTERACT_WITH_TARGET()

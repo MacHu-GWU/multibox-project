@@ -14,11 +14,15 @@ from hotkeynet import utils
 from multibox.game.wow.wlk.api import TalentCategory as TC
 from ..my_act import api as act
 
-if T.TYPE_CHECKING: # pragma: no cover
+if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
 class HotkeyGroup11Healbot:
+    """
+    todo: docstring.
+    """
+
     def _build_send_label_non_shaman_dps(self: "Mode"):
         """
         点击 Healbot 的时候, 所有 DPS 继续攻击焦点的目标. 唯独 增强萨满 和 元素萨满 例外.

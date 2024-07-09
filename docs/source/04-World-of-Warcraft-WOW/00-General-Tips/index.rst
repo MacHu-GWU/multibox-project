@@ -1,6 +1,8 @@
 World of Warcraft General Tips
 ==============================================================================
 
+``watch -n 5 free -m`` 命令可以查看内存使用量
+
 
 .. _wow-active-character:
 

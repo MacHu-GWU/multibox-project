@@ -17,6 +17,9 @@ if T.TYPE_CHECKING: # pragma: no cover
 
 
 class HotkeyControlPanelMixin:
+    """
+    todo: docstring.
+    """
     def build_control_panel(self: "Mode"):
         WIDTH = 24
         HEIGHT = 24
