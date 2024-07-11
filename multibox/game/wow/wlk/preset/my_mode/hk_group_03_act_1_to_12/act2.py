@@ -8,6 +8,7 @@ import typing as T
 
 import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
+from multibox.game.wow.wlk.api import TL, TC
 import multibox.game.wow.wlk.preset.my_act.api as act
 
 
@@ -32,17 +33,17 @@ class Act2Mixin:
             self.build_dps_default_action(key=KN.KEY_2)
 
             # 奶骑
-            for lb in self.lbs_paladin_holy:
+            for lb in self.get_lbs_paladin_holy():
                 with hk.SendLabel(to=[lb]):
                     act.Target.TARGET_RAID()
                     CAN.KEY_2()
 
             # 奶萨, 奶德, 牧师
             for lb in (
-                self.lbs_shaman_resto
-                | self.lbs_druid_resto
-                | self.lbs_priest_disco
-                | self.lbs_priest_holy
+                self.get_lbs_shaman_resto()
+                | self.get_lbs_druid_resto()
+                | self.get_lbs_priest_disco()
+                | self.get_lbs_priest_holy()
             ):
                 char = self.get_char_by_label(lb)
                 if char.is_raid_healer:

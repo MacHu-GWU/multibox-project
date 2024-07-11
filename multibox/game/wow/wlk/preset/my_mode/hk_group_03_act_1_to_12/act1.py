@@ -33,7 +33,7 @@ class Act1Mixin:
             self.build_dps_default_action(key=KN.KEY_1)
 
             # 奶骑
-            for lb in self.lbs_paladin_holy:
+            for lb in self.get_lbs_paladin_holy():
                 char = self.get_char_by_label(lb)
                 if char.is_tank_1_healer:
                     with hk.SendLabel(to=[lb]):
@@ -54,10 +54,10 @@ class Act1Mixin:
             priest_disco_talents = TC.priest_disco.talents
             priest_holy_talents = TC.priest_holy.talents
             for lb in (
-                self.lbs_shaman_resto
-                | self.lbs_druid_resto
-                | self.lbs_priest_disco
-                | self.lbs_priest_holy
+                self.get_lbs_shaman_resto()
+                | self.get_lbs_druid_resto()
+                | self.get_lbs_priest_disco()
+                | self.get_lbs_priest_holy()
             ):
                 char = self.get_char_by_label(lb)
                 if char.is_tank_1_healer:

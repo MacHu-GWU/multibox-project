@@ -15,6 +15,7 @@ from multibox.app.wow_wotlk.paths import dir_app_wow_wotlk, path_wow_wotlk_hkn
 # Azerothcore - Alliance - Raid
 # -----------------------------------------------------------------------------
 # mode = mode_fact.acore_alliance_r_abcdefghij_solo_raid
+mode = mode_fact.acore_alliance_r_a_to_y_solo_25raid
 
 # -----------------------------------------------------------------------------
 # Azerothcore - Horde - Dungeon
@@ -28,7 +29,6 @@ from multibox.app.wow_wotlk.paths import dir_app_wow_wotlk, path_wow_wotlk_hkn
 # ==============================================================================
 # Warmane Icecrown
 # ==============================================================================
-mode = mode_fact.acore_alliance_r_abcdefghij_solo_icc_boss1
 # mode = mode_fact.warmane_quarterly_login_team1
 # mode = mode_fact.warmane_quarterly_login_team2
 
