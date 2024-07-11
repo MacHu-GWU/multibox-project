@@ -15,8 +15,8 @@ class Discipline:
     Mass_Dispel = CAN.CTRL_R  # 群体驱散
 
     Inner_Focus = CAN.SHIFT_C  # 心灵专注, 使你的下一个法术必暴击, 戒律系天赋技能
-    Power_Infusion = CAN.SHIFT_F2  # 能量灌注, 使目标的施法速度提高, 戒律系天赋技能
-    Pain_Suppression = CAN.ALT_F  # 痛苦压制, 减伤技能, 戒律系天赋技能
+    Power_Infusion = None  # 能量灌注, 使目标的施法速度提高, 戒律系天赋技能
+    Pain_Suppression = None  # 痛苦压制, 减伤技能, 戒律系天赋技能
 
     Power_Word_Fortitude = None  # 真言术韧
     Prayer_of_Fortitude = None  # 真言术韧祷言
@@ -38,11 +38,11 @@ class Holy:
     Flash_Heal = CAN.X  # 快速治疗
     Greater_Heal = CAN.ALT_X  # 超级治疗术
     Holy_Nova = CAN.G  # 神圣新星
-    Circle_of_Healing = CAN.R  # 治疗之环, 群体治疗技能, 神圣系天赋技能
+    Circle_of_Healing = None  # 治疗之环, 群体治疗技能, 神圣系天赋技能
     Prayer_of_Healing = CAN.ALT_G  # 治疗祷言, 群体治疗
-    Desperate_Prayer = CAN.ALT_F1  # 绝望祷言, 神圣系天赋技能
+    Desperate_Prayer = None  # 绝望祷言, 神圣系天赋技能
     Lightwell = None  # 光明之井, 神圣系天赋技能
-    Guardian_Spirit = CAN.ALT_F  # 守护天使, 保护目标不被一击必杀一次, 神圣系天赋技能
+    Guardian_Spirit = None  # 守护天使, 保护目标不被一击必杀一次, 神圣系天赋技能
 
     Smite = None  # 惩击
     Holy_Fire = None  # 神圣之火, 神圣系天赋技能
@@ -59,16 +59,16 @@ class Shadow:
     # 暗影系主打攻击技能
     Shadow_Word_Pain = CAN.KEY_1  # 暗言术 痛
     Devouring_Plague = CAN.KEY_6  # 噬灵瘟疫
-    Vampiric_Touch = CAN.KEY_4  # 吸血鬼之触
-    Mind_Flay = CAN.KEY_2  # 精神鞭笞
+    Vampiric_Touch = None  # 吸血鬼之触
+    Mind_Flay = None  # 精神鞭笞
     Mind_Blast = CAN.KEY_3  # 心灵震爆
     Mind_Sear = CAN.KEY_5  # 精神灼烧
     Psychic_Horror = None  # 心灵惊骇, 远程恐惧单体目标, 暗影系天赋技能
 
-    Silence = CAN.R  # 沉默, 暗影系天赋技能
-    Shadowform = CAN.SHIFT_Q  # 暗影形态, 暗影系天赋技能
-    Vampiric_Embrace = CAN.KEY_8  # 吸血鬼的拥抱, 暗影系天赋技能
-    Dispersion = CAN.ALT_F  # 影散, 回蓝和减伤技能, 暗影系天赋技能
+    Silence = None  # 沉默, 暗影系天赋技能
+    Shadowform = None  # 暗影形态, 暗影系天赋技能
+    Vampiric_Embrace = None  # 吸血鬼的拥抱, 暗影系天赋技能
+    Dispersion = None  # 影散, 回蓝和减伤技能, 暗影系天赋技能
     Shadow_Word_Death = CAN.ALT_1  # 暗言术 死
     Shadowfiend = CAN.ALT_T  # 召唤暗影恶魔
 
@@ -211,10 +211,10 @@ class PriestHoly(Priest):
 
 class PriestShadow(Priest):
     Mind_Flay = CAN.KEY_2  # 精神鞭笞
-    Vampiric_Embrace = None  # 吸血鬼的拥抱, 暗影系天赋技能
+    Vampiric_Embrace = CAN.KEY_8  # 吸血鬼的拥抱, 暗影系天赋技能
     Silence = CAN.R  # 沉默, 暗影系天赋技能
     Shadowform = CAN.SHIFT_Q  # 暗影形态, 暗影系天赋技能
-    Psychic_Horror = CAN.ALT_E  # 心灵惊骇, 远程恐惧单体目标, 暗影系天赋技能Silence = None  # 沉默, 暗影系天赋技能
-    Vampiric_Touch = CAN.KEY_5  # 吸血鬼之触
+    Psychic_Horror = CAN.ALT_E  # 心灵惊骇, 远程恐惧单体目标, 暗影系天赋技能
+    Vampiric_Touch = CAN.KEY_4  # 吸血鬼之触
     Dispersion = CAN.ALT_F  # 影散, 回蓝和减伤技能, 暗影系天赋技能
 # fmt: on

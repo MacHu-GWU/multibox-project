@@ -8,9 +8,7 @@ import typing as T
 
 from ordered_set import OrderedSet
 import hotkeynet.api as hk
-from hotkeynet.api import KN, CAN
 import multibox.game.wow.wlk.api as wlk
-import multibox.game.wow.wlk.preset.my_act.api as act
 from multibox.game.wow.wlk.preset.my_mode.utils import TargetEnum
 
 from .act1 import Act1Mixin
@@ -20,6 +18,12 @@ from .act4 import Act4Mixin
 from .act5 import Act5Mixin
 from .act6 import Act6Mixin
 from .act7 import Act7Mixin
+from .act8 import Act8Mixin
+from .act9 import Act9Mixin
+from .act10 import Act10Mixin
+from .act11 import Act11Mixin
+from .act12 import Act12Mixin
+from .act_alt_5 import ActAlt5Mixin
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
@@ -40,6 +44,12 @@ class HotkeyGroup03Act1To12Mixin(
     Act5Mixin,
     Act6Mixin,
     Act7Mixin,
+    Act8Mixin,
+    Act9Mixin,
+    Act10Mixin,
+    Act11Mixin,
+    Act12Mixin,
+    ActAlt5Mixin,
 ):
     """
     这个类定义了多开时按下 1-12 按键时的行为.
@@ -142,3 +152,9 @@ class HotkeyGroup03Act1To12Mixin(
         self.build_act5()
         self.build_act6()
         self.build_act7()
+        self.build_act8()
+        self.build_act9()
+        self.build_act10()
+        self.build_act11()
+        self.build_act12()
+        self.build_act_alt_5()

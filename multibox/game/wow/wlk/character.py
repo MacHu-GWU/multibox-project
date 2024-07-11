@@ -28,6 +28,13 @@ class Character(wow.Character):
     :param tank_2: 从自己的视角看 2 号坦克是哪个.
     :param is_dr_pala_1: 自己是否是 1 号减伤圣骑士.
     :param is_dr_pala_2: 自己是否是 2 号减伤圣骑士.
+    :param is_typhoon_druid_1:
+    :param is_typhoon_druid_2:
+    :param is_tank_1_healer:
+    :param is_tank_2_healer:
+    :param is_raid_healer:
+    :param is_tank_1_beacon_paladin:
+    :param is_tank_2_beacon_paladin:
 
     **Why do I need these attribute?**
 

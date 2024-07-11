@@ -8,11 +8,15 @@ This is a sample script to configure your spell key binding for multiboxing.
 You should copy and paste this script as your foundation and fill in your own
 spell key binding.
 
-该文件是一个用来定义你游戏中的技能键位绑定的配置文件模版. 请不要直接在本文件上修改. 而是将其拷贝一份到 app 文件夹下进行修改. 该文件是基于圣骑士的, 其他职业也是同理.
+该文件是一个用来定义你游戏中的技能键位绑定的配置文件模版. 请不要直接在本文件上修改. 而是将其
+拷贝一份到 app 文件夹下进行修改. 该文件是基于圣骑士的, 其他职业也是同理.
 
 这个文件有这么几个类:
 
-- class $Talent1: 属于该系的职业技能, 这些技能的键位设定应该是无论你当前使用的什么天赋, 都应该是用这个键位. 我们以 ``class Retribution`` 距离. 例如 惩戒天赋中如果有 神圣风暴 技能. 该技只会在 惩戒天赋下 才会用到. 所以你在这个类中请让他保持 None, 而是转而到 ``class PaladinRetribution`` 中定义它的快捷键
+- class $Talent1: 属于该系的职业技能, 这些技能的键位设定应该是无论你当前使用的什么天赋,
+    都应该是用这个键位. 我们以 ``class Retribution`` 距离. 例如 惩戒天赋中如果有 神圣风暴 技能.
+    该技只会在 惩戒天赋下 才会用到. 所以你在这个类中请让他保持 None, 而是转而到
+    ``class PaladinRetribution`` 中定义它的快捷键.
 - class $Talent2: 同上
 - class $Talent3: 同上
 - class Healbot: 使用 Healbot 团队框架施放的技能, 这些技能的键位设定应该是无论你当前使用的什么天赋, 都应该是用这个键位.
@@ -129,14 +133,15 @@ class Healbot:
     HB_Cleanse = CAN.CTRL_LEFT_CLICK
     HB_Sacred_Shield = CAN.ALT_LEFT_CLICK
 
-    HB_Flash_of_Light = CAN.MOUSE_RButton
-    HB_Holy_Shock = CAN.SHIFT_RIGHT_CLICK
-    HB_Hand_of_Freedom = CAN.ALT_RIGHT_CLICK
-
     HB_MB_Beacon_of_Light = CAN.MIDDLE_CLICK
     HB_Hand_of_Sacrifice = CAN.SHIFT_MIDDLE_CLICK
     HB_Hand_of_Salvation = CAN.CTRL_MIDDLE_CLICK
     HB_Hand_of_Protection = CAN.ALT_MIDDLE_CLICK
+
+    HB_Flash_of_Light = CAN.MOUSE_RButton
+    HB_Lay_on_Hand = CAN.CTRL_RIGHT_CLICK
+    HB_Holy_Shock = CAN.SHIFT_RIGHT_CLICK
+    HB_Hand_of_Freedom = CAN.ALT_RIGHT_CLICK
 
     HB_Righteous_Defense = None
     HB_Divine_Intervention = None
