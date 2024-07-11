@@ -11,9 +11,8 @@ dir_here = Path.dir_here(__file__)
 path_excel = Dataset.locate_excel(prefix="multibox-game-wow-wotlk")
 ds = Dataset.from_excel(path_excel)
 
-if __name__ == "__main__":
-    from pathlib_mate import Path
 
+def make_module():
     dir_here = Path.dir_here(__file__)
     ds.to_module(
         dir_module=dir_here,
@@ -21,3 +20,7 @@ if __name__ == "__main__":
         overwrite=True,
         test=True,
     )
+
+
+if __name__ == "__main__":
+    make_module()

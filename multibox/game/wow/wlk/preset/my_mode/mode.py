@@ -17,7 +17,8 @@ from .hk_group_03_act_1_to_12.main import HotkeyGroup03Act1To12Mixin
 from .hk_group_04_pet_control.main import HotkeyGroup04PetControlMixin
 from .hk_group_05_numpad_1_to_12 import HotkeyGroup05Numpad1To12Mixin
 from .hk_group_06_party_and_system import HotkeyGroup06PartyAndSystemMixin
-from .hk_group_07_utility_spell import HotkeyGroup07UtilitySpellMixin
+from .hk_group_07_utility_spell.main import HotkeyGroup07UtilitySpellMixin
+from .hk_group_07_utility_spell_old import HotkeyGroup07UtilitySpellMixinOld
 from .hk_group_08_alt_numpad_1_to_12 import HotkeyGroup08AltNumpad1To12
 from .hk_group_09_ctrl_numpad_1_to_12 import HotkeyGroup09CtrlNumpad1To12
 from .hk_group_10_shift_numpad_1_to_12 import HotkeyGroup10ShiftNumpad1To12
@@ -41,6 +42,7 @@ class Mode(
     HotkeyGroup05Numpad1To12Mixin,
     HotkeyGroup06PartyAndSystemMixin,
     HotkeyGroup07UtilitySpellMixin,
+    HotkeyGroup07UtilitySpellMixinOld,
     HotkeyGroup08AltNumpad1To12,
     HotkeyGroup09CtrlNumpad1To12,
     HotkeyGroup10ShiftNumpad1To12,
@@ -49,6 +51,12 @@ class Mode(
     # --- Control Panel
     HotkeyControlPanelMixin,
 ):
+    """
+    这个类定义了所有多开会用到的 Hotkeynet 快捷键. 每一个快捷键都是 ``with hk.Hotkey()``
+    的上下文管理器. 每一个快捷键都是一个函数. 例如动作条 1 的快捷键功能定义是在
+    :meth:`multibox.game.wow.wlk.preset.my_mode.hk_group_03_act_1_to_12.act1.Act1Mixin.build_default_act1`
+    方法中定义的.
+    """
     is_tank1_has_healer: bool = attrs.field(default=False)
     is_tank2_has_healer: bool = attrs.field(default=False)
     tank1_direct_healer: T.Optional[Character] = attrs.field(default=None)
@@ -148,6 +156,7 @@ class Mode(
         self.build_hk_group_05_numpad_1_to_12_mixin()
         self.build_hk_group_06_party_and_system_mixin()
         self.build_hk_group_07_mixin()
+        self.build_hk_group_07_mixin_old()
         self.build_hk_group_08_alt_numpad_1_to_12_mixin()
         self.build_hk_group_09_ctrl_numpad_1_to_12_mixin()
         self.build_hk_group_10_mixin()

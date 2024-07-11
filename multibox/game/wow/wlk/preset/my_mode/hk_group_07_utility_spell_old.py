@@ -17,7 +17,7 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-class HotkeyGroup07UtilitySpellMixin:
+class HotkeyGroup07UtilitySpellMixinOld:
     def build_hk_domino_action_bar_5(self: "Mode"):
         # with hk.Hotkey(
         #     id="Alt F1",
@@ -571,7 +571,7 @@ class HotkeyGroup07UtilitySpellMixin:
         #     ):
         #         hk.Key.trigger()
 
-    def build_hk_group_07_mixin(self):
+    def build_hk_group_07_mixin_old(self):
         self.build_hk_domino_action_bar_5()
         self.build_hk_domino_action_bar_4()
         self.build_hk_domino_action_bar_3()

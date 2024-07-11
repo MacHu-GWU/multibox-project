@@ -11,8 +11,8 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
 
 
-class Ctrl1To6Mixin:
-    def build_hk_ctrl_1_to_6(self: "Mode"):
+class CtrlOem3Mixin:
+    def build_hk_ctrl_oem3(self: "Mode"):
         for i in range(1, 1 + 6):
             with hk.Hotkey(
                 id=f"Ctrl {i}",
@@ -25,8 +25,8 @@ class Ctrl1To6Mixin:
                     act.Target.TARGET_FOCUS_TARGET()
                     act.General.TRIGGER()
 
-    def build_ctrl_1_to_6_mixin(self: "Mode"):
+    def build_ctrl_oem3_mixin(self: "Mode"):
         if self.name == "special_mode":
             raise NotImplementedError
         else:
-            self.build_hk_ctrl_1_to_6()
+            self.build_hk_ctrl_oem3()

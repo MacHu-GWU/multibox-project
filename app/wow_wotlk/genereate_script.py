@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from multibox.app.wow_wotlk.gen_dataset import make_module
+# make_module()
+
 from multibox.app.wow_wotlk.dataset import mode_fact
 from multibox.app.wow_wotlk.paths import dir_app_wow_wotlk, path_wow_wotlk_hkn
 
