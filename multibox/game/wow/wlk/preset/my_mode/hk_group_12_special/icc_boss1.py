@@ -12,7 +12,7 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class IccBoss1Mixin:
-    def build_icc_boss1(self: "Mode"):
+    def build_hk_icc_boss1(self: "Mode"):
         # 所有 DPS 点杀骸骨尖刺
         # Shift + V 按钮上必须放点杀 /target 骸骨尖刺 的宏
         with hk.Hotkey(

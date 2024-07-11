@@ -20,7 +20,7 @@ class Act12Mixin:
     todo: docstring
     """
 
-    def build_default_act12(self: "Mode"):
+    def build_hk_default_act12(self: "Mode"):
         """
         See :ref:`wow-wlk-act-1-to-10-tank-dps-healer`
         """
@@ -48,4 +48,4 @@ class Act12Mixin:
         if self.name == "special_mode":
             raise NotImplementedError
         else:
-            self.build_default_act12()
+            self.build_hk_default_act12()

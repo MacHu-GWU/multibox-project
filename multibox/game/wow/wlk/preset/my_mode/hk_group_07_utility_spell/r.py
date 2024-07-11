@@ -11,12 +11,12 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
 
 
-class CtrlOem3Mixin:
-    def build_hk_ctrl_oem3(self: "Mode"):
+class RMixin:
+    def build_hk_r(self: "Mode"):
         pass
 
-    def build_ctrl_oem3_mixin(self: "Mode"):
+    def build_r_mixin(self: "Mode"):
         if self.name == "special_mode":
             raise NotImplementedError
         else:
-            self.build_hk_ctrl_oem3()
+            self.build_hk_r()

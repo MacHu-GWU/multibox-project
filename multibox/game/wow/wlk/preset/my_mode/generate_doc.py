@@ -7,10 +7,11 @@
 
 from multibox.game.wow.wlk.preset.my_mode.mode import Mode
 
+counter = 0
 for klass in Mode.__mro__:
     for k, v in klass.__dict__.items():
-        print(klass.__name__)
-        # if k.startswith("build_hk"):
-        #     print(f"{klass.__module__}.{klass.__name__}.{k}")
-# for k, v in Mode.__dict__.items():
-#     print(k, v)
+        if k.startswith("build_hk") and (not k.startswith("build_hk_group")):
+            counter += 1
+            print(f"{klass.__module__}.{klass.__name__}.{k}")
+
+print(counter)

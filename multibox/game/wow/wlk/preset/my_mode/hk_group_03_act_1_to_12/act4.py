@@ -21,7 +21,7 @@ class Act4Mixin:
     todo: docstring
     """
 
-    def build_default_act4(self: "Mode"):
+    def build_hk_default_act4(self: "Mode"):
         """
         Act 4 技能主要是周期性的补一些技能. 包括:
 
@@ -65,4 +65,4 @@ class Act4Mixin:
         if self.name == "special_mode":
             raise NotImplementedError
         else:
-            self.build_default_act4()
+            self.build_hk_default_act4()

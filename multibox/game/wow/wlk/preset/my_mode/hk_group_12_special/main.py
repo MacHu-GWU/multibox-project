@@ -11,4 +11,4 @@ if T.TYPE_CHECKING:  # pragma: no cover
 class HotkeyGroup12SpecialMixin(IccBoss1Mixin):
     def build_hk_group_12_special_mixin(self: "Mode"):
         if "icc_boss1" in self.name:
-            self.build_icc_boss1()
+            self.build_hk_icc_boss1()
