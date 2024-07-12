@@ -66,17 +66,16 @@ class HealBotFearWardMixin:
                         to=[lb],
                     ):
                         act.Priest.Fear_Ward()
+                # other
+                self._build_other_guy_do_your_job(
+                    lbs_assigned=lbs_assigned,
+                    id="Healbot Fear Ward {role}",
+                )
             hotkey_list.append(hotkey)
 
         self.hk_healbot_fear_ward_1 = hotkey_list[0]
         self.hk_healbot_fear_ward_2 = hotkey_list[1]
         self.hk_healbot_fear_ward_3 = hotkey_list[2]
-
-        # other
-        self._build_other_guy_do_your_job(
-            lbs_assigned=lbs_assigned,
-            id="Healbot Fear Ward {role}",
-        )
 
     def build_healbot_fear_ward(self: "Mode"):
         if self.name == "special_mode":

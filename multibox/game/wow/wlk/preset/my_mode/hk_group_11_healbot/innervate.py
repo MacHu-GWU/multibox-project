@@ -68,17 +68,16 @@ class HealBotInnervateMixin:
                         to=[lb],
                     ):
                         act.Druid.HB_Innervate()
+                # other
+                self._build_other_guy_do_your_job(
+                    lbs_assigned=lbs_assigned,
+                    id="Healbot Innervate {role}",
+                )
             hotkey_list.append(hotkey)
 
         self.hk_healbot_innervate_1 = hotkey_list[0]
         self.hk_healbot_innervate_2 = hotkey_list[1]
         self.hk_healbot_innervate_3 = hotkey_list[2]
-
-        # other
-        self._build_other_guy_do_your_job(
-            lbs_assigned=lbs_assigned,
-            id="Healbot Innervate {role}",
-        )
 
     def build_healbot_innervate(self: "Mode"):
         if self.name == "special_mode":
