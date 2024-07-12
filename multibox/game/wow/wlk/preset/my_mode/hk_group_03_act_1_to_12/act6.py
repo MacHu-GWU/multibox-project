@@ -6,6 +6,7 @@ todo: docstring
 
 import typing as T
 
+import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
 from multibox.game.wow.wlk.preset.my_mode.utils import TargetEnum
 
@@ -23,12 +24,16 @@ class Act6Mixin:
         """
         See :ref:`wow-wlk-act-1-to-10-tank-dps-healer`
         """
-        self.build_tank_default_action(key=KN.KEY_6)
-        self.build_dps_default_action(key=KN.KEY_6)
-        self.build_healer_default_action(
-            key=KN.KEY_6,
-            target=TargetEnum.TARGET_FOCUS_TARGET,
-        )
+        with hk.Hotkey(
+            id="Key6",
+            key=KN.SCROLOCK_ON(KN.KEY_6),
+        ) as self.hk_6:
+            self.build_tank_default_action(key=KN.KEY_6)
+            self.build_dps_default_action(key=KN.KEY_6)
+            self.build_healer_default_action(
+                key=KN.KEY_6,
+                target=TargetEnum.TARGET_FOCUS_TARGET,
+            )
 
     def build_act6(self: "Mode"):
         if self.name == "special_mode":
