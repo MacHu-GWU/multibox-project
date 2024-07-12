@@ -50,7 +50,7 @@ class HealBotAoeHealMixin:
                 id=id,
             )
             self.build_send_label_by_tc(
-                tc=TC.shaman_resto,
+                tc=TC.shaman,
                 funcs=[
                     act.ShamanRestoration.HB_Chain_Heal_for_mbox,
                 ],
