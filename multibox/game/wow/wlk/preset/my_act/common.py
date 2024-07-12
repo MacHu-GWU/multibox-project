@@ -89,7 +89,11 @@ class Target:
 
     TARGET_FOCUS_TARGET = CAN.NUMPAD_3
     """
-    The ``MB-TgtFcsTgt`` Macro, when focus is tank, usually it assist the leader::
+    The ``MB-TgtFcsTgt`` Macro, when focus is tank, usually it assist the leader.
+    在多开时, 虽然完全可以让 HotkeyNet 先点击 "选择焦点", 然后点击 "协助目标" 快捷键, 但是由于
+    游戏内的宏命令的性能要远远高于用 HotkeyNet 模拟出的键盘点击事件, 而且由于选择焦点目标的
+    操作在多开中是最高频的操作, 没有之一, 所以很有必要用一个宏来实现这个功能以提高性能.
+    宏的内容如下::
 
         /assist focus
     """
