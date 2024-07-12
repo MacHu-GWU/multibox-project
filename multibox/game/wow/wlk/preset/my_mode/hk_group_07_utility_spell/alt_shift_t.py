@@ -71,13 +71,13 @@ class AltShiftTMixin:
             )
             # create label to key mapping
             lb_to_spell_mapping = dict()
-            for lb in lbs_shaman_dps | lbs_shaman_healer:
+            for lb in (lbs_shaman_dps | lbs_shaman_healer):
                 lb_to_spell_mapping[lb] = act.Shaman.Purge
             for lb in lbs_hunter:
                 lb_to_spell_mapping[lb] = act.Hunter.Tranquilizing_Shot
             for lb in lbs_mage:
                 lb_to_spell_mapping[lb] = act.Mage.Spellsteal
-            for lb in lbs_priest_shadow | lbs_priest_healer:
+            for lb in (lbs_priest_shadow | lbs_priest_healer):
                 lb_to_spell_mapping[lb] = act.Priest.Dispel_Magic
             # get the two dps to dispel
             if len(lbs_all):

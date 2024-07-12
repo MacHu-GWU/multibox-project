@@ -510,6 +510,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         self,
         tc: TC,
         funcs: T.Iterable[T.Callable],
+        id: str = "{talent}",
     ) -> T.Optional[hk.SendLabel]:
         """
         根据天赋组对角色进行筛选, 并生成 SendLabel 对象. 这个方法是为了简化代码而设计的.
@@ -520,7 +521,7 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         lbs = self.get_lbs_by_tc(tc)
         if lbs:
             with hk.SendLabel(
-                id=tc.name,
+                id=id.format(talent=tc.name),
                 to=list(lbs),
             ) as send_label:
                 for func in funcs:

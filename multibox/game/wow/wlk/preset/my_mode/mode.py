@@ -4,10 +4,14 @@ import typing as T
 import attrs
 
 from ordered_set import OrderedSet
+import hotkeynet.api as hk
+from hotkeynet.api import CAN
 from multibox.game.wow.wlk.api import (
     Mode as _Mode,
     Character,
+    TC,
 )
+import multibox.game.wow.wlk.preset.my_act.api as act
 
 from .hk_cmd import HotkeyCommandMixin
 
@@ -18,11 +22,10 @@ from .hk_group_04_pet_control.main import HotkeyGroup04PetControlMixin
 from .hk_group_05_numpad_1_to_12 import HotkeyGroup05Numpad1To12Mixin
 from .hk_group_06_party_and_system import HotkeyGroup06PartyAndSystemMixin
 from .hk_group_07_utility_spell.main import HotkeyGroup07UtilitySpellMixin
-from .hk_group_07_utility_spell_old import HotkeyGroup07UtilitySpellMixinOld
 from .hk_group_08_alt_numpad_1_to_12 import HotkeyGroup08AltNumpad1To12
 from .hk_group_09_ctrl_numpad_1_to_12 import HotkeyGroup09CtrlNumpad1To12
 from .hk_group_10_shift_numpad_1_to_12 import HotkeyGroup10ShiftNumpad1To12
-from .hk_group_11_healbot import HotkeyGroup11Healbot
+from .hk_group_11_healbot.main import HotkeyGroup11HealBotMixin
 from .hk_group_12_special.main import HotkeyGroup12SpecialMixin
 
 from .hk_control_panel import HotkeyControlPanelMixin
@@ -42,11 +45,10 @@ class Mode(
     HotkeyGroup05Numpad1To12Mixin,
     HotkeyGroup06PartyAndSystemMixin,
     HotkeyGroup07UtilitySpellMixin,
-    HotkeyGroup07UtilitySpellMixinOld,
     HotkeyGroup08AltNumpad1To12,
     HotkeyGroup09CtrlNumpad1To12,
     HotkeyGroup10ShiftNumpad1To12,
-    HotkeyGroup11Healbot,
+    HotkeyGroup11HealBotMixin,
     HotkeyGroup12SpecialMixin,
     # --- Control Panel
     HotkeyControlPanelMixin,
@@ -57,6 +59,7 @@ class Mode(
     :meth:`multibox.game.wow.wlk.preset.my_mode.hk_group_03_act_1_to_12.act1.Act1Mixin.build_default_act1`
     方法中定义的.
     """
+
     is_tank1_has_healer: bool = attrs.field(default=False)
     is_tank2_has_healer: bool = attrs.field(default=False)
     tank1_direct_healer: T.Optional[Character] = attrs.field(default=None)
@@ -142,6 +145,35 @@ class Mode(
         for lb in lbs_other_healer:
             self.extra_tank_healer.add(self.get_char_by_label(lb))
 
+    def _build_other_guy_do_your_job(
+        self: "Mode",
+        lbs_assigned: OrderedSet[str],
+        id: str,
+    ):
+        """
+        在多开中在 Leader 界面操纵跟随者使用 Healbot 的逻辑中一般都是特定的几个角色干特定
+        的事情, 其他职业照常 Tank 拉怪, DPS 打怪, 治疗随机奶团. 这个方法可以剔除掉干特定
+        的事情的几个角色, 让其他人照常干活.
+        """
+        lbs_tank = self.get_lbs_by_tc(TC.tank)
+        lbs_dps = self.get_lbs_by_tc(TC.dps)
+        lbs_healer = self.get_lbs_by_tc(TC.healer)
+        for role, lbs, keys in [
+            ("tank", lbs_tank, []),
+            ("dps", lbs_dps, [act.Target.TARGET_FOCUS_TARGET]),
+            # 这里控制的不够精细, 不是每个治疗都是先随机选择团员无脑刷团的, 但由于激活也就是一秒钟, 也就 OK 了
+            ("healer", lbs_healer, [act.Target.TARGET_RAID]),
+        ]:
+            lbs = lbs.difference(lbs_assigned)
+            if len(lbs):
+                with hk.SendLabel(
+                    id=id.format(role=role),
+                    to=lbs,
+                ):
+                    for key_maker in keys:
+                        key_maker()
+                    CAN.KEY_2()
+
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
 
@@ -155,8 +187,7 @@ class Mode(
         self.build_hk_group_04_pet_control_mixin()
         self.build_hk_group_05_numpad_1_to_12_mixin()
         self.build_hk_group_06_party_and_system_mixin()
-        self.build_hk_group_07_mixin()
-        self.build_hk_group_07_mixin_old()
+        self.build_hk_group_07_utility_spell_mixin()
         self.build_hk_group_08_alt_numpad_1_to_12_mixin()
         self.build_hk_group_09_ctrl_numpad_1_to_12_mixin()
         self.build_hk_group_10_mixin()

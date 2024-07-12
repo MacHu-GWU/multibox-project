@@ -35,7 +35,7 @@ class HotkeyGroup07UtilitySpellMixin(
     AltShiftXMixin,
     AltShiftCMixin,
 ):
-    def build_hk_group_07_mixin(self: "Mode"):
+    def build_hk_group_07_utility_spell_mixin(self: "Mode"):
         self.build_ctrl_oem3_mixin()
         self.build_ctrl_z_mixin()
         self.build_ctrl_t_mixin()
