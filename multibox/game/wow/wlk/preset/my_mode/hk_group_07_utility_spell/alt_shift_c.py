@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 import typing as T
 
 import hotkeynet.api as hk
@@ -12,6 +16,9 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class AltShiftCMixin:
+    """
+    todo: docstring
+    """
     def build_hk_alt_shift_c(self: "Mode"):
         pass
 

@@ -572,7 +572,8 @@ class HotkeyGroup07UtilitySpellMixinOld:
         #         hk.Key.trigger()
 
     def build_hk_group_07_mixin_old(self):
-        self.build_hk_domino_action_bar_5()
-        self.build_hk_domino_action_bar_4()
-        self.build_hk_domino_action_bar_3()
-        self.build_hk_domino_action_bar_2()
+        # self.build_hk_domino_action_bar_5()
+        # self.build_hk_domino_action_bar_4()
+        # self.build_hk_domino_action_bar_3()
+        # self.build_hk_domino_action_bar_2()
+        pass
