@@ -13,6 +13,7 @@ from multibox.game.wow.wlk.api import (
 )
 import multibox.game.wow.wlk.preset.my_act.api as act
 
+from .hk_label import HotkeyLabelMixin
 from .hk_cmd import HotkeyCommandMixin
 
 from .hk_group_01_window_and_login import HotkeyGroup01WindowAndLoginMixin
@@ -35,7 +36,7 @@ from .hk_control_panel import HotkeyControlPanelMixin
 class Mode(
     _Mode,
     # --- Label and Command
-    # HotkeyLabelMixin,
+    HotkeyLabelMixin,
     HotkeyCommandMixin,
     # --- Group 1 to 12
     HotkeyGroup01WindowAndLoginMixin,
@@ -179,6 +180,7 @@ class Mode(
 
         self.allocate_healer()
 
+        self.build_label_mixin()
         self.build_command_mixin()
 
         self.build_hk_group_01_window_and_login_mixin()
