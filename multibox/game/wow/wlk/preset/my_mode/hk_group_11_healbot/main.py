@@ -7,6 +7,7 @@ from .big_heal import HealBotBigHealMixin
 from .aoe_heal import HealBotAoeHealMixin
 from .dispel import HealBotDispelMixin
 from .innervate import HealBotInnervateMixin
+from .fear_ward import HealBotFearWardMixin
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from ..mode import Mode
@@ -18,6 +19,7 @@ class HotkeyGroup11HealBotMixin(
     HealBotAoeHealMixin,
     HealBotDispelMixin,
     HealBotInnervateMixin,
+    HealBotFearWardMixin,
 ):
     def build_hk_group_11_healbot_mixin(self: "Mode"):
         self.build_healbot_small_heal()
@@ -25,3 +27,4 @@ class HotkeyGroup11HealBotMixin(
         self.build_healbot_aoe_heal()
         self.build_healbot_dispel()
         self.build_healbot_innervate()
+        self.build_healbot_fear_ward()

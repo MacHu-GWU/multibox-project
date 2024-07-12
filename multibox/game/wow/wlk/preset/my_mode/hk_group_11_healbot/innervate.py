@@ -25,7 +25,7 @@ class HealBotInnervateMixin:
         """
         **说明**
 
-        在 Leader 角色的窗口内用鼠标选择团队框架上的角色, 然后按住 Ctrl + 1 / 2 / 3,
+        在 Leader 角色的窗口内用鼠标选择团队框架上的角色, 然后按住 Ctrl + Numpad 1/2/3,
         可以分别让 1, 2, 3 号德鲁伊给目标施放激活, 并且让其他 Tank 和 DPS 继续正常打怪.
 
         分配任务的逻辑是:
@@ -63,7 +63,7 @@ class HealBotInnervateMixin:
                     key=KN.SCROLOCK_ON(key),
                 ) as self.hk_healbot_innervate:
                     with hk.SendLabel(
-                        id=f"Healbot Druid {i} cast innervate",
+                        id=f"Healbot Druid {i} cast Innervate",
                         to=[lb],
                     ):
                         act.Druid.HB_Innervate()
