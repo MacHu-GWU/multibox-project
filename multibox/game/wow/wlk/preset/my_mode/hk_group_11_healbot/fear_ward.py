@@ -54,28 +54,23 @@ class HealBotFearWardMixin:
             (5, KN.CTRL_NUMPAD_5),
             (6, KN.CTRL_NUMPAD_6),
         ]:
-            if len(lbs_priest):
-                lb = lbs_priest.pop()
-                lbs_assigned.add(lb)
-                with hk.Hotkey(
-                    id=f"Healbot Fear Ward {i}",
-                    key=KN.SCROLOCK_ON(key),
-                ) as hotkey:
+            with hk.Hotkey(
+                id=f"Healbot Fear Ward {i}",
+                key=KN.SCROLOCK_ON(key),
+            ) as hotkey:
+                if len(lbs_priest):
+                    lb = lbs_priest.pop()
+                    lbs_assigned.add(lb)
                     with hk.SendLabel(
                         id=f"Healbot Priest {i} cast Fear Ward",
                         to=[lb],
                     ):
                         act.Priest.Fear_Ward()
-                    hotkey_list.append(hotkey)
-            else:
-                hotkey_list.append(None)
+            hotkey_list.append(hotkey)
 
-        if hotkey_list[0] is not None:
-            self.hk_healbot_fear_ward_1 = hotkey_list[0]
-        if hotkey_list[1] is not None:
-            self.hk_healbot_fear_ward_2 = hotkey_list[1]
-        if hotkey_list[2] is not None:
-            self.hk_healbot_fear_ward_3 = hotkey_list[2]
+        self.hk_healbot_fear_ward_1 = hotkey_list[0]
+        self.hk_healbot_fear_ward_2 = hotkey_list[1]
+        self.hk_healbot_fear_ward_3 = hotkey_list[2]
 
         # other
         self._build_other_guy_do_your_job(

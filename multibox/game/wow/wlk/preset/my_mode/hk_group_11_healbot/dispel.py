@@ -47,7 +47,6 @@ class HealBotDispelMixin:
             id="Healbot Dispel",
             key=KN.SCROLOCK_ON(KN.CTRL_ALT_(KN.MOUSE_RButton)),
         ) as self.hk_healbot_dispel:
-            id = "Healbot Dispel {talent}"
             lbs_paladin_dps = self.get_lbs_by_tc(TC.paladin_dps)
             lbs_paladin_healer = self.get_lbs_by_tc(TC.paladin_healer)
             lbs_paladin_tank = self.get_lbs_by_tc(TC.paladin_tank)

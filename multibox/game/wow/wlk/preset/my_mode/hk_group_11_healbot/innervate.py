@@ -56,28 +56,23 @@ class HealBotInnervateMixin:
             (2, KN.CTRL_NUMPAD_2),
             (3, KN.CTRL_NUMPAD_3),
         ]:
-            if len(lbs_druid):
-                lb = lbs_druid.pop()
-                lbs_assigned.add(lb)
-                with hk.Hotkey(
-                    id=f"Healbot Innervate {i}",
-                    key=KN.SCROLOCK_ON(key),
-                ) as hotkey:
+            with hk.Hotkey(
+                id=f"Healbot Innervate {i}",
+                key=KN.SCROLOCK_ON(key),
+            ) as hotkey:
+                if len(lbs_druid):
+                    lb = lbs_druid.pop()
+                    lbs_assigned.add(lb)
                     with hk.SendLabel(
                         id=f"Healbot Druid {i} cast Innervate",
                         to=[lb],
                     ):
                         act.Druid.HB_Innervate()
-                    hotkey_list.append(hotkey)
-            else:
-                hotkey_list.append(None)
+            hotkey_list.append(hotkey)
 
-        if hotkey_list[0] is not None:
-            self.hk_healbot_innervate_1 = hotkey_list[0]
-        if hotkey_list[1] is not None:
-            self.hk_healbot_innervate_2 = hotkey_list[1]
-        if hotkey_list[2] is not None:
-            self.hk_healbot_innervate_3 = hotkey_list[2]
+        self.hk_healbot_innervate_1 = hotkey_list[0]
+        self.hk_healbot_innervate_2 = hotkey_list[1]
+        self.hk_healbot_innervate_3 = hotkey_list[2]
 
         # other
         self._build_other_guy_do_your_job(
