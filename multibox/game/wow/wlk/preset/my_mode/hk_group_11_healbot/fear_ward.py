@@ -65,7 +65,7 @@ class HealBotFearWardMixin:
                         id=f"Healbot Priest {i} cast Fear Ward",
                         to=[lb],
                     ):
-                        act.Priest.Fear_Ward()
+                        act.Priest.HB_Fear_Ward()
                 # other
                 self._build_other_guy_do_your_job(
                     lbs_assigned=lbs_assigned,
