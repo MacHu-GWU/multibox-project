@@ -12,7 +12,7 @@ from hotkeynet import api as hk
 from .....wow.api import Icons
 from ..my_act import api as act
 
-if T.TYPE_CHECKING: # pragma: no cover
+if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
@@ -20,6 +20,7 @@ class HotkeyControlPanelMixin:
     """
     todo: docstring.
     """
+
     def build_control_panel(self: "Mode"):
         WIDTH = 24
         HEIGHT = 24
@@ -116,36 +117,55 @@ class HotkeyControlPanelMixin:
                     )
                     set_hotkey_or_command(button, hotkey, command, command_args)
 
+                # ------ row ------
                 create_picture_button(
                     name="ButtonLaunchAndRenameAllGameClient",
                     file=Icons.wow,
                     command=self.cmd_launch_and_rename_all_game_client,
                 )
-
                 create_picture_button(
                     name="ButtonBatchLogin",
                     file=Icons.log_in,
                     command=self.cmd_batch_login_and_enter_game,
                 )
-
                 create_picture_button(
                     name="ButtonResizeWindow",
                     file=Icons.resize_window,
                     command=self.cmd_center_overlap_layout,
                 )
-
                 create_picture_button(
                     name="ButtonLogOut",
                     file=Icons.log_out,
                     hotkey=self.hk_batch_logout,
                 )
-
                 create_picture_button(
                     name="ButtonVolumeDown",
                     file=Icons.vol_down,
                     hotkey=self.hk_volumn_down,
                 )
-
+                # ------ row ------
+                create_picture_button(
+                    name="RDFConfirmRoleAndEnterDungeon",
+                    file=Icons.spell_holy_summonchampion,
+                    hotkey=self.hk_rdf_confirm_role_and_enter_dungeon,
+                )
+                create_button(
+                    name=f"GameClient7",
+                    text="NA",
+                )
+                create_button(
+                    name=f"GameClient8",
+                    text="NA",
+                )
+                create_button(
+                    name=f"GameClient9",
+                    text="NA",
+                )
+                create_button(
+                    name=f"GameClient10",
+                    text="NA",
+                )
+                # ------ row ------
                 index_mapper = dict()
                 for window, account in self.login_window_and_account_pairs:
                     index_mapper[window.index] = (window, account)
@@ -168,12 +188,6 @@ class HotkeyControlPanelMixin:
                             text="NA",
                         )
 
-                create_picture_button(
-                    name="RDFConfirmRoleAndEnterDungeon",
-                    file=Icons.spell_holy_summonchampion,
-                    hotkey=self.hk_rdf_confirm_role_and_enter_dungeon,
-                )
-
                 # -------------------------------------------------------------
                 # Login
                 # -------------------------------------------------------------
@@ -182,6 +196,7 @@ class HotkeyControlPanelMixin:
                 # -------------------------------------------------------------
                 # Alt + Numpad 1 - 12
                 # -------------------------------------------------------------
+                # ------ row ------
                 for id, text in enumerate(
                     [
                         "Alt",
@@ -193,108 +208,112 @@ class HotkeyControlPanelMixin:
                     start=1,
                 ):
                     create_colored_button(
-                        name=f"ButtonBarAlt1To12B{id}", bkcolor="E75638", text=text
+                        name=f"ButtonBarAlt1To12B{id}",
+                        bkcolor="E75638",
+                        text=text,
                     )
 
+                # ------ row ------
+                create_button(
+                    name=f"AltNumpad1To3B1",
+                    text="NA",
+                )
                 create_picture_button(
-                    name="Alt1",
+                    name="AltNumpad1",
                     file=Icons.ability_hunter_misdirection,
                     hotkey=self.hk_alt_numpad_1_hunter_misdirect,
                 )
                 create_picture_button(
-                    name="Alt2",
+                    name="AltNumpad2",
                     file=Icons.ability_mount_whitetiger,
                     hotkey=self.hk_alt_numpad_2_aspect_of_pact_or_hawk,
                 )
                 create_picture_button(
-                    name="Alt3",
+                    name="AltNumpad3",
                     file=Icons.ability_hunter_aspectoftheviper,
                     hotkey=self.hk_alt_numpad_3_aspect_of_viper_or_hawk,
                 )
                 create_button(
-                    name=f"Alt3B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Alt3B2",
+                    name=f"AltNumpad1To3B5",
                     text="NA",
                 )
 
+                # ------ row ------
+                create_button(
+                    name=f"AltNumpad4To6B1",
+                    text="NA",
+                )
                 create_picture_button(
-                    name="Alt4",
+                    name="AltNumpad4",
                     file=Icons.ability_druid_starfall,
                     hotkey=self.hk_alt_numpad_4_all_boomkin_star_fall,
                 )
                 create_picture_button(
-                    name="Alt5",
+                    name="AltNumpad5",
                     file=Icons.spell_nature_wispheal,
                     hotkey=self.hk_alt_numpad_5_all_dps_burst,
                 )
                 create_picture_button(
-                    name="Alt6",
+                    name="AltNumpad6",
                     file=Icons.spell_nature_bloodlust,
                     hotkey=self.hk_alt_numpad_6_all_dps_burst_and_hero,
                 )
                 create_button(
-                    name=f"Alt6B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Alt6B2",
+                    name=f"AltNumpad4To6B5",
                     text="NA",
                 )
 
-                create_picture_button(
-                    name="Alt7",
-                    file=Icons.spell_holy_powerwordbarrier,
-                    hotkey=self.hk_alt_numpad_7_raid_damage_reduction,
-                )
-                create_picture_button(
-                    name="Alt8",
-                    file=Icons.spell_holy_powerwordbarrier,
-                    hotkey=self.hk_alt_numpad_8_raid_damage_reduction,
-                )
-                create_picture_button(
-                    name="Alt9",
-                    file=Icons.spell_holy_auramastery,
-                    hotkey=self.hk_alt_numpad_9_raid_damage_reduction,
-                )
+                # ------ row ------
                 create_button(
-                    name=f"Alt9B1",
+                    name=f"AltNumpad7To9B1",
                     text="NA",
                 )
                 create_button(
-                    name=f"Alt9B2",
+                    name=f"AltNumpad7To9B2",
+                    text="NA",
+                )
+                create_button(
+                    name=f"AltNumpad7To9B3",
+                    text="NA",
+                )
+                create_button(
+                    name=f"AltNumpad7To9B4",
+                    text="NA",
+                )
+                create_button(
+                    name=f"AltNumpad7To9B5",
                     text="NA",
                 )
 
+                # ------ row ------
+                create_button(
+                    name=f"AltNumpad10To12B1",
+                    text="NA",
+                )
                 create_picture_button(
-                    name="Alt10",
+                    name="AltNumpad10",
                     file=Icons.spell_nature_diseasecleansingtotem,
                     hotkey=self.hk_alt_numpad_10_cleansing_totem,
                 )
                 create_picture_button(
-                    name="Alt11",
+                    name="AltNumpad11",
                     file=Icons.spell_nature_tremortotem,
                     hotkey=self.hk_alt_numpad_11_tremor_totem,
                 )
                 create_picture_button(
-                    name="Alt12",
+                    name="AltNumpad12",
                     file=Icons.spell_nature_strengthofearthtotem02,
                     hotkey=self.hk_alt_numpad_12_earth_binding_totem,
                 )
                 create_button(
-                    name=f"Alt12B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Alt12B2",
+                    name=f"AltNumpad10To12B5",
                     text="NA",
                 )
 
                 # -------------------------------------------------------------
                 # Ctrl + Numpad 1 - 12
                 # -------------------------------------------------------------
+                # ------ row ------
                 for id, text in enumerate(
                     [
                         "Ctrl",
@@ -309,82 +328,86 @@ class HotkeyControlPanelMixin:
                         name=f"ButtonBarCtrl1To12B{id}", bkcolor="E75638", text=text
                     )
 
+                # ------ row ------
+                create_button(
+                    name=f"CtrlNumpad1To3B1",
+                    text="NA",
+                )
                 create_picture_button(
                     name="CtrlNumpad1",
-                    file=Icons.ability_theblackarrow,
-                    hotkey=self.hk_ctrl_numpad_1,
+                    file=Icons.spell_nature_lightning,
+                    hotkey=self.hk_healbot_innervate_1,
                 )
                 create_picture_button(
                     name="CtrlNumpad2",
-                    file=Icons.spell_frost_iceshock,
-                    hotkey=self.hk_ctrl_numpad_2,
+                    file=Icons.spell_nature_lightning,
+                    hotkey=self.hk_healbot_innervate_2,
                 )
                 create_picture_button(
                     name="CtrlNumpad3",
-                    file=Icons.spell_holy_dispelmagic,
-                    hotkey=self.hk_ctrl_numpad_3,
+                    file=Icons.spell_nature_lightning,
+                    hotkey=self.hk_healbot_innervate_3,
                 )
                 create_button(
-                    name=f"Ctrl3B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Ctrl3B2",
+                    name=f"CtrlNumpad1To3B5",
                     text="NA",
                 )
 
+                # ------ row ------
+                create_button(
+                    name=f"CtrlNumpad4To6B1",
+                    text="NA",
+                )
                 create_picture_button(
                     name="CtrlNumpad4",
-                    file=Icons.spell_shadow_psychicscream,
-                    hotkey=self.hk_ctrl_numpad_4,
+                    file=Icons.spell_holy_excorcism,
+                    hotkey=self.hk_healbot_fear_ward_1,
                 )
                 create_picture_button(
                     name="CtrlNumpad5",
-                    file=Icons.ability_druid_typhoon,
-                    hotkey=self.hk_ctrl_numpad_5,
+                    file=Icons.spell_holy_excorcism,
+                    hotkey=self.hk_healbot_fear_ward_2,
                 )
                 create_picture_button(
                     name="CtrlNumpad6",
-                    file=Icons.spell_shaman_thunderstorm,
-                    hotkey=self.hk_ctrl_numpad_6,
+                    file=Icons.spell_holy_excorcism,
+                    hotkey=self.hk_healbot_fear_ward_3,
                 )
                 create_button(
-                    name=f"Ctrl6B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Ctrl6B2",
+                    name=f"CtrlNumpad4To6B5",
                     text="NA",
                 )
 
-                create_picture_button(
-                    name="CtrlNumpad7",
-                    file=Icons.spell_holy_divinehymn,
-                    hotkey=self.hk_ctrl_numpad_7,
-                )
-                create_picture_button(
-                    name="CtrlNumpad8",
-                    file=Icons.spell_nature_tranquility,
-                    hotkey=self.hk_ctrl_numpad_7,
-                )
-                create_picture_button(
-                    name="CtrlNumpad9",
-                    file=Icons.spell_nature_tranquility,
-                    hotkey=self.hk_ctrl_numpad_7,
-                )
+                # ------ row ------
                 create_button(
-                    name=f"Ctrl9B1",
+                    name=f"CtrlNumpad7To9B1",
                     text="NA",
                 )
                 create_button(
-                    name=f"Ctrl9B2",
+                    name=f"CtrlNumpad7To9B2",
+                    text="NA",
+                )
+                create_button(
+                    name=f"CtrlNumpad7To9B3",
+                    text="NA",
+                )
+                create_button(
+                    name=f"CtrlNumpad7To9B4",
+                    text="NA",
+                )
+                create_button(
+                    name=f"CtrlNumpad7To9B5",
                     text="NA",
                 )
 
-                create_picture_button(
-                    name="CtrlNumpad10",
-                    file=Icons.spell_holy_symbolofhope,
-                    hotkey=self.hk_ctrl_numpad_10,
+                # ------ row ------
+                create_button(
+                    name=f"CtrlNumpad10To12B1",
+                    text="NA",
+                )
+                create_button(
+                    name=f"CtrlNumpad10To12B2",
+                    text="NA",
                 )
                 create_picture_button(
                     name="CtrlNumpad11",
@@ -397,11 +420,7 @@ class HotkeyControlPanelMixin:
                     hotkey=self.hk_ctrl_numpad_12,
                 )
                 create_button(
-                    name=f"Ctrl12B1",
-                    text="NA",
-                )
-                create_button(
-                    name=f"Ctrl12B2",
+                    name=f"CtrlNumpad10To12B5",
                     text="NA",
                 )
 

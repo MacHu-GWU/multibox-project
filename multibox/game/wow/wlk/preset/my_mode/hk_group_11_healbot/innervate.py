@@ -50,6 +50,7 @@ class HealBotInnervateMixin:
         )
 
         lbs_assigned = OrderedSet()
+        hotkey_list = list()
         for i, key in [
             (1, KN.CTRL_NUMPAD_1),
             (2, KN.CTRL_NUMPAD_2),
@@ -61,12 +62,22 @@ class HealBotInnervateMixin:
                 with hk.Hotkey(
                     id=f"Healbot Innervate {i}",
                     key=KN.SCROLOCK_ON(key),
-                ) as self.hk_healbot_innervate:
+                ) as hotkey:
                     with hk.SendLabel(
                         id=f"Healbot Druid {i} cast Innervate",
                         to=[lb],
                     ):
                         act.Druid.HB_Innervate()
+                    hotkey_list.append(hotkey)
+            else:
+                hotkey_list.append(None)
+
+        if hotkey_list[0] is not None:
+            self.hk_healbot_innervate_1 = hotkey_list[0]
+        if hotkey_list[1] is not None:
+            self.hk_healbot_innervate_2 = hotkey_list[1]
+        if hotkey_list[2] is not None:
+            self.hk_healbot_innervate_3 = hotkey_list[2]
 
         # other
         self._build_other_guy_do_your_job(

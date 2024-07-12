@@ -21,6 +21,7 @@ class HotkeyGroup08AltNumpad1To12:
     """
     todo: docstring.
     """
+
     def build_hk_alt_numpad_1_misdirect_and_tot_focus(self: "Mode"):
         """
         todo: docstring.
@@ -212,7 +213,7 @@ class HotkeyGroup08AltNumpad1To12:
         self.build_hk_alt_numpad_4_all_boomkin_star_fall()
         self.build_hk_alt_numpad_5_all_dps_burst()
         self.build_hk_alt_numpad_6_all_dps_burst_and_hero()
-        self.build_hk_alt_numpad_7_8_9_first_raid_damage_reduction()
+        # self.build_hk_alt_numpad_7_8_9_first_raid_damage_reduction()
         self.build_hk_alt_numpad_10_cleansing_totem()
         self.build_hk_alt_numpad_11_tremor_totem()
         self.build_hk_alt_numpad_12_earth_binding_totem()
