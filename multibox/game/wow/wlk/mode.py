@@ -23,6 +23,7 @@ from .talent import Talent as TL
 from .talent import TalentCategory as TC
 from .client import Client
 
+from multibox.logger import logger
 from multibox.utils.models import BaseSemiMutableModel
 
 
@@ -538,8 +539,13 @@ class Mode(BaseSemiMutableModel, AttrsClass):
         """
         return self.script.render(verbose=verbose)
 
+    @logger.emoji_block(
+        msg="Generate HotkeyNet Script",
+        emoji="📝",
+    )
     def dump(self, verbose: bool = False):  # pragma: no cover
         """
         Generate the hotkeynet script and write to file.
         """
+        logger.info(f"mode: {self.name!r}")
         self.script_path.write_text(self.render(verbose=verbose))

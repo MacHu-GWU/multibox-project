@@ -11,9 +11,17 @@ sub packages and modules
     :maxdepth: 1
 
     act1 <act1>
+    act10 <act10>
+    act11 <act11>
+    act12 <act12>
     act2 <act2>
     act3 <act3>
     act4 <act4>
+    act5 <act5>
     act6 <act6>
+    act7 <act7>
+    act8 <act8>
+    act9 <act9>
+    act_alt_5 <act_alt_5>
     main <main>
     

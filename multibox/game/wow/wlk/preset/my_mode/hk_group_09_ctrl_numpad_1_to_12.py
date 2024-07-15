@@ -16,7 +16,7 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-class HotkeyGroup09CtrlNumpad1To12:
+class HotkeyGroup09CtrlNumpad1To12Mixin:
     """
     todo: docstring.
     """
@@ -186,13 +186,5 @@ class HotkeyGroup09CtrlNumpad1To12:
         """
         todo: docstring
         """
-        # self.build_hk_ctrl_numpad_1_silence_shot_focus_target()
-        # self.build_hk_ctrl_numpad_2_counter_spell_focus_target()
-        # self.build_hk_ctrl_numpad_3_aggressive_dispel()
-        # self.build_hk_ctrl_numpad_4_aoe_fear()
-        # self.build_hk_ctrl_numpad_5_typhoon()
-        # self.build_hk_ctrl_numpad_6_thunder_storm()
-        # self.build_hk_ctrl_numpad_7_hymn_of_life()
-        # self.build_hk_ctrl_numpad_10_hymn_of_mana()
         self.build_hk_ctrl_numpad_11_tank_1_taunt()
         self.build_hk_ctrl_numpad_12_tank_2_taunt()

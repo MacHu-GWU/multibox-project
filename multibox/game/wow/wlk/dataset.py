@@ -81,6 +81,18 @@ class BuildGroupTabColumnEnum(str, enum.Enum):
     is_raid_healer = "is_raid_healer"
     is_tank_1_beacon_paladin = "is_tank_1_beacon_paladin"
     is_tank_2_beacon_paladin = "is_tank_2_beacon_paladin"
+    is_1_interrupt = "is_1_interrupt"
+    is_2_interrupt = "is_2_interrupt"
+    is_3_interrupt = "is_3_interrupt"
+    is_1_divine_sacrifice = "is_1_divine_sacrifice"
+    is_2_divine_sacrifice = "is_2_divine_sacrifice"
+    is_3_divine_sacrifice = "is_3_divine_sacrifice"
+    is_1_divine_hymn = "is_1_divine_hymn"
+    is_2_divine_hymn = "is_2_divine_hymn"
+    is_3_divine_hymn = "is_3_divine_hymn"
+    is_1_hymn_of_hope = "is_1_hymn_of_hope"
+    is_2_hymn_of_hope = "is_2_hymn_of_hope"
+    is_3_hymn_of_hope = "is_3_hymn_of_hope"
 
 
 build_group_schema = {
@@ -478,6 +490,18 @@ class Dataset:
                 is_raid_healer=bool(build_dct[BuildGroupTabColumnEnum.is_raid_healer.value]),
                 is_tank_1_beacon_paladin=bool(build_dct[BuildGroupTabColumnEnum.is_tank_1_beacon_paladin.value]),
                 is_tank_2_beacon_paladin=bool(build_dct[BuildGroupTabColumnEnum.is_tank_2_beacon_paladin.value]),
+                is_1_interrupt=bool(build_dct[BuildGroupTabColumnEnum.is_1_interrupt.value]),
+                is_2_interrupt=bool(build_dct[BuildGroupTabColumnEnum.is_2_interrupt.value]),
+                is_3_interrupt=bool(build_dct[BuildGroupTabColumnEnum.is_3_interrupt.value]),
+                is_1_divine_sacrifice=bool(build_dct[BuildGroupTabColumnEnum.is_1_divine_sacrifice.value]),
+                is_2_divine_sacrifice=bool(build_dct[BuildGroupTabColumnEnum.is_2_divine_sacrifice.value]),
+                is_3_divine_sacrifice=bool(build_dct[BuildGroupTabColumnEnum.is_3_divine_sacrifice.value]),
+                is_1_divine_hymn=bool(build_dct[BuildGroupTabColumnEnum.is_1_divine_hymn.value]),
+                is_2_divine_hymn=bool(build_dct[BuildGroupTabColumnEnum.is_2_divine_hymn.value]),
+                is_3_divine_hymn=bool(build_dct[BuildGroupTabColumnEnum.is_3_divine_hymn.value]),
+                is_1_hymn_of_hope=bool(build_dct[BuildGroupTabColumnEnum.is_1_hymn_of_hope.value]),
+                is_2_hymn_of_hope=bool(build_dct[BuildGroupTabColumnEnum.is_2_hymn_of_hope.value]),
+                is_3_hymn_of_hope=bool(build_dct[BuildGroupTabColumnEnum.is_3_hymn_of_hope.value]),
                 # fmt: on
             )
             chars.append(new_char)

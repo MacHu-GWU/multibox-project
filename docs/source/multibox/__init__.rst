@@ -13,5 +13,6 @@ sub packages and modules
     game <game/__init__>
     utils <utils/__init__>
     api <api>
+    logger <logger>
     runtime <runtime>
     

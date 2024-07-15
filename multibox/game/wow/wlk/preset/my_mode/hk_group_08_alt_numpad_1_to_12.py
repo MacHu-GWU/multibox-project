@@ -17,63 +17,122 @@ if T.TYPE_CHECKING:  # pragma: no cover
     from .mode import Mode
 
 
-class HotkeyGroup08AltNumpad1To12:
+class HotkeyGroup08AltNumpad1To12Mixin:
     """
     todo: docstring.
     """
 
-    def build_hk_alt_numpad_1_misdirect_and_tot_focus(self: "Mode"):
+    def build_hk_alt_numpad_1_misdirect_and_mark(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        在 Boss 战开怪时, 通常需要猎人给 Tank 误导, 然后前三下的毒蛇钉刺, 奇美拉射击,
+        瞄准射击造成的大量仇恨会累计给 Tank, 使得开场就能建立足够的初始仇恨, 确保不会 OT.
+
+        另外, 在开怪之前, 猎人应该给 Boss 上猎人标记增加受到的远程攻击伤害.
+
+        这个按键就是用来完成这两个任务的.
+
+        **使用方法**
+
+        按 1 下就可以了.
+
+        **动作条安排**
+
+        - 动作条按钮上误导焦点宏.
+        - 误导焦点宏按钮要绑定 ``Alt + Z`` 快捷键, 并确保跟 ``act.Hunter.Misdirection_Focus_Macro``
+            中的定义一致. 猎人印记技能要绑定 ``Ctrl + G`` 快捷键, 并确保跟 ``act.Hunter.Hunter_s_Mark``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad1 - 猎人误导坦克",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_1),
         ) as self.hk_alt_numpad_1_hunter_misdirect:
             with hk.SendLabel(
-                id=TC.hunter.name,
+                id=f"Alt Numpad1 - 猎人误导坦克",
                 to=self.get_lbs_by_tc(TC.hunter),
             ):
+                # 一般上猎人印记时我们不能让猎人自动攻击, 开怪应该由 Tank 来开.
+                # 先选择自己能确保之前右键点击 Boss 所产生的自动攻击被取消.
+                act.Target.TARGET_SELF()
+                act.Target.TARGET_FOCUS_TARGET()
+                act.Hunter.Hunter_s_Mark()
                 act.Hunter.Misdirection_Focus_Macro()
 
     def build_hk_alt_numpad_2_aspect_of_pact_or_hawk(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        猎人在龙鹰守护和豹群守护 (全团提高移动速度) 之间切换.
+
+        **使用方法**
+
+        按 1 下就切换到下一个守护. 一直按就一直在两个守护之间切换
+
+        **动作条安排**
+
+        - 动作条按钮上是切换守护宏.
+        - 动作条按钮要绑定 ``Shift + F`` 快捷键, 并确保跟 ``act.Hunter.Aspect_of_Pact_or_dragon_hawk``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad2 - 猎人在雄鹰和豹群守护之间切换",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_2),
         ) as self.hk_alt_numpad_2_aspect_of_pact_or_hawk:
             with hk.SendLabel(
-                id=TC.hunter.name,
+                id="Alt Numpad2 - 猎人在雄鹰和豹群守护之间切换",
                 to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Hunter.Aspect_of_Pact_or_dragon_hawk()
 
     def build_hk_alt_numpad_3_aspect_of_viper_or_hawk(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        猎人在龙鹰守护和蝮蛇守护 (回蓝) 之间切换.
+
+        **使用方法**
+
+        按 1 下就切换到下一个守护. 一直按就一直在两个守护之间切换
+
+        **动作条安排**
+
+        - 动作条按钮上是切换守护宏.
+        - 动作条按钮要绑定 ``Shift + G`` 快捷键, 并确保跟 ``act.Hunter.Aspect_of_viper_or_dragon_hawk``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad3 - 猎人在雄鹰和蝮蛇守护之间切换",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_3),
         ) as self.hk_alt_numpad_3_aspect_of_viper_or_hawk:
             with hk.SendLabel(
-                name=TC.hunter.name,
+                id="Alt Numpad3 - 猎人在雄鹰和蝮蛇守护之间切换",
                 to=self.get_lbs_by_tc(TC.hunter),
             ):
                 act.Hunter.Aspect_of_viper_or_dragon_hawk()
 
     def build_hk_alt_numpad_4_all_boomkin_star_fall(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有鸟德一起开星落.
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是星落技能.
+        - 动作条按钮要绑定 ``Alt + F`` 快捷键, 并确保跟 ``act.DruidBalance.Starfall``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad4 - 鸟德集体放星落",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_4),
         ) as self.hk_alt_numpad_4_all_boomkin_star_fall:
             with hk.SendLabel(
-                id=TC.druid_balance.name,
+                id="Alt Numpad4 - 鸟德集体放星落",
                 to=self.get_lbs_by_tc(TC.druid_balance),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
@@ -81,44 +140,65 @@ class HotkeyGroup08AltNumpad1To12:
 
     def build_hk_alt_numpad_5_all_dps_burst(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有 DPS 一起开爆发性技能 (不包括萨满嗜血).
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是一键开爆发技能宏.
+        - 动作条按钮要绑定 ``Alt + D`` 快捷键, 并确保跟 ``act.General.DPS_BURST_MACRO_KEY_ALT_D``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad5 - DPS 开爆发技能",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_5),
         ) as self.hk_alt_numpad_5_all_dps_burst:
             with hk.SendLabel(
-                id=TC.dps.name,
+                id="Alt Numpad5 - DPS 开爆发技能",
                 to=self.get_lbs_by_tc(TC.dps),
             ):
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
     def build_hk_alt_numpad_6_all_dps_burst_and_hero(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有 DPS 一起开爆发性技能, 并且包括萨满嗜血.
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是一键开爆发技能宏.
+        - 动作条按钮要绑定 ``Alt + D`` 快捷键, 并确保跟 ``act.General.DPS_BURST_MACRO_KEY_ALT_D``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad6 - 开嗜血, 同时所有 DPS 开爆发技能",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_6),
         ) as self.hk_alt_numpad_6_all_dps_burst_and_hero:
             with hk.SendLabel(
-                id="all_non_shaman_dps",
-                to=difference_list(
-                    self.get_lbs_by_tc(TC.dps),
-                    self.get_lbs_by_tc(TC.shaman),
-                ),
+                id="Alt Numpad6 - 非萨满 DPS 开爆发技能",
+                to=self.get_lbs_by_tc(TC.dps).difference(self.get_lbs_by_tc(TC.shaman)),
             ):
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
             with hk.SendLabel(
-                id=TC.shaman_elemental.name,
+                id="Alt Numpad6 - 萨满 DPS 开爆发技能以及嗜血",
                 to=self.get_lbs_by_tc(TC.shaman_elemental),
             ):
                 act.Shaman.Bloodlust_or_Heroism()
                 act.General.DPS_BURST_MACRO_KEY_ALT_D()
 
             with hk.SendLabel(
-                id=TC.shaman_resto.name,
+                id="Alt Numpad6 - 萨满 治疗 开嗜血",
                 to=self.get_lbs_by_tc(TC.shaman_resto),
             ):
                 act.Shaman.Bloodlust_or_Heroism()
@@ -163,14 +243,26 @@ class HotkeyGroup08AltNumpad1To12:
 
     def build_hk_alt_numpad_10_cleansing_totem(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有萨满放净化图腾 (给小队驱 Debuff)
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是净化图腾技能.
+        - 动作条按钮要绑定 ``Alt + F2`` 快捷键, 并确保跟 ``act.Shaman.Cleansing_Totem``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad10 - 萨满放清毒图腾",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_0),
         ) as self.hk_alt_numpad_10_cleansing_totem:
             with hk.SendLabel(
-                id=TC.shaman.name,
+                id="Alt Numpad10 - 萨满放清毒图腾",
                 to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
@@ -178,14 +270,26 @@ class HotkeyGroup08AltNumpad1To12:
 
     def build_hk_alt_numpad_11_tremor_totem(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有萨满放战栗图腾 (给小队成员反恐惧)
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是战栗图腾技能.
+        - 动作条按钮要绑定 ``Alt + F1`` 快捷键, 并确保跟 ``act.Shaman.Tremor_Totem``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad11 - 萨满放战栗图腾",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_11_DIVIDE),
         ) as self.hk_alt_numpad_11_tremor_totem:
             with hk.SendLabel(
-                id=TC.shaman.name,
+                id="Alt Numpad11 - 萨满放战栗图腾",
                 to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
@@ -193,21 +297,33 @@ class HotkeyGroup08AltNumpad1To12:
 
     def build_hk_alt_numpad_12_earth_binding_totem(self: "Mode"):
         """
-        todo: docstring.
+        **说明**
+
+        所有萨满放地缚图腾 (范围减速)
+
+        **使用方法**
+
+        按就行了.
+
+        **动作条安排**
+
+        - 动作条按钮上是地缚图腾技能.
+        - 动作条按钮要绑定 ``Shift + F`` 快捷键, 并确保跟 ``act.Shaman.Earthbind_Totem``
+            中的定义一致.
         """
         with hk.Hotkey(
             id="Alt Numpad12 - 萨满放地缚图腾",
             key=KN.SCROLOCK_ON(KN.ALT_NUMPAD_12_MULTIPLY),
         ) as self.hk_alt_numpad_12_earth_binding_totem:
             with hk.SendLabel(
-                id=TC.shaman.name,
+                id="Alt Numpad12 - 萨满放地缚图腾",
                 to=self.get_lbs_by_tc(TC.shaman),
             ):
                 act.General.STOP_CASTING_KEY_OEM1_SEMICOLUMN()
                 act.Shaman.Earthbind_Totem()
 
     def build_hk_group_08_alt_numpad_1_to_12_mixin(self):
-        self.build_hk_alt_numpad_1_misdirect_and_tot_focus()
+        self.build_hk_alt_numpad_1_misdirect_and_mark()
         self.build_hk_alt_numpad_2_aspect_of_pact_or_hawk()
         self.build_hk_alt_numpad_3_aspect_of_viper_or_hawk()
         self.build_hk_alt_numpad_4_all_boomkin_star_fall()

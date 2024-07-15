@@ -23,11 +23,11 @@ from .hk_group_04_pet_control.main import HotkeyGroup04PetControlMixin
 from .hk_group_05_numpad_1_to_12 import HotkeyGroup05Numpad1To12Mixin
 from .hk_group_06_party_and_system import HotkeyGroup06PartyAndSystemMixin
 from .hk_group_07_utility_spell.main import HotkeyGroup07UtilitySpellMixin
-from .hk_group_08_alt_numpad_1_to_12 import HotkeyGroup08AltNumpad1To12
-from .hk_group_09_ctrl_numpad_1_to_12 import HotkeyGroup09CtrlNumpad1To12
-from .hk_group_10_shift_numpad_1_to_12 import HotkeyGroup10ShiftNumpad1To12
+from .hk_group_08_alt_numpad_1_to_12 import HotkeyGroup08AltNumpad1To12Mixin
+from .hk_group_09_ctrl_numpad_1_to_12 import HotkeyGroup09CtrlNumpad1To12Mixin
 from .hk_group_11_healbot.main import HotkeyGroup11HealBotMixin
 from .hk_group_12_special.main import HotkeyGroup12SpecialMixin
+from .hk_group_13_ctrl_alt_numpad_1_to_12 import HotkeyGroup13CtrlAltNumpad1To12Mixin
 
 from .hk_control_panel import HotkeyControlPanelMixin
 
@@ -46,11 +46,11 @@ class Mode(
     HotkeyGroup05Numpad1To12Mixin,
     HotkeyGroup06PartyAndSystemMixin,
     HotkeyGroup07UtilitySpellMixin,
-    HotkeyGroup08AltNumpad1To12,
-    HotkeyGroup09CtrlNumpad1To12,
-    HotkeyGroup10ShiftNumpad1To12,
+    HotkeyGroup08AltNumpad1To12Mixin,
+    HotkeyGroup09CtrlNumpad1To12Mixin,
     HotkeyGroup11HealBotMixin,
     HotkeyGroup12SpecialMixin,
+    HotkeyGroup13CtrlAltNumpad1To12Mixin,
     # --- Control Panel
     HotkeyControlPanelMixin,
 ):
@@ -192,8 +192,8 @@ class Mode(
         self.build_hk_group_07_utility_spell_mixin()
         self.build_hk_group_08_alt_numpad_1_to_12_mixin()
         self.build_hk_group_09_ctrl_numpad_1_to_12_mixin()
-        self.build_hk_group_10_mixin()
         self.build_hk_group_11_healbot_mixin()
         self.build_hk_group_12_special_mixin()
+        self.build_hk_group_13_ctrl_alt_numpad_1_to_12_mixin()
 
         self.build_control_panel_mixin()

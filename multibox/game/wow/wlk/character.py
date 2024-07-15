@@ -35,12 +35,28 @@ class Character(wow.Character):
     :param is_raid_healer:
     :param is_tank_1_beacon_paladin:
     :param is_tank_2_beacon_paladin:
+    :param is_1_interrupt:
+    :param is_2_interrupt:
+    :param is_3_interrupt:
+    :param is_1_divine_sacrifice:
+    :param is_2_divine_sacrifice:
+    :param is_3_divine_sacrifice:
+    :param is_1_divine_hymn:
+    :param is_2_divine_hymn:
+    :param is_3_divine_hymn:
+    :param is_1_hymn_of_hope:
+    :param is_2_hymn_of_hope:
+    :param is_3_hymn_of_hope:
 
     **Why do I need these attribute?**
 
-    早期时 Character 并没有这些属性,
-
-
+    早期我实现这个模块时并没有这些属性. 后来在进行多开脚本编辑时, 发现经常会有根据团队中的角色的
+    天赋来给每个角色安排任务的需求. 例如根据团队中有打断施法技能的角色数量, 来安排打断链, 谁是
+    1 打断, 谁是 2 打断, 谁是 3 打断. 但是在开发中发现, 在大多数时候由于团队中的角色的不确定性,
+    很难指定一套足够智能且没有 bug 的逻辑来自动安排工作. 而更好的方式是在定义一个团队的时候,
+    显式定义谁负责什么. 例如你可以用 ``is_1_interrupt`` 来定义谁是 1 号打断. 这样做的好处是
+    能大幅简化代码的复杂度以及提升可维护性. 相比之下, 多定义一些属性, 以及显式指定谁负责什么
+    所带来的复杂度是微不足道的.
     """
 
     # fmt: off
@@ -60,6 +76,20 @@ class Character(wow.Character):
     is_raid_healer: bool = AttrsClass.ib_bool(default=False)
     is_tank_1_beacon_paladin: bool = AttrsClass.ib_bool(default=False)
     is_tank_2_beacon_paladin: bool = AttrsClass.ib_bool(default=False)
+    # 下面的属性是用来定义各种技能链的, 例如轮流打断, 轮流开减伤等等
+    is_1_interrupt: bool = AttrsClass.ib_bool(default=False)
+    is_2_interrupt: bool = AttrsClass.ib_bool(default=False)
+    is_3_interrupt: bool = AttrsClass.ib_bool(default=False)
+    is_1_divine_sacrifice: bool = AttrsClass.ib_bool(default=False)
+    is_2_divine_sacrifice: bool = AttrsClass.ib_bool(default=False)
+    is_3_divine_sacrifice: bool = AttrsClass.ib_bool(default=False)
+    is_1_divine_hymn: bool = AttrsClass.ib_bool(default=False)
+    is_2_divine_hymn: bool = AttrsClass.ib_bool(default=False)
+    is_3_divine_hymn: bool = AttrsClass.ib_bool(default=False)
+    is_1_hymn_of_hope: bool = AttrsClass.ib_bool(default=False)
+    is_2_hymn_of_hope: bool = AttrsClass.ib_bool(default=False)
+    is_3_hymn_of_hope: bool = AttrsClass.ib_bool(default=False)
+
     # fmt: on
 
     @classmethod

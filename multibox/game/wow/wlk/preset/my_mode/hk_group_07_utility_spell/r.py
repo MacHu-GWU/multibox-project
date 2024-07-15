@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+todo: docstring
+"""
+
 import typing as T
-import itertools
 
 import hotkeynet.api as hk
 from hotkeynet.api import KN, CAN
@@ -13,111 +16,75 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 class RMixin:
+    """
+    todo: docstring
+    """
+
     def build_hk_default_r(self: "Mode"):
+        """
+        **说明**
+
+        将所有有打断技能的职业分组轮流打断施法. 假设我们团队中有 3 个近战, 3 个远程打断职业,
+        我们可以将它们分为 3 组, 每一组都有 1 个近战和 1 个远程. 这样可以保证每一个施法都有
+        至少两个人在打断, 并且 Boss 几乎不会有施法成功的机会.
+
+        这个方法假设你在 dataset 的 excel 中显式定义了分别哪个角色是 1, 2, 3 打断. 这个
+        方法以前的实现方式是按照一定的逻辑分析团队中有哪些天赋的角色, 然后尝试自动分组. 后来
+        发现这样的逻辑实现起来 bug 太多, 而且不够灵活. 所以现在改为显式定义.
+
+        巫妖王之怒版本所有的打断技能请参考: https://docs.google.com/spreadsheets/d/1vr8NwGpVcjbpQKonHJ1_zRLQGxQULO_vUURaZ1dGH6Y/edit?gid=994045182#gid=994045182
+
+        **使用方法**
+
+        按 1 下就有一组人打断. 根据团队配置可能会有 3 个组, 也可能只有 1 或 2 个组.
+
+        **动作条安排**
+
+        - 动作条按钮上就是打断技能.
+        - 动作条按钮要绑定 ``R`` 快捷键, 并确保每个职业的打断技能按钮都是 R.
+        """
         with hk.Hotkey(
             id="R - 能打断的职业打断",
             key=KN.SCROLOCK_ON(KN.R),
         ) as self.hk_r_interrupt:
-            # 近战打断, CD 都是 10 秒
-            # lbs_warrior = self.lbs_by_tc(TC.warrior)
-            # lbs_rogue = self.lbs_by_tc(TC.rogue)
+            lbs_warrior_dps = self.get_lbs_by_tc(TC.warrior_dps)
+            lbs_warrior_tank = self.get_lbs_by_tc(TC.warrior_tank)
             lbs_dk = self.get_lbs_by_tc(TC.dk)
-
-            # 远程打断
-            # 萨满打断技能 CD 很短, 只有 6 秒
-            lbs_shaman_non_resto = self.get_lbs_by_tc(TC.shaman_non_resto)
-            # 萨满打断技能 CD 很短, 只有 6 秒
-            lbs_shaman_resto = self.get_lbs_by_tc(TC.shaman_resto)
-            lbs_shaman = lbs_shaman_non_resto.union(lbs_shaman_resto)
-            # 法师反制 CD 24 秒
+            lbs_hunter_marksman = self.get_lbs_by_tc(TC.hunter_marksman)
+            lbs_shaman = self.get_lbs_by_tc(TC.shaman)
+            lbs_rogue = self.get_lbs_by_tc(TC.rogue)
+            lbs_warlock_affliction = self.get_lbs_by_tc(TC.warlock_affliction)
             lbs_mage = self.get_lbs_by_tc(TC.mage)
-            # 猎人 沉默射击 CD 24 秒
-            lbs_marksman_hunter = self.get_lbs_by_tc(TC.hunter_marksman)
-            # shadow_priest_lbs = self.lbs_by_tc(TC.priest_shadow) # 不是每一个牧师都会点出沉默
 
-            n_melee = len(lbs_dk)
-            n_shaman = len(lbs_shaman)
-            n_range = len(lbs_mage) + len(lbs_marksman_hunter)
+            lb_to_key_mapping = dict()
+            for lb in lbs_warrior_dps:
+                lb_to_key_mapping[lb] = act.Warrior.Pummel
+            for lb in lbs_warrior_tank:
+                lb_to_key_mapping[lb] = act.Warrior.Shield_Bash
+            for lb in lbs_dk:
+                lb_to_key_mapping[lb] = act.DK.Mind_Freeze
+            for lb in lbs_hunter_marksman:
+                lb_to_key_mapping[lb] = act.Hunter.Silencing_Shot
+            for lb in lbs_shaman:
+                lb_to_key_mapping[lb] = act.Shaman.Wind_Shear
+            # for lb in lbs_rogue:
+            #     lb_to_key_mapping[lb] = act.Rogue.Kick
+            for lb in lbs_warlock_affliction:
+                lb_to_key_mapping[lb] = CAN.CTRL_7  # 恶魔犬的法术反制
+            for lb in lbs_mage:
+                lb_to_key_mapping[lb] = act.Mage.Counterspell
 
-            melee_pairs = [(label, act.DK.Mind_Freeze) for label in lbs_dk]
-            shaman_pairs = [(label, act.Shaman.Wind_Shear) for label in lbs_shaman]
-
-            mage_pairs = [(label, act.Mage.Counterspell) for label in lbs_mage]
-            hunter_pairs = [
-                (label, act.HunterMarksmanship.Silencing_Shot)
-                for label in lbs_marksman_hunter
-            ]
-            range_pairs = mage_pairs + hunter_pairs
-
-            loop_melee = itertools.cycle(melee_pairs)
-            loop_range = itertools.cycle(range_pairs)
-
-            # 没有萨满的情况:
-            if len(lbs_shaman) == 0:
-                pass
-            # 有一个 萨满的情况
-            elif len(lbs_shaman) == 1:
-                shaman_label, shaman_key = lbs_shaman[0], act.Shaman.Wind_Shear
-                # 如果没有其他远程打断角色, 那么每次都是这个萨满来打断
-                if n_range == 0:
-                    with hk.SendLabel(
-                        to=[
-                            shaman_label,
-                        ]
-                    ):
-                        shaman_key()
-                # 如果有少于 2 个其他远程打断角色, 那么打断循环就是:
-                # 角色 1 -> 萨满 -> 角色 2 -> 萨满 -> 角色 1 -> 萨满 -> ...
-                elif len(range_pairs) <= 2:
-                    for label, key in range_pairs:
-                        with hk.Toggle():
-                            with hk.SendLabel(to=[label]):
-                                key()
-                        with hk.Toggle():
-                            with hk.SendLabel(
-                                to=[
-                                    shaman_label,
-                                ]
-                            ):
-                                shaman_key()
-                # 如果有多于 2 个 (3 个或 3 个以上) 其他远程打断角色, 那么打断循环就是:
-                # 角色 1 和 萨满 -> 角色 2 和 萨满 -> 角色 3 和 萨满 -> 角色 1 和 萨满 -> ...
-                else:
-                    for label, key in range_pairs:
-                        with hk.Toggle():
-                            with hk.SendLabel(to=[label]):
-                                key()
-                            with hk.SendLabel(to=[shaman_label]):
-                                shaman_key()
-            # 有两个 萨满的情况, 两个萨满配合其他人轮流来
-            elif len(lbs_shaman) >= 2:
-                # 如果有其他远程打断角色, 那么这两个萨满还是轮流来
-                # 但是穿插其他远程打断角色 以及 近战打断角色
-                for label, key in shaman_pairs:
+            # fmt: off
+            lbs_1 = [char.window.label for char in self.active_chars if char.is_1_interrupt]
+            lbs_2 = [char.window.label for char in self.active_chars if char.is_2_interrupt]
+            lbs_3 = [char.window.label for char in self.active_chars if char.is_3_interrupt]
+            # fmt: on
+            for lbs in [lbs_1, lbs_2, lbs_3]:
+                if len(lbs):
                     with hk.Toggle():
-                        with hk.SendLabel(to=[label]):
-                            key()
-                        if n_melee:
-                            label_melee, key_melee = next(loop_melee)
-                            with hk.SendLabel(to=[label_melee]):
-                                key_melee()
-                        if n_range:
-                            label_range, key_range = next(loop_range)
-                            with hk.SendLabel(to=[label_range]):
-                                key_range()
-                # 重复两次是因为我们有可能 近战 / 远程 打断的数量多于萨满
-                for label, key in shaman_pairs:
-                    with hk.Toggle():
-                        with hk.SendLabel(to=[label]):
-                            key()
-                        if n_melee:
-                            label_melee, key_melee = next(loop_melee)
-                            with hk.SendLabel(to=[label_melee]):
-                                key_melee()
-                        if n_range:
-                            label_range, key_range = next(loop_range)
-                            with hk.SendLabel(to=[label_range]):
-                                key_range()
+                        for lb in lbs:
+                            with hk.SendLabel(to=[lb]):
+                                lb_to_key_mapping[lb]()
 
     def build_r_mixin(self: "Mode"):
         if self.name == "special_mode":
